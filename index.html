@@ -216,24 +216,22 @@ section{padding-block:110px}
 @media (max-width:620px){.prices{grid-template-columns:1fr}}
 
 /* 진행 방법 */
-.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;counter-reset:f}
-.step{position:relative;background:var(--card);border-radius:22px;padding:22px 20px 24px}
-.step .no{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;box-shadow:0 0 0 6px var(--accent-soft)}
-.step small{display:block;margin-top:16px;font-size:12.5px;font-weight:700;color:var(--accent-ink)}
-.step h3{font-family:var(--display);font-size:23px;margin-top:2px;line-height:1.25}
+.sec-head.center{text-align:center;margin-left:auto;margin-right:auto}
+.sec-head.center h2{font-size:clamp(34px,5vw,54px);line-height:1.2}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{position:relative;background:var(--bg);border-radius:24px;padding:30px 26px}
+.step .no{position:relative;z-index:1;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:17px}
+.step h3{font-family:var(--display);font-size:23px;margin-top:16px;line-height:1.25}
 .step p{font-size:14.5px;color:var(--muted);margin-top:8px}
-.flow .step:not(:last-child)::after{content:"";position:absolute;top:38px;right:-12px;width:12px;height:2px;background:var(--accent);opacity:.45}
-.steps-wide{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.steps-wide div{background:var(--card);border-radius:22px;padding:22px 24px}
-.steps-wide small{font-size:13px;font-weight:700;color:var(--accent-ink)}
-.steps-wide h3{font-family:var(--display);font-size:26px;margin-top:4px}
+.flow .step:not(:last-child)::after{content:"";position:absolute;top:52px;left:82px;right:-10px;height:2px;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 12px);opacity:.5}
+.steps-wide{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.steps-wide div{background:var(--bg);border-radius:24px;padding:28px 28px}
+.steps-wide .pill{display:inline-block;background:var(--accent-soft);color:var(--accent-ink);font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px}
+.steps-wide h3{font-family:var(--display);font-size:26px;margin-top:12px}
 .steps-wide p{font-size:14.5px;color:var(--muted);margin-top:6px}
-.proc-promise{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:12px;align-items:center;margin-top:12px;background:var(--dark);color:#fff;border-radius:22px;padding:22px 24px}
-.proc-promise b{display:block;font-family:var(--display);font-size:21px;font-weight:400}
-.proc-promise span{font-size:13.5px;color:#b0b8c1}
-@media (max-width:1000px){.flow{grid-template-columns:1fr 1fr 1fr}.flow .step::after{display:none}.proc-promise{grid-template-columns:1fr 1fr 1fr}.proc-promise .btn{grid-column:1/-1;justify-self:start}}
-@media (max-width:860px){.flow{grid-template-columns:1fr 1fr}.steps-wide{grid-template-columns:1fr}}
-@media (max-width:560px){.flow{grid-template-columns:1fr}.step{display:grid;grid-template-columns:34px 1fr;column-gap:14px;padding:20px}.step .no{grid-row:1/4}.step small{margin-top:0}.proc-promise{grid-template-columns:1fr}.proc-promise .btn{justify-self:stretch;text-align:center}}
+.proc-cta{text-align:center;margin-top:36px}
+@media (max-width:860px){.flow{grid-template-columns:1fr 1fr}.flow .step::after{display:none}.steps-wide{grid-template-columns:1fr}}
+@media (max-width:560px){.flow{grid-template-columns:1fr}.step{padding:24px 22px}}
 
 /* 시작한 이유 */
 .why{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
@@ -411,24 +409,18 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 
 <section id="process" class="band" aria-labelledby="proc-h">
   <div class="wrap">
-    <div class="sec-head"><p class="kicker">진행 방법</p><h2 id="proc-h">문자 한 통이면<br><em>가능 여부부터</em></h2><p>한 번 자르면 되돌리기 어려운 일이라, 치수는 실제 냉장고 기준으로 잡아요. 상담한 사람이 직접 와서 끝까지 시공해요.</p></div>
+    <div class="sec-head center"><p class="kicker">진행 순서</p><h2 id="proc-h">견적부터 시공까지<br><em>이렇게 진행돼요</em></h2></div>
     <ol class="flow">
-      <li class="step"><span class="no">1</span><small>문자 상담</small><h3>사진 보내기</h3><p>현장 사진 여러 장, 동네, 원하는 작업을 문자로 보내주세요. 냉장고 모델명이 있으면 더 정확해요.</p></li>
-      <li class="step"><span class="no">2</span><small>견적 안내</small><h3>방식과 비용 안내</h3><p>살릴 부분과 바꿀 부분을 나눠서 작업 방식과 예상 금액을 알려드려요.</p></li>
-      <li class="step"><span class="no">3</span><small>실측</small><h3>현장 실측</h3><p>냉장고 크기, 벽체와 상부장 상태를 직접 보고 방법을 정해요. 필요한 부재는 미리 만들어 가요.</p></li>
-      <li class="step"><span class="no">4</span><small>시공</small><h3>보양 후 철거·보강</h3><p>벽과 바닥부터 보양하고 필요한 부분만 철거해요. 기둥이 받치던 무게만큼 천장과 프레임을 보강해요.</p></li>
-      <li class="step"><span class="no">5</span><small>마무리</small><h3>설치와 점검</h3><p>수평을 맞춰 설치하고 문 여닫힘, 단차, 흔들림까지 확인한 뒤 주변을 정리해요.</p></li>
+      <li class="step"><span class="no">1</span><h3>사진·동네 보내기</h3><p>현장 사진 몇 장과 동네, 하고 싶은 일을 문자로 보내주세요. 냉장고 모델명이 있으면 더 정확해요.</p></li>
+      <li class="step"><span class="no">2</span><h3>방식과 금액 안내</h3><p>살릴 부분과 바꿀 부분을 나눠서 작업 방법과 예상 금액을 먼저 알려드려요.</p></li>
+      <li class="step"><span class="no">3</span><h3>실측과 사전 제작</h3><p>현장을 직접 재고, 필요한 부재는 미리 만들어 가요.</p></li>
+      <li class="step"><span class="no">4</span><h3>시공과 점검</h3><p>보양, 철거, 보강, 설치까지 대표가 직접 하고 문 여닫힘까지 확인해요.</p></li>
     </ol>
     <div class="steps-wide">
-      <div><small>리폼</small><h3>대부분 그날 끝나요</h3><p>칸막이 제거, 신발장 오픈장 리폼처럼 있는 장을 고치는 일은 대부분 하루 안에 끝나고 당일 사용할 수 있어요.</p></div>
-      <div><small>새로 제작</small><h3>실측하고 맞춰 짜요</h3><p>냉장고장, 홈바장을 새로 짤 땐 실측한 치수로 만들고, 일정은 상담 때 따로 알려드려요.</p></div>
+      <div><span class="pill">리폼</span><h3>대부분 그날 끝나요</h3><p>칸막이 제거, 신발장 오픈장 리폼처럼 있는 장을 고치는 일은 대부분 하루 안에 끝나요.</p></div>
+      <div><span class="pill">새로 제작</span><h3>실측하고 맞춰 짜요</h3><p>냉장고장, 홈바장을 새로 짤 땐 실측한 치수로 만들고 일정은 상담 때 알려드려요.</p></div>
     </div>
-    <div class="proc-promise">
-      <div><b>평생 AS</b><span>처짐·기울어짐은 끝까지 책임져요</span></div>
-      <div><b>대표 직접 시공</b><span>중간 업체 없이 상담한 사람이 와요</span></div>
-      <div><b>필요한 부분만</b><span>멀쩡한 장은 살리고 고쳐요</span></div>
-      <a class="btn btn-acc" href="#quote">사진 보내고 견적 받기</a>
-    </div>
+    <p class="proc-cta"><a class="btn btn-acc" href="#quote">사진 보내고 견적 받기</a></p>
   </div>
 </section>
 
@@ -669,7 +661,7 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
   /* 스크롤 등장 */
   if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
-    document.querySelectorAll('.sec-head,.chat,.card,.price,.step,.steps-wide>div,.proc-promise,.fact,.faq,.areas,.need,.form,.slider,.stat-row,.why>div:first-child').forEach(function(el,i){el.classList.add('reveal');el.style.transitionDelay=(i%3)*60+'ms';io.observe(el)});
+    document.querySelectorAll('.sec-head,.chat,.card,.price,.step,.steps-wide>div,.fact,.faq,.areas,.need,.form,.slider,.stat-row,.why>div:first-child').forEach(function(el,i){el.classList.add('reveal');el.style.transitionDelay=(i%3)*60+'ms';io.observe(el)});
     setTimeout(function(){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')})},2500);
   }
 })();
