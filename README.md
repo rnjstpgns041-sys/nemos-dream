@@ -1,4 +1,4 @@
-# 네모의꿈 홈페이지
+# 가구이야기 홈페이지
 
 https://nemos-dream.netlify.app
 
