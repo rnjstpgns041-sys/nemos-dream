@@ -386,6 +386,82 @@ footer a{color:#d6cbc1}
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important}}
+
+/* ===== v11: 토스처럼 깔끔하게 ===== */
+:root{--bg:#ffffff;--bg-2:#f9fafb;--bg-3:#f2f4f6;--ink:#191f28;--ink-2:#4e5968;--ink-3:#8b95a1;--line:#e5e8eb;
+  --shadow-sm:none;--shadow:0 1px 2px rgba(0,0,0,.04);--shadow-lg:0 24px 60px rgba(25,31,40,.14)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#101013;--bg-2:#17171b;--bg-3:#202027;--card:#1c1c21;--ink:#f2f4f6;--ink-2:#b0b8c1;--ink-3:#8b95a1;--line:#2c2c33;--shadow-sm:none;--shadow:none}}
+:root[data-theme="dark"]{--bg:#101013;--bg-2:#17171b;--bg-3:#202027;--card:#1c1c21;--ink:#f2f4f6;--ink-2:#b0b8c1;--ink-3:#8b95a1;--line:#2c2c33;--shadow-sm:none;--shadow:none}
+h1,h2,h3{font-weight:700;letter-spacing:-0.03em}
+.hero::before,.hero::after{display:none}
+.hero{padding-top:72px}
+.hero h1{font-weight:700;letter-spacing:-0.035em;line-height:1.25}
+.hero h1 .hl{background:none;padding:0}
+.hero-sub{color:var(--ink-2)}
+.pill{box-shadow:none;background:var(--acc-soft);color:var(--acc-2);padding:8px 14px}
+.hero-points li .ic{background:var(--bg-3);color:var(--ink-2)}
+.fits i{box-shadow:none;background:var(--bg-3)}
+.hv-before{transform:none;border-width:5px}
+.badge-round{transform:none;background:var(--acc);color:#fff;width:104px;height:104px;font-size:21px}
+.badge-round::after{display:none}
+.float-card{animation:none;box-shadow:0 12px 32px rgba(25,31,40,.12)}
+.btn{border-radius:16px;font-weight:600}
+.btn-acc{box-shadow:none}.btn-acc:hover{transform:none}
+.btn-line{background:var(--bg-3);box-shadow:none}.btn-line:hover{background:var(--line);box-shadow:none;transform:none}
+.nav .btn-acc{border-radius:12px}
+.numbers{box-shadow:none;background:var(--bg-2);border-radius:24px}
+.numbers .n{font-weight:700}
+.q{box-shadow:none;background:var(--bg-2)}.q:hover{box-shadow:none}
+.recent{box-shadow:none;background:var(--bg-2)}
+.sec{padding-block:150px}
+.tint{background:var(--bg-2)}
+.eyebrow{font-size:17px;font-weight:600}
+.sec-head .eyebrow{color:var(--acc)}
+.eyebrow::before{display:none}
+.sec-head h2{font-weight:700;letter-spacing:-0.035em;line-height:1.35}
+.sec-head p{color:var(--ink-2)}
+.msg{box-shadow:none;background:var(--bg-2);border-radius:24px;font-weight:600}
+.msg.out{box-shadow:none;background:var(--acc);border-radius:24px}
+.tile{box-shadow:none}.tile:hover{transform:none;box-shadow:none}
+.t-a{background:var(--acc);box-shadow:none}
+.mini{background:var(--bg-3);color:var(--ink-2)}
+.chips{background:none;padding:0}
+.chip{background:var(--bg-3)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);box-shadow:none}
+.work{box-shadow:none;background:var(--bg-2)}.work:hover{box-shadow:none;transform:translateY(-4px)}
+.work .thumb{margin:10px 10px 0;border-radius:16px}
+.work .thumb .pair{background:var(--bg-2)}
+.work .thumb .pair::after{display:none}
+.work .where{color:var(--ink-3);font-weight:600}
+.work h3{font-weight:700}
+.dark{background:#191f28}.dark::before{display:none}
+.fact{background:rgba(255,255,255,.06);border:0}
+.fact::before{background:rgba(255,255,255,.12)}
+.price{box-shadow:none}
+.price.pop{box-shadow:inset 0 0 0 2px var(--acc)}
+.price.pop::before{box-shadow:none}
+.price .won{font-weight:700}
+.steps::before{display:none}
+.step{background:var(--bg-2);border-radius:24px;padding:28px 24px}
+.step .no,.step:nth-child(n+2) .no{width:44px;height:44px;border-radius:14px;font-size:18px;background:var(--acc-soft);color:var(--acc);box-shadow:none}
+.faq details{box-shadow:none}
+.faq details[open]{box-shadow:none;background:var(--card)}
+#faq .faq details{background:var(--card)}
+.region{box-shadow:none;background:var(--bg-2)}
+.region.main{background:var(--acc-soft)}
+.contact{box-shadow:none;background:var(--acc)}
+.contact::before,.contact::after{display:none}
+.checklist{box-shadow:none}
+/* 큰 문장 */
+.statement-sec{padding-block:150px 40px;text-align:center}
+.statement{font-size:clamp(30px,4.8vw,56px);line-height:1.35;font-weight:700;letter-spacing:-0.04em}
+.statement .w{color:var(--line);transition:color .7s ease}
+.statement.in .w{color:var(--ink)}
+.statement.in .w.o{color:var(--acc)}
+.statement .w:nth-child(3){transition-delay:.2s}.statement .w:nth-child(4){transition-delay:.4s}
+.statement-sub{margin-top:24px;font-size:18px;color:var(--ink-3)}
+@media (max-width:760px){.sec{padding-block:96px}.statement-sec{padding-block:100px 10px}.statement-sub{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.statement .w{color:var(--ink)}}
 </style>
 
 <nav class="nav" aria-label="주요 메뉴">
@@ -462,6 +538,13 @@ footer a{color:#d6cbc1}
     </div>
   </div>
 </header>
+
+<section class="statement-sec">
+  <div class="wrap">
+    <p class="statement" id="statement"><span class="w">멀쩡한 장은 살리고,</span><br><span class="w o">필요한 곳만</span> <span class="w">고칩니다.</span></p>
+    <p class="statement-sub">전부 바꾸지 않아도 돼요. 그래서 비용도, 공사 기간도 줄어요.</p>
+  </div>
+</section>
 
 <section class="sec" id="voices">
   <div class="wrap">
@@ -818,6 +901,9 @@ footer a{color:#d6cbc1}
       return '<a href="'+r.u+'" target="_blank" rel="noopener" tabindex="-1"><img loading="lazy" alt="" src="'+PH.works[no(r.u)][1]+'"><span>'+esc(r.w)+' · '+esc(r.t)+'</span></a>'}).join('');
     mq.innerHTML=items+items;mq.setAttribute('aria-hidden','true')}
 
+  /* ---------- 큰 문장 색 채우기 ---------- */
+  var st=document.getElementById('statement');
+  if('IntersectionObserver' in window){new IntersectionObserver(function(es){if(es[0].isIntersecting)st.classList.add('in')},{rootMargin:'0px 0px -25% 0px'}).observe(st)}else st.classList.add('in');
   /* ---------- 메뉴 그림자 ---------- */
   var nav=document.querySelector('.nav');
   function onScroll(){nav.classList.toggle('scrolled',scrollY>8)}
