@@ -24,6 +24,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <link rel="stylesheet" href="style.css">
+<script>
+/* 문의 측정: GA4 측정 ID(G-로 시작)를 아래 따옴표 안에 넣으면 전화·문자·견적 버튼 클릭이 집계된다 */
+window.NEMO_GA='';
+(function(){var id=window.NEMO_GA;if(!id)return;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s);
+window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',id);
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';
+var ev=h.indexOf('tel:')===0?'phone_click':h.indexOf('sms:')===0?'sms_click':a.id==='copy'?'quote_copy':/#quote$/.test(h)?'quote_open':null;
+if(ev)gtag('event',ev,{page_path:location.pathname})},true)})();
+</script>
 </head>
 <body>
 

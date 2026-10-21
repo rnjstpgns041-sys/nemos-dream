@@ -24,6 +24,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <link rel="stylesheet" href="style.css">
+<script>
+/* 문의 측정: GA4 측정 ID(G-로 시작)를 아래 따옴표 안에 넣으면 전화·문자·견적 버튼 클릭이 집계된다 */
+window.NEMO_GA='';
+(function(){var id=window.NEMO_GA;if(!id)return;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s);
+window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',id);
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';
+var ev=h.indexOf('tel:')===0?'phone_click':h.indexOf('sms:')===0?'sms_click':a.id==='copy'?'quote_copy':/#quote$/.test(h)?'quote_open':null;
+if(ev)gtag('event',ev,{page_path:location.pathname})},true)})();
+</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "HomeAndConstructionBusiness", "name": "네모의꿈", "alternateName": "NEMO'S DREAM", "url": "https://nemos-dream.com/", "image": "https://nemos-dream.com/img/share2.jpg", "telephone": "+82-10-4888-3988", "priceRange": "₩300,000~", "description": "키친핏 냉장고장 맞춤제작·설치와 냉장고장 칸막이 제거 리폼, 홈바장 제작. 대표 직접 시공.", "areaServed": ["대전", "세종", "천안", "아산", "청주", "홍성", "내포", "충청남도", "충청북도"], "sameAs": ["https://blog.naver.com/zibaejang", "https://blog.naver.com/soorigome"], "makesOffer": [{"@type": "Offer", "name": "키친핏 냉장고장 맞춤제작", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 1000000, "priceCurrency": "KRW"}}, {"@type": "Offer", "name": "냉장고장 칸막이·기둥 제거 리폼", "price": 300000, "priceCurrency": "KRW"}, {"@type": "Offer", "name": "디자인 홈바장 맞춤제작", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 1000000, "priceCurrency": "KRW"}}]}</script>
 </head>
 <body>
@@ -49,8 +58,8 @@
       <div><b>평생</b><span>처짐·기울어짐 AS</span></div>
     </div>
     <div class="slider" id="slider">
-      <img id="hero-before" alt="공사 전: 냉장고장 옵션 없이 비어 있는 냉장고 자리">
-      <div class="after"><img id="hero-after" alt="공사 후: 맞춤제작한 키친핏 냉장고장"></div>
+      <img id="hero-before" src="img/main-before.jpg" width="800" height="1000" fetchpriority="high" alt="공사 전: 냉장고장 옵션 없이 비어 있는 냉장고 자리">
+      <div class="after"><img id="hero-after" src="img/main-after.jpg" width="800" height="1000" alt="공사 후: 맞춤제작한 키친핏 냉장고장"></div>
       <span class="bar"></span><span class="knob"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <span class="lab l">BEFORE</span><span class="lab r">AFTER</span>
       <input type="range" id="baRange" min="0" max="100" value="50" aria-label="전후 비교 위치">
@@ -86,6 +95,13 @@
     <div class="log" id="works-grid"></div>
     <div class="log-foot"><div class="log-nav"><button type="button" id="prev" aria-label="이전 작업">←</button><button type="button" id="next" aria-label="다음 작업">→</button></div><span id="works-count"></span><a class="btn btn-soft btn-sm" href="https://blog.naver.com/zibaejang" target="_blank" rel="noopener">블로그에서 전체 보기</a></div>
     <p class="more-link"><a class="btn btn-soft" href="works.html">작업 기록 전체 보기 →</a></p>
+  </div>
+</section>
+
+<section id="reviews" class="rv-sec" aria-labelledby="rv-h">
+  <div class="wrap">
+    <div class="sec-head"><p class="kicker">고객님 후기</p><h2 id="rv-h">시공 끝나고<br><em>이렇게 말씀해 주셨어요</em></h2><p>블로그 시공기에 남긴 실제 고객님 말씀이에요. 눌러서 그 현장의 공사 전후를 확인해 보세요.</p></div>
+    <div class="rv-grid"><figure class="rv"><blockquote>“입주전에 계약한 냉장고 설치가 불가하다고해서 난감했는데 완전히 해결됐어요!”</blockquote><figcaption><b>대전 신축 아파트</b><span>틈새 홈카페장 + 로봇청소기장</span><a href="case-224277045640.html">현장 보기 →</a></figcaption></figure><figure class="rv"><blockquote>“구매한 냉장고가 들어가지 않아 난감했는데 깔끔하게 작업해주셔서 너무 감사합니다 많이 추천할게요!!”</blockquote><figcaption><b>홍성 내포 반도유보라마크에디션</b><span>냉장고장 중간 가림막 제거</span><a href="case-223843274881.html">현장 보기 →</a></figcaption></figure><figure class="rv"><blockquote>“정말 감쪽같네요! 냉장고가 제자리를 찾은 것 같아요 덕분에 새 아파트에 완벽한 주방이 생겼습니다!!”</blockquote><figcaption><b>대전 중촌 SK뷰</b><span>삼성 비스포크 자리 만들기</span><a href="case-223895189104.html">현장 보기 →</a></figcaption></figure><figure class="rv"><blockquote>“처음부터 이렇게 시공된 것 같아요!”</blockquote><figcaption><b>대전 중촌 SK뷰</b><span>LG 오브제 1+1+1 + 김치냉장고</span><a href="case-223828245418.html">현장 보기 →</a></figcaption></figure><figure class="rv"><blockquote>“벽지와 마루는 생각도 못했는데 깔끔하게 마감해주셔서 너무 감사합니다!!”</blockquote><figcaption><b>대전 선화동 하늘채 스카이엔2차</b><span>냉장고장 중간 칸막이 제거</span><a href="case-224070896477.html">현장 보기 →</a></figcaption></figure><figure class="rv"><blockquote>“이사 일정 때문에 무리하게 작업을 부탁드렸는데 최대한 맞춰서 작업해주셔서 너무 너무 감사합니다!!”</blockquote><figcaption><b>대전 용문동 둔산더샵엘리프</b><span>LG 오브제 자리 만들기</span><a href="case-223845410630.html">현장 보기 →</a></figcaption></figure><figure class="rv"><blockquote>“냉장고 넣으면 공간이 애매하게 남아서 고민이였는데 이렇게 칸막이로 문을 만들어 설치하니 너무 깔끔하고 좋아요 많이 추천해드리겠습니다!!”</blockquote><figcaption><b>신축 아파트</b><span>상부장 재사용 + 칸막이 제거</span><a href="case-224271127551.html">현장 보기 →</a></figcaption></figure><figure class="rv"><blockquote>“이래서 다들 옵션 안 넣고 따로 시공하나봐요”</blockquote><figcaption><b>신축 아파트 무옵션 세대</b><span>냉장고장 맞춤제작</span><a href="case-223833108339.html">현장 보기 →</a></figcaption></figure></div>
   </div>
 </section>
 
