@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>작업 기록 | 네모의꿈 냉장고장 리폼 · 맞춤가구</title>
+<title>작업 기록 | 네모의꿈 키친핏 냉장고장</title>
 <meta name="description" content="대전, 세종, 천안, 청주, 홍성, 정읍, 수원에서 한 냉장고장 리폼과 맞춤가구 현장 19곳의 공사 전후 사진이에요.">
 <meta name="keywords" content="키친핏 냉장고장,냉장고장 맞춤제작,비스포크 냉장고장,오브제 냉장고장,무옵션 냉장고장,대전 냉장고장,냉장고장리폼,냉장고장 칸막이 제거,홈바장,맞춤가구">
 <meta property="og:type" content="website">
@@ -67,7 +67,7 @@
 
 <footer>
   <div class="wrap">
-    <div><p class="fl">네모의꿈</p><p>냉장고장 · 홈바장 · 신발장 · 로봇청소기장 제작과 리폼</p><p>전화·문자 <a href="tel:010-4888-3988">010-4888-3988</a></p></div>
+    <div><p class="fl">네모의꿈</p><p>냉장고장 · 홈바장 · 신발장 · 로봇청소기장 제작과 리폼</p><p>전화·문자 <a href="tel:010-4888-3988">010-4888-3988</a></p><p class="foot-areas"><a href="area-daejeon.html">대전</a><a href="area-sejong.html">세종</a><a href="area-cheonan.html">천안·아산</a><a href="area-cheongju.html">청주</a><a href="area-hongseong.html">홍성·내포</a></p></div>
     <div class="links"><a href="https://m.blog.naver.com/zibaejang" target="_blank" rel="noopener">네모의꿈 블로그</a><a href="https://m.blog.naver.com/soorigome" target="_blank" rel="noopener">집수리비버 블로그</a><a href="index.html#quote">문의 방법 안내</a></div>
   </div>
 </footer>
@@ -84,7 +84,7 @@
   function render(f){
     g.innerHTML=W.filter(function(r){return f==='all'||r.f===f}).map(function(r){
       return '<article class="wk"><div class="wk-pair"><figure><img loading="lazy" src="img/works/'+r.no+'-before.jpg" alt="'+esc(r.t)+' 공사 전"><figcaption>BEFORE</figcaption></figure><figure><img loading="lazy" src="img/works/'+r.no+'-after.jpg" alt="'+esc(r.t)+' 공사 후"><figcaption class="a">AFTER</figcaption></figure></div>'+
-        '<div class="wk-info"><span class="where"><i>'+K[r.f]+'</i><i class="g">'+esc(r.w)+'</i></span><h2>'+esc(r.t)+'</h2><p>'+esc(r.p)+'</p><div class="wk-foot"><span>'+r.d+'</span><a href="'+r.u+'" target="_blank" rel="noopener">작업 과정 보기 ↗</a></div></div></article>';
+        '<div class="wk-info"><span class="where"><i>'+K[r.f]+'</i><i class="g">'+esc(r.w)+'</i></span><h2><a href="case-'+r.no+'.html">'+esc(r.t)+'</a></h2><p>'+esc(r.p)+'</p><div class="wk-foot"><span>'+r.d+'</span><a href="case-'+r.no+'.html">자세히 보기 →</a></div></div></article>';
     }).join('');
   }
   function pick(f){document.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.f===f)});render(f)}

@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <link rel="stylesheet" href="style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "HomeAndConstructionBusiness", "name": "네모의꿈", "alternateName": "NEMO'S DREAM", "url": "https://nemos-dream.com/", "image": "https://nemos-dream.com/img/share2.jpg", "telephone": "+82-10-4888-3988", "priceRange": "₩300,000~", "description": "키친핏 냉장고장 맞춤제작·설치와 냉장고장 칸막이 제거 리폼, 홈바장 제작. 대표 직접 시공.", "areaServed": ["대전", "세종", "천안", "아산", "청주", "홍성", "내포", "충청남도", "충청북도"], "sameAs": ["https://blog.naver.com/zibaejang", "https://blog.naver.com/soorigome"], "makesOffer": [{"@type": "Offer", "name": "키친핏 냉장고장 맞춤제작", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 1000000, "priceCurrency": "KRW"}}, {"@type": "Offer", "name": "냉장고장 칸막이·기둥 제거 리폼", "price": 300000, "priceCurrency": "KRW"}, {"@type": "Offer", "name": "디자인 홈바장 맞춤제작", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 1000000, "priceCurrency": "KRW"}}]}</script>
 </head>
 <body>
 
@@ -54,7 +55,7 @@
       <span class="lab l">BEFORE</span><span class="lab r">AFTER</span>
       <input type="range" id="baRange" min="0" max="100" value="50" aria-label="전후 비교 위치">
     </div>
-    <div class="ba-cap"><span>신축 아파트 무옵션 세대 · 냉장고장 맞춤제작 · 손잡이를 밀어보세요</span><a href="https://blog.naver.com/zibaejang/223833108339" target="_blank" rel="noopener">작업 과정 보기 ↗</a></div>
+    <div class="ba-cap"><span>신축 아파트 무옵션 세대 · 냉장고장 맞춤제작 · 손잡이를 밀어보세요</span><a href="case-223833108339.html">작업 과정 보기 →</a></div>
   </div>
 </header>
 
@@ -183,7 +184,7 @@
 
 <footer>
   <div class="wrap">
-    <div><p class="fl">네모의꿈</p><p>냉장고장 · 홈바장 · 신발장 · 로봇청소기장 제작과 리폼</p><p>전화·문자 <a href="tel:010-4888-3988">010-4888-3988</a></p></div>
+    <div><p class="fl">네모의꿈</p><p>냉장고장 · 홈바장 · 신발장 · 로봇청소기장 제작과 리폼</p><p>전화·문자 <a href="tel:010-4888-3988">010-4888-3988</a></p><p class="foot-areas"><a href="area-daejeon.html">대전</a><a href="area-sejong.html">세종</a><a href="area-cheonan.html">천안·아산</a><a href="area-cheongju.html">청주</a><a href="area-hongseong.html">홍성·내포</a></p></div>
     <div class="links"><a href="https://m.blog.naver.com/zibaejang" target="_blank" rel="noopener">네모의꿈 블로그</a><a href="https://m.blog.naver.com/soorigome" target="_blank" rel="noopener">집수리비버 블로그</a><a href="#quote">문의 방법 안내</a></div>
   </div>
 </footer>
@@ -340,7 +341,7 @@
   function render(f){
     var rows=works.filter(function(r){return f==='all'||r.f===f});
     grid.innerHTML=rows.map(function(r){
-      return '<a class="work" href="'+r.u+'" target="_blank" rel="noopener">'+thumb(r)+'<div class="info"><span class="where"><i>'+K[r.f]+'</i><i class="g">'+esc(r.w)+'</i></span><h3>'+esc(r.t)+'</h3><p class="meta">'+r.d+'</p></div></a>';
+      return '<a class="work" href="case-'+no(r.u)+'.html">'+thumb(r)+'<div class="info"><span class="where"><i>'+K[r.f]+'</i><i class="g">'+esc(r.w)+'</i></span><h3>'+esc(r.t)+'</h3><p class="meta">'+r.d+'</p></div></a>';
     }).join('');
     grid.scrollLeft=0;cnt.textContent='현장 '+rows.length+'곳';
   }
