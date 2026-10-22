@@ -27,6 +27,18 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap"></noscript>
 <link rel="stylesheet" href="style.css">
 <script>
+/* 방문 통계: nemos-dream.com에서만 /api/t로 방문·전화·문자·견적 클릭을 남긴다(개인정보 없음) */
+(function(){if(location.hostname.indexOf('nemos-dream.com')<0||navigator.webdriver)return;
+var d=new Date(Date.now()+324e5).toISOString().slice(0,10),f=0;try{if(!localStorage.getItem('nv'+d)){localStorage.setItem('nv'+d,1);f=1}}catch(x){}
+var r='';try{r=document.referrer?new URL(document.referrer).hostname:''}catch(x){}if(r===location.hostname)r='';
+var q=location.search.match(/[?&]utm_source=([^&]+)/);if(q)r=decodeURIComponent(q[1]);
+function send(e){var u='/api/t?e='+e+'&p='+encodeURIComponent(location.pathname)+'&r='+encodeURIComponent(r)+'&m='+(matchMedia('(max-width:760px)').matches?1:0)+'&f='+f;f=0;
+try{navigator.sendBeacon?navigator.sendBeacon(u):fetch(u,{method:'POST',keepalive:true})}catch(x){}}
+send('view');
+document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';
+var e=h.indexOf('tel:')===0?'phone':h.indexOf('sms:')===0?'sms':a.id==='copy'?'copy':/#quote$/.test(h)?'quote':null;if(e)send(e)},true)})();
+</script>
+<script>
 /* 문의 측정: GA4 측정 ID(G-로 시작)를 아래 따옴표 안에 넣으면 전화·문자·견적 버튼 클릭이 집계된다 */
 window.NEMO_GA='';
 (function(){var id=window.NEMO_GA;if(!id)return;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s);
