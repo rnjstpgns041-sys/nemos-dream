@@ -2,6 +2,7 @@
 import { getStore } from "@netlify/blobs";
 
 const KEY = "ffa224045666b883";
+const dec = (s) => { try { return decodeURIComponent(s || ""); } catch { return s || ""; } };
 
 export default async (req) => {
   const u = new URL(req.url);
@@ -11,10 +12,11 @@ export default async (req) => {
   const { blobs } = await getStore("stats").list({ prefix: "d/" });
   const rows = [];
   for (const b of blobs) {
-    const [, day, rest] = b.key.split("/");
+    // 키: d/YYYY-MM-DD/종류|페이지|유입|모바일|첫방문|난수 (페이지 안의 / 가 풀려서 저장될 수 있어 앞에서부터 자른다)
+    const day = b.key.slice(2, 12);
     if (day < since) continue;
-    const [e, p, r, m, f] = rest.split("|");
-    rows.push([day, e, decodeURIComponent(p), decodeURIComponent(r), +m, +f]);
+    const [e, p, r, m, f] = b.key.slice(13).split("|");
+    rows.push([day, e, dec(p), dec(r), +m, +f]);
   }
   return Response.json({ since, days, rows }, { headers: { "cache-control": "no-store" } });
 };
