@@ -25,12 +25,17 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap"></noscript>
 <link rel="stylesheet" href="style.css">
 <script>
-/* 방문 통계: nemos-dream.com에서만 /api/t로 방문·전화·문자·견적 클릭을 남긴다(개인정보 없음) */
+/* 방문 통계: nemos-dream.com에서만 /api/t로 방문·전화·문자·견적 클릭을 남긴다(개인정보 없음). 사장님 기기는 /admin/stats/에서 빼기 가능 */
 (function(){if(location.hostname.indexOf('nemos-dream.com')<0||navigator.webdriver)return;
-var d=new Date(Date.now()+324e5).toISOString().slice(0,10),f=0;try{if(!localStorage.getItem('nv'+d)){localStorage.setItem('nv'+d,1);f=1}}catch(x){}
-var r='';try{r=document.referrer?new URL(document.referrer).hostname:''}catch(x){}if(r===location.hostname)r='';
-var q=location.search.match(/[?&]utm_source=([^&]+)/);if(q)r=decodeURIComponent(q[1]);
-function send(e){var u='/api/t?e='+e+'&p='+encodeURIComponent(location.pathname)+'&r='+encodeURIComponent(r)+'&m='+(matchMedia('(max-width:760px)').matches?1:0)+'&f='+f;f=0;
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(x){return null}}
+if(ls('nemo-owner'))return;
+var d=new Date(Date.now()+324e5).toISOString().slice(0,10),f=0,v=ls('nv-id');
+if(!v||v.slice(0,10)!==d){v=d+Math.random().toString(36).slice(2,10);ls('nv-id',v);f=1}
+var src='',kw='';try{src=sessionStorage.getItem('n-src');kw=sessionStorage.getItem('n-kw')||''}catch(x){}
+if(src===null){src='';try{var R=document.referrer?new URL(document.referrer):null;if(R&&R.hostname!==location.hostname){src=R.hostname;kw=R.searchParams.get('query')||R.searchParams.get('q')||''}}catch(x){}
+var q=location.search.match(/[?&]utm_source=([^&]+)/);if(q)src=decodeURIComponent(q[1]);
+try{sessionStorage.setItem('n-src',src);sessionStorage.setItem('n-kw',kw)}catch(x){}}
+function send(e){var u='/api/t?e='+e+'&p='+encodeURIComponent(location.pathname)+'&r='+encodeURIComponent(src)+'&m='+(matchMedia('(max-width:760px)').matches?1:0)+'&f='+f+'&v='+v.slice(10)+'&k='+encodeURIComponent(kw.slice(0,20));f=0;
 try{navigator.sendBeacon?navigator.sendBeacon(u):fetch(u,{method:'POST',keepalive:true})}catch(x){}}
 send('view');
 document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';
