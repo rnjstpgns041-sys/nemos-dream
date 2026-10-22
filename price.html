@@ -22,7 +22,8 @@
 <!-- 네이버 서치어드바이저 인증 태그를 받으면 이 줄 아래에 붙여 넣으세요 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap"></noscript>
 <link rel="stylesheet" href="style.css">
 <script>
 /* 문의 측정: GA4 측정 ID(G-로 시작)를 아래 따옴표 안에 넣으면 전화·문자·견적 버튼 클릭이 집계된다 */
@@ -60,7 +61,7 @@ if(ev)gtag('event',ev,{page_path:location.pathname})},true)})();
     <div class="prices">
       <div class="price pop"><span class="mini">키친핏 냉장고장 맞춤제작</span><h3>1+1+1 · 4+4 · 4+3도어</h3><div class="won">100<small>만원부터</small></div>
         <ul><li>기본형<b>100만원</b></li><li>로봇청소기장<b>100만원</b></li><li>렌지장 · 밥솥장 · 오븐장<b>110만원</b></li><li>밥솥장 + 렌지장<b>115만원</b></li><li>홈바장<b>130만원</b></li><li>홈바장 + 렌지장 또는 밥솥장<b>140만원</b></li></ul></div>
-      <div class="price"><span class="mini">부분 리폼</span><h3>칸막이 제거 + 틈새장</h3><div class="won">30<small>만원</small></div><p>기존 상부장은 그대로 쓰고 중간 기둥만 빼서 남는 폭에 틈새장을 만들어요.</p><img class="photo" style="margin-top:auto;aspect-ratio:auto" loading="lazy" alt="부분 리폼 예시: 상부장 유지, 중간 기둥 제거 후 틈새장" src="img/price-partial.jpg"></div>
+      <div class="price"><span class="mini">부분 리폼</span><h3>칸막이 제거 + 틈새장</h3><div class="won">30<small>만원</small></div><p>기존 상부장은 그대로 쓰고 중간 기둥만 빼서 남는 폭에 틈새장을 만들어요.</p><img class="photo" style="margin-top:auto;aspect-ratio:auto" loading="lazy" width="800" height="225" alt="부분 리폼 예시: 상부장 유지, 중간 기둥 제거 후 틈새장" src="img/price-partial.jpg"></div>
       <div class="price"><span class="mini">디자인 홈바</span><h3>조명이 들어가는 홈바장</h3><div class="won">100<small>만원부터</small></div>
         <ul><li>홈바장만 추가<b>100만원</b></li><li>와이드 홈바장<b>140만원</b></li><li>디스플레이장<b>145만원</b></li><li>홈바장 + 수납장<b>160만원</b></li><li>옆조명 홈바장<b>170만원</b></li><li>라운드 홈바장<b>240만원</b></li></ul></div>
     </div>
@@ -99,7 +100,7 @@ if(ev)gtag('event',ev,{page_path:location.pathname})},true)})();
 
 <footer>
   <div class="wrap">
-    <div><p class="fl">네모의꿈</p><p>냉장고장 · 홈바장 · 신발장 · 로봇청소기장 제작과 리폼</p><p>전화·문자 <a href="tel:010-4888-3988">010-4888-3988</a></p><p class="foot-areas"><a href="area-daejeon.html">대전</a><a href="area-sejong.html">세종</a><a href="area-cheonan.html">천안·아산</a><a href="area-cheongju.html">청주</a><a href="area-hongseong.html">홍성·내포</a></p></div>
+    <div><p class="fl">네모의꿈</p><p>냉장고장 · 홈바장 · 신발장 · 로봇청소기장 제작과 리폼</p><p>전화·문자 <a href="tel:010-4888-3988">010-4888-3988</a></p><p class="foot-areas"><a href="area-daejeon.html">대전</a><a href="area-sejong.html">세종</a><a href="area-cheonan.html">천안·아산</a><a href="area-cheongju.html">청주</a><a href="area-hongseong.html">홍성·내포</a></p><p class="foot-areas"><a href="guide-kitchenfit.html">키친핏 냉장고장 맞춤제작</a><a href="guide-partition.html">냉장고장 칸막이 제거</a><a href="fridge-bespoke.html">비스포크 냉장고장</a><a href="fridge-objet.html">오브제 냉장고장</a></p></div>
     <div class="links"><a href="https://m.blog.naver.com/zibaejang" target="_blank" rel="noopener">네모의꿈 블로그</a><a href="https://m.blog.naver.com/soorigome" target="_blank" rel="noopener">집수리비버 블로그</a><a href="as.html">AS 안내</a><a href="index.html#quote">문의 방법 안내</a></div>
   </div>
 </footer>

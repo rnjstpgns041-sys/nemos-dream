@@ -420,3 +420,4 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .rv-sec{background:var(--accent-soft)}
 .rv-title{text-align:center;font-size:24px;margin:56px 0 18px}.rv-2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .areas a:hover{filter:brightness(.95)}.trust b,.trust span{display:block}
+.rv figcaption a+a{margin-top:2px;font-weight:600;color:var(--muted)}
