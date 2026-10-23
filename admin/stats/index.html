@@ -73,6 +73,8 @@ details summary{cursor:pointer;font-weight:700}
 
   <div class="note">전화·문자 숫자는 홈페이지에서 <b>버튼을 누른 횟수</b>예요. 버튼을 누르고 실제로 걸지 않은 경우도 들어가고, 번호를 직접 보고 건 전화는 빠져요. 견적 사진은 문자로 받는 그대로라 여기에는 사진이 쌓이지 않아요.</div>
 
+  <div class="card"><h2>타고 들어온 검색 키워드</h2><p class="sub">어떤 검색어로 홈페이지에 들어왔는지 (방문자 수 순서)</p><div id="tKw"></div><p class="sub" id="kwNote" style="margin:10px 0 0"></p></div>
+
   <div class="grid2">
     <div class="card"><h2>하루 방문자</h2><p class="sub">그날 홈페이지에 들어온 사람 수</p><div class="chart" id="cVisit"></div></div>
     <div class="card"><h2>하루 연락</h2><p class="sub">전화 버튼 + 문자 버튼(문자 앱 열기·내용 복사)</p><div class="chart" id="cContact"></div></div>
@@ -82,8 +84,6 @@ details summary{cursor:pointer;font-weight:700}
     <div class="card"><h2>어디서 들어왔나</h2><p class="sub">처음 들어온 경로별 방문자 수</p><div id="tSrc"></div></div>
     <div class="card"><h2>연락이 나온 페이지</h2><p class="sub">전화·문자 버튼을 누른 페이지</p><div id="tContact"></div></div>
   </div>
-
-  <div class="card"><h2>검색 키워드</h2><p class="sub">어떤 검색어로 홈페이지에 들어왔는지 (방문자 수 순서)</p><div id="tKw"></div><p class="sub" id="kwNote" style="margin:10px 0 0"></p></div>
 
   <div class="card"><h2>많이 본 페이지</h2><p class="sub">열람 수가 많은 순서</p><div id="tPages"></div></div>
 
@@ -120,6 +120,7 @@ details summary{cursor:pointer;font-weight:700}
 
   function srcName(r){r=(r||'').toLowerCase();
     if(!r)return '직접 방문·카톡·문자 링크';
+    if(r==='naver-ad')return '네이버 광고';
     if(r.indexOf('blog.naver')>=0)return '네이버 블로그';
     if(r.indexOf('naver')>=0)return '네이버 검색';
     if(r.indexOf('google')>=0)return '구글 검색';
@@ -129,7 +130,7 @@ details summary{cursor:pointer;font-weight:700}
     if(r.indexOf('instagram')>=0)return '인스타그램';
     if(r.indexOf('chatgpt')>=0||r.indexOf('openai')>=0)return 'ChatGPT';
     return r}
-  function isSearch(name){return /검색/.test(name)}
+  function isSearch(name){return /검색|광고/.test(name)}
 
   function render(d){
     var R=d.rows.filter(function(r){return r[2].indexOf('/__')!==0});
@@ -158,7 +159,7 @@ details summary{cursor:pointer;font-weight:700}
 
     $('tSrc').innerHTML=table(group(firsts,contacts,function(r){return srcName(r[3])}),['경로','방문자','연락'],function(r,max){return '<td>'+esc(r.name)+'<span class="bar" style="width:'+Math.max(2,r.a/max*100)+'%"></span></td><td class="n">'+n(r.a)+'</td><td class="n">'+n(r.b)+'</td>'},'a');
     var searchV=firsts.filter(function(r){return isSearch(srcName(r[3]))}),kwRows=group(firsts.filter(function(r){return r[7]}),contacts.filter(function(r){return r[7]}),function(r){return r[7]});
-    $('tKw').innerHTML=table(kwRows,['검색어','방문자','연락'],function(r,max){return '<td>'+esc(r.name)+'<span class="bar" style="width:'+Math.max(2,r.a/max*100)+'%"></span></td><td class="n">'+n(r.a)+'</td><td class="n">'+n(r.b)+'</td>'},'a');
+    $('tKw').innerHTML=!kwRows.length?'<p class="empty">아직 검색으로 들어온 방문자가 없어요. 네이버·구글에 홈페이지가 노출되기 시작하면 여기에 검색어가 쌓여요.</p>':table(kwRows,['검색어','방문자','연락'],function(r,max){return '<td>'+esc(r.name)+'<span class="bar" style="width:'+Math.max(2,r.a/max*100)+'%"></span></td><td class="n">'+n(r.a)+'</td><td class="n">'+n(r.b)+'</td>'},'a');
     $('kwNote').textContent='검색으로 들어온 방문자 '+n(searchV.length)+'명 중 '+n(searchV.filter(function(r){return r[7]}).length)+'명의 검색어를 알 수 있었어요. 구글은 검색어를 알려주지 않아서 구글 서치 콘솔에서만 볼 수 있고, 네이버는 서치어드바이저에서 더 자세히 볼 수 있어요.';
     $('tContact').innerHTML=table(group(contacts,[],function(r){return r[2]}),['페이지','연락'],function(r){return '<td>'+link(r.name)+'</td><td class="n">'+n(r.a)+'</td>'});
     $('tPages').innerHTML=table(group(views,contacts,function(r){return r[2]}).slice(0,20),['페이지','열람','연락'],function(r,max){return '<td>'+link(r.name)+'<span class="bar" style="width:'+Math.max(2,r.a/max*100)+'%"></span></td><td class="n">'+n(r.a)+'</td><td class="n">'+n(r.b)+'</td>'},'a');
