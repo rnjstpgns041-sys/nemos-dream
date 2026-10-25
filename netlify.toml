@@ -1,5 +1,5 @@
 # 정적 파일만 dist로 복사해서 배포하고, netlify/functions의 방문 통계 함수를 같이 올린다.
 [build]
-  command = "rm -rf dist && mkdir dist && cp -r *.html *.css *.xml *.txt img admin dist/"
+  command = "rm -rf dist && mkdir dist && cp -r *.html *.css *.xml *.txt *.ico *.svg *.png site.webmanifest img admin dist/"
   publish = "dist"
   functions = "netlify/functions"
