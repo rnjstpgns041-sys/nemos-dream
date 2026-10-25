@@ -52,6 +52,21 @@ details summary{cursor:pointer;font-weight:700}
 .lock input{width:100%;margin-top:16px;font:inherit;font-size:1.4rem;letter-spacing:.3em;text-align:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
 .err{color:#d23b3b;font-size:.85rem;min-height:1.2em;margin:8px 0 0}
 [hidden]{display:none!important}
+.tile em.up{color:var(--brand-ink);font-weight:700}.tile em.down{color:#d23b3b;font-weight:700}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ink-faint);font-weight:500}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--brand);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.live i{animation:none}}
+.feed{list-style:none;margin:0;padding:0}
+.feed li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--grid)}
+.feed li:last-child{border-bottom:0}
+.feed time{font-size:.8rem;color:var(--ink-faint);font-variant-numeric:tabular-nums;padding-top:2px}
+.feed .who{font-size:.88rem;font-weight:700}
+.feed .who small{font-weight:500;color:var(--ink-faint);margin-left:6px}
+.feed .path{font-size:.82rem;color:var(--ink-soft);margin-top:2px}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;border-radius:999px;padding:1px 8px;margin-left:6px;background:var(--grid);color:var(--ink-soft)}
+.tag.c{background:var(--brand);color:#fff}
+.more{margin-top:8px}
 </style>
 </head>
 <body>
@@ -63,7 +78,7 @@ details summary{cursor:pointer;font-weight:700}
 
 <div class="wrap" id="app" hidden>
   <header>
-    <h1>방문·문의 통계<small id="range"></small></h1>
+    <h1>방문·문의 통계<small id="range"></small><span class="live" id="live" hidden><i></i>1분마다 자동 새로고침</span></h1>
     <div class="seg" role="group" aria-label="기간">
       <button type="button" data-d="1">오늘</button><button type="button" data-d="7">7일</button><button type="button" data-d="30">30일</button><button type="button" data-d="90">90일</button>
     </div>
@@ -72,6 +87,8 @@ details summary{cursor:pointer;font-weight:700}
   <div class="tiles" id="tiles"></div>
 
   <div class="note">전화·문자 숫자는 홈페이지에서 <b>버튼을 누른 횟수</b>예요. 버튼을 누르고 실제로 걸지 않은 경우도 들어가고, 번호를 직접 보고 건 전화는 빠져요. 견적 사진은 문자로 받는 그대로라 여기에는 사진이 쌓이지 않아요.</div>
+
+  <div class="card"><h2>최근 들어온 사람</h2><p class="sub">한 사람이 어디서 들어와서 어떤 페이지를 봤는지 (최신 순서)</p><ul class="feed" id="tFeed"></ul><button class="btn2 more" type="button" id="feedMore" hidden>더 보기</button></div>
 
   <div class="card"><h2>타고 들어온 검색 키워드</h2><p class="sub">어떤 검색어로 홈페이지에 들어왔는지 (방문자 수 순서)</p><div id="tKw"></div><p class="sub" id="kwNote" style="margin:10px 0 0"></p></div>
 
@@ -83,6 +100,11 @@ details summary{cursor:pointer;font-weight:700}
   <div class="grid2">
     <div class="card"><h2>어디서 들어왔나</h2><p class="sub">처음 들어온 경로별 방문자 수</p><div id="tSrc"></div></div>
     <div class="card"><h2>연락이 나온 페이지</h2><p class="sub">전화·문자 버튼을 누른 페이지</p><div id="tContact"></div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h2>시간대별 방문</h2><p class="sub">몇 시에 많이 들어오는지 (방문자 수)</p><div class="chart" id="cHour"></div></div>
+    <div class="card"><h2>지역 페이지 성과</h2><p class="sub">지역 페이지별 열람과 연락</p><div id="tArea"></div></div>
   </div>
 
   <div class="card"><h2>많이 본 페이지</h2><p class="sub">열람 수가 많은 순서</p><div id="tPages"></div></div>
@@ -106,13 +128,14 @@ details summary{cursor:pointer;font-weight:700}
   var CONTACT={phone:1,sms:1,copy:1};
 
   function load(){
+    todayStr=d.today;
     $('range').textContent='불러오는 중…';
-    fetch('/api/stats?days='+days+'&pin='+encodeURIComponent(pin),{cache:'no-store'})
+    fetch('/api/stats?days='+Math.min(180,days*2)+'&pin='+encodeURIComponent(pin),{cache:'no-store'})
       .then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
       .then(function(res){
         if(res.status===401){ls('nemo-stats-pin',null);pin='';showLock('비밀번호가 맞지 않아요.');return}
         if(!res.ok){showLock('불러오지 못했어요. 잠시 뒤 다시 시도해 주세요.');return}
-        $('lock').hidden=true;$('app').hidden=false;render(res.j);
+        $('lock').hidden=true;$('app').hidden=false;var j=res.j;j.since=new Date(Date.parse(j.today)-(days-1)*864e5).toISOString().slice(0,10);j.days=days;render(j);
       })
       .catch(function(){showLock('인터넷 연결을 확인해 주세요.')});
   }
@@ -133,7 +156,11 @@ details summary{cursor:pointer;font-weight:700}
   function isSearch(name){return /검색|광고/.test(name)}
 
   function render(d){
-    var R=d.rows.filter(function(r){return r[2].indexOf('/__')!==0});
+    var ALL=d.rows.filter(function(r){return r[2].indexOf('/__')!==0});
+    var R=ALL.filter(function(r){return r[0]>=d.since}),P=ALL.filter(function(r){return r[0]<d.since});
+    var pv=P.filter(function(r){return r[1]==='view'&&r[5]===1}).length,pp=P.filter(function(r){return r[1]==='phone'}).length,ps=P.filter(function(r){return r[1]==='sms'||r[1]==='copy'}).length,pq=P.filter(function(r){return r[1]==='quote'}).length;
+    var prevLabel=d.days===1?'어제':'지난 '+d.days+'일';
+    function delta(now,before){var x=now-before;return x>0?['up',prevLabel+'보다 +'+n(x)+' ▲']:x<0?['down',prevLabel+'보다 '+n(x)+' ▼']:['',prevLabel+'과 같아요']}
     // 행: [날짜, 종류, 페이지, 유입, 모바일, 첫방문, 방문자ID, 검색어]
     var views=R.filter(function(r){return r[1]==='view'}), firsts=views.filter(function(r){return r[5]===1}), contacts=R.filter(function(r){return CONTACT[r[1]]});
     var dayList=[];for(var i=0;i<d.days;i++)dayList.push(new Date(Date.parse(d.since)+i*864e5).toISOString().slice(0,10));
@@ -147,12 +174,19 @@ details summary{cursor:pointer;font-weight:700}
     $('range').textContent=(d.days===1?'오늘':'최근 '+d.days+'일')+' · '+d.today+' 기준';
     document.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.d===d.days))});
     $('tiles').innerHTML=[
-      ['방문자',n(t.visitors),'오늘 '+n(td.visitors)+'명','hl'],
-      ['전화 버튼',n(t.phone),'오늘 '+n(td.phone)+'번','hl'],
-      ['문자 버튼',n(t.sms),'오늘 '+n(td.sms)+'번',''],
-      ['견적 만들기',n(t.quote),'오늘 '+n(td.quote)+'번',''],
-      ['연락한 방문자 비율',rate+'%','방문자 '+n(nv)+'명 중 '+n(nc)+'명','wide']
-    ].map(function(x){return '<div class="tile '+x[3]+'"><span>'+x[0]+'</span><b>'+x[1]+'</b><em>'+x[2]+'</em></div>'}).join('');
+      ['방문자',n(t.visitors),delta(t.visitors,pv),'hl'],
+      ['전화 버튼',n(t.phone),delta(t.phone,pp),'hl'],
+      ['문자 버튼',n(t.sms),delta(t.sms,ps),''],
+      ['견적 만들기',n(t.quote),delta(t.quote,pq),''],
+      ['연락한 방문자 비율',rate+'%',['','방문자 '+n(nv)+'명 중 '+n(nc)+'명'],'wide']
+    ].map(function(x){return '<div class="tile '+x[3]+'"><span>'+x[0]+'</span><b>'+x[1]+'</b><em class="'+x[2][0]+'">'+x[2][1]+'</em></div>'}).join('');
+    feed(R);
+    var hrs=[];for(var h=0;h<24;h++)hrs.push({k:h,v:0});
+    firsts.forEach(function(r){if(r[8])hrs[new Date(r[8]+9*3600e3).getUTCHours()].v++});
+    bars($('cHour'),hrs.map(function(x){return{k:String(x.k),label:x.k+'시',v:x.v,tip:x.k+'시대 · 방문자 '+n(x.v)+'명'}}),'var(--brand)',4);
+    var areaV=views.filter(function(r){return /area-/.test(r[2])}),areaC=contacts.filter(function(r){return /area-/.test(r[2])});
+    $('tArea').innerHTML=table(group(areaV,areaC,function(r){return r[2]}).slice(0,15),['페이지','열람','연락'],function(r,max){return '<td>'+link(r.name)+'<span class="bar" style="width:'+Math.max(2,r.a/max*100)+'%"></span></td><td class="n">'+n(r.a)+'</td><td class="n">'+n(r.b)+'</td>'},'a');
+    $('live').hidden=d.days!==1;
 
     bars($('cVisit'),daily.map(function(r){return{k:r.day,v:r.visitors,tip:r.day.slice(5).replace('-','/')+' · 방문자 '+n(r.visitors)+'명 · 열람 '+n(r.views)+'회'}}),'var(--brand)');
     bars($('cContact'),daily.map(function(r){return{k:r.day,v:r.phone+r.sms,tip:r.day.slice(5).replace('-','/')+' · 전화 '+r.phone+' · 문자 '+r.sms}}),'var(--accent)');
@@ -166,6 +200,23 @@ details summary{cursor:pointer;font-weight:700}
     $('tDaily').innerHTML=table(daily.slice().reverse(),['날짜','방문자','열람','전화','문자','견적'],function(r){return '<td>'+r.day+'</td><td class="n">'+n(r.visitors)+'</td><td class="n">'+n(r.views)+'</td><td class="n">'+n(r.phone)+'</td><td class="n">'+n(r.sms)+'</td><td class="n">'+n(r.quote)+'</td>'});
     $('devices').textContent='휴대폰 '+n(firsts.filter(function(r){return r[4]}).length)+'명 · PC '+n(firsts.filter(function(r){return !r[4]}).length)+'명';
   }
+  // 최근 방문: 같은 날 같은 방문자ID끼리 묶어서 들어온 경로와 본 페이지를 순서대로 보여준다
+  var feedN=15,lastR=[];
+  function feed(R){
+    lastR=R;var m={},out=[];
+    R.forEach(function(r){var id=r[6]?r[0]+r[6]:'x'+Math.random();var g=m[id]||(m[id]={rows:[]});g.rows.push(r)});
+    Object.keys(m).forEach(function(k){var g=m[k];g.rows.sort(function(a,b){return a[8]-b[8]});g.t=Math.max.apply(null,g.rows.map(function(r){return r[8]||0}));g.d=g.rows[0][0];out.push(g)});
+    out.sort(function(a,b){return b.t-a.t||(b.d>a.d?1:-1)});
+    $('tFeed').innerHTML=!out.length?'<p class="empty">아직 기록이 없어요.</p>':out.slice(0,feedN).map(function(g){
+      var f=g.rows[0],v=g.rows.filter(function(r){return r[1]==='view'}),c=g.rows.filter(function(r){return CONTACT[r[1]]||r[1]==='quote'});
+      var seen=[],pages=v.map(function(r){var k=pkey(r[2]);return NAMES[k]||k}).filter(function(x){if(seen.indexOf(x)>=0)return false;seen.push(x);return true});
+      var when=g.t?new Date(g.t+9*3600e3):null,tm=when?((g.d===todayStr?'':g.d.slice(5).replace('-','/')+' ')+String(when.getUTCHours()).padStart(2,'0')+':'+String(when.getUTCMinutes()).padStart(2,'0')):g.d.slice(5);
+      var tags=c.map(function(r){return {phone:'전화',sms:'문자',copy:'번호 복사',quote:'견적'}[r[1]]}).filter(function(x,i,a){return a.indexOf(x)===i}).map(function(x){return '<span class="tag c">'+x+'</span>'}).join('');
+      var kw=g.rows.map(function(r){return r[7]}).filter(Boolean)[0];
+      return '<li><time>'+tm+'</time><div><div class="who">'+esc(srcName(f[3]))+(kw?' <small>“'+esc(kw)+'”</small>':'')+'<span class="tag">'+(f[4]?'휴대폰':'PC')+'</span>'+tags+'</div><div class="path">'+esc(pages.join(' → ')||'-')+'</div></div></li>'}).join('');
+    $('feedMore').hidden=out.length<=feedN;
+  }
+  var todayStr='';
   // a = 첫 목록 개수, b = 둘째 목록(연락) 개수, 같은 이름끼리 묶어 a 큰 순서
   function group(A,B,key){var m={};A.forEach(function(r){var k=key(r);(m[k]=m[k]||{name:k,a:0,b:0}).a++});B.forEach(function(r){var k=key(r);if(m[k])m[k].b++});return Object.keys(m).map(function(k){return m[k]}).sort(function(x,y){return y.a-x.a||y.b-x.b})}
   function pkey(p){return (p.replace(/\.html$/,'').replace(/\/$/,''))||'/'}
@@ -176,17 +227,17 @@ details summary{cursor:pointer;font-weight:700}
     return '<table><thead><tr>'+heads.map(function(h,i){return '<th'+(i?' class="n"':'')+'>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+row(r,max)+'</tr>'}).join('')+'</tbody></table>';
   }
   // 막대 차트: 하루 한 칸, 마우스를 올리거나 누르면 그날 숫자 표시
-  function bars(el,data,color){
+  function bars(el,data,color,everyN){
     var W=440,H=170,pl=28,pb=22,pt=8,iw=W-pl-8,ih=H-pt-pb,max=Math.max(1,Math.max.apply(null,data.map(function(x){return x.v})));
     var step=Math.pow(10,Math.floor(Math.log10(max))),top=Math.ceil(max/step)*step;if(top/step>5&&step>=1)top=Math.ceil(max/(step*2))*step*2;top=Math.max(top,2);
     var bw=iw/data.length,gap=Math.min(2,bw*0.2),s='<svg viewBox="0 0 '+W+' '+H+'" role="img">';
     [0,.5,1].forEach(function(f){var y=pt+ih-ih*f,v=Math.round(top*f*10)/10;s+='<line x1="'+pl+'" x2="'+(W-8)+'" y1="'+y+'" y2="'+y+'" stroke="var(--grid)"/><text x="'+(pl-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="var(--ink-faint)">'+v+'</text>'});
-    var every=Math.ceil(data.length/7);
+    var every=everyN||Math.ceil(data.length/7);
     data.forEach(function(x,i){
       var h=x.v/top*ih,X=pl+i*bw+gap/2,w=Math.max(1,Math.min(bw-gap,40)),Y=pt+ih-h,r=Math.min(4,w/2,h);X=pl+i*bw+(bw-w)/2;
       if(h>0)s+='<path d="M'+X+','+(pt+ih)+'V'+(Y+r)+'Q'+X+','+Y+' '+(X+r)+','+Y+'H'+(X+w-r)+'Q'+(X+w)+','+Y+' '+(X+w)+','+(Y+r)+'V'+(pt+ih)+'Z" fill="'+color+'"/>';
       s+='<rect class="hit" data-i="'+i+'" x="'+(pl+i*bw)+'" y="'+pt+'" width="'+bw+'" height="'+ih+'" fill="transparent"/>';
-      if(i%every===0||i===data.length-1&&data.length<=7)s+='<text x="'+(pl+i*bw+bw/2)+'" y="'+(H-6)+'" text-anchor="middle" font-size="10" fill="var(--ink-faint)">'+x.k.slice(5).replace('-','/')+'</text>';
+      if(i%every===0||i===data.length-1&&data.length<=7)s+='<text x="'+(pl+i*bw+bw/2)+'" y="'+(H-6)+'" text-anchor="middle" font-size="10" fill="var(--ink-faint)">'+(x.label||x.k.slice(5).replace('-','/'))+'</text>';
     });
     s+='<line x1="'+pl+'" x2="'+(W-8)+'" y1="'+(pt+ih)+'" y2="'+(pt+ih)+'" stroke="var(--line)"/></svg><div class="tip"></div>';
     el.innerHTML=s;el.setAttribute('aria-label',data.map(function(x){return x.tip}).join(', '));
@@ -197,6 +248,8 @@ details summary{cursor:pointer;font-weight:700}
 
   $('pinForm').addEventListener('submit',function(e){e.preventDefault();pin=$('pin').value.trim();if(!pin)return;ls('nemo-stats-pin',pin);load()});
   document.querySelector('.seg').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;days=+b.dataset.d;ls('nemo-stats-days',String(days));load()});
+  $('feedMore').addEventListener('click',function(){feedN+=20;feed(lastR)});
+  setInterval(function(){if(days===1&&pin&&!$('app').hidden&&!document.hidden)load()},60000);
   $('logout').addEventListener('click',function(){ls('nemo-stats-pin',null);pin='';$('pin').value='';showLock('')});
   function ownerLabel(){$('ownerBtn').textContent=ls('nemo-owner')?'이 기기 방문은 통계에서 빠져 있어요 (다시 넣기)':'내 방문은 통계에서 빼기'}
   $('ownerBtn').addEventListener('click',function(){ls('nemo-owner',ls('nemo-owner')?null:'1');ownerLabel()});

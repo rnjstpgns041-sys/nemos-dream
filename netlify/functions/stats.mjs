@@ -1,5 +1,5 @@
 // 사장님 통계 페이지(/admin/stats/)용: 비밀번호가 맞으면 최근 N일 기록을
-// [날짜, 종류, 페이지, 유입, 모바일, 첫방문, 방문자ID, 검색어] 줄로 돌려준다.
+// [날짜, 종류, 페이지, 유입, 모바일, 첫방문, 방문자ID, 검색어, 시각(ms)] 줄로 돌려준다.
 import { getStore } from "@netlify/blobs";
 import { pbkdf2Sync, timingSafeEqual } from "node:crypto";
 
@@ -15,7 +15,7 @@ export default async (req) => {
     await new Promise((r) => setTimeout(r, 800));
     return Response.json({ error: "pin" }, { status: 401 });
   }
-  const days = Math.min(90, Math.max(1, +u.searchParams.get("days") || 7));
+  const days = Math.min(180, Math.max(1, +u.searchParams.get("days") || 7));
   const today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
   const since = new Date(Date.parse(today) - (days - 1) * 864e5).toISOString().slice(0, 10);
   const { blobs } = await getStore("stats").list({ prefix: "d/" });
@@ -26,7 +26,9 @@ export default async (req) => {
     if (day < since) continue;
     const f = b.key.slice(13).split("|");
     const old = f.length < 8;
-    rows.push([day, f[0], dec(f[1]), dec(f[2]), +f[3], +f[4], old ? "" : dec(f[5]), old ? "" : dec(f[6])]);
+    // 마지막 칸 = 기록 시각(36진수) + 난수 4자리
+    const last = f[f.length - 1] || "", ts = parseInt(last.slice(0, -4), 36);
+    rows.push([day, f[0], dec(f[1]), dec(f[2]), +f[3], +f[4], old ? "" : dec(f[5]), old ? "" : dec(f[6]), ts > 1.7e12 && ts < 2.2e12 ? ts : 0]);
   }
   return Response.json({ today, since, days, rows }, { headers: { "cache-control": "no-store" } });
 };
