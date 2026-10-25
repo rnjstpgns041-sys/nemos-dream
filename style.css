@@ -421,3 +421,41 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .rv-title{text-align:center;font-size:24px;margin:56px 0 18px}.rv-2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .areas a:hover{filter:brightness(.95)}.trust b,.trust span{display:block}
 .rv figcaption a+a{margin-top:2px;font-weight:600;color:var(--muted)}
+/* 지역 페이지 보강: 숫자 띠, 대표 현장, 맡기는 경우, 비용표 */
+.area-stats-sec{padding-top:0}
+.area-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.area-stats div{background:var(--surface);border-radius:22px;padding:22px 20px;text-align:center}
+.area-stats b{display:block;font-size:34px;font-weight:900;color:var(--accent-ink);letter-spacing:-.03em;line-height:1.1}
+.area-stats b small{font-size:18px;margin-left:2px}
+.area-stats span{display:block;margin-top:6px;color:var(--muted);font-size:14.5px}
+.area-feat{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.area-feat .case-pair{border-radius:24px;overflow:hidden}
+.area-feat-txt h3,.area-feat-res h3{font-size:19px;margin:0 0 6px}
+.area-feat-txt p,.area-feat-res p{color:var(--muted)}
+.area-feat-txt h3+ol{margin-top:6px}
+.area-feat-txt>p{margin-bottom:22px}
+.area-feat-res{margin-top:28px;background:var(--accent-soft);border-radius:22px;padding:22px 24px}
+.area-feat-res p{color:var(--fg)}
+.area-need{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.area-need li{background:var(--surface);border-radius:22px;padding:22px 22px 22px 58px;position:relative}
+.area-need li::before{content:"✓";position:absolute;left:20px;top:20px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px}
+.area-need b{display:block;font-size:17.5px}
+.area-need span{display:block;color:var(--muted);font-size:15px;margin-top:4px}
+.area-flow{max-width:760px;margin-left:auto;margin-right:auto}
+.area-price{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);font-size:15.5px}
+.area-price th{background:var(--accent-soft);text-align:left;padding:14px 18px;font-size:14px;color:var(--accent-ink)}
+.area-price td{padding:16px 18px;border-top:1px solid var(--line,rgba(0,0,0,.07));vertical-align:top}
+.area-price td:first-child{font-weight:700}
+.area-price td:last-child{white-space:nowrap;text-align:right}
+.area-price td b{color:var(--accent-ink);font-size:17px}
+@media (max-width:760px){
+ .area-stats{grid-template-columns:1fr 1fr}
+ .area-stats b{font-size:28px}
+ .area-feat,.area-need{grid-template-columns:1fr}
+ .area-price thead{display:none}
+ .area-price tr{display:grid;grid-template-columns:1fr auto;padding:14px 16px;border-top:1px solid var(--line,rgba(0,0,0,.07))}
+ .area-price tr:first-child{border-top:0}
+ .area-price td{border:0;padding:0}
+ .area-price td:nth-child(2){grid-column:1/-1;grid-row:2;color:var(--muted);font-size:14px;margin-top:4px}
+ .area-price td:last-child{grid-column:2;grid-row:1}
+}
