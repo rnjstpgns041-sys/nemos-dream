@@ -128,7 +128,6 @@ details summary{cursor:pointer;font-weight:700}
   var CONTACT={phone:1,sms:1,copy:1};
 
   function load(){
-    todayStr=d.today;
     $('range').textContent='불러오는 중…';
     fetch('/api/stats?days='+Math.min(180,days*2)+'&pin='+encodeURIComponent(pin),{cache:'no-store'})
       .then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
@@ -156,11 +155,12 @@ details summary{cursor:pointer;font-weight:700}
   function isSearch(name){return /검색|광고/.test(name)}
 
   function render(d){
+    todayStr=d.today;
     var ALL=d.rows.filter(function(r){return r[2].indexOf('/__')!==0});
     var R=ALL.filter(function(r){return r[0]>=d.since}),P=ALL.filter(function(r){return r[0]<d.since});
     var pv=P.filter(function(r){return r[1]==='view'&&r[5]===1}).length,pp=P.filter(function(r){return r[1]==='phone'}).length,ps=P.filter(function(r){return r[1]==='sms'||r[1]==='copy'}).length,pq=P.filter(function(r){return r[1]==='quote'}).length;
     var prevLabel=d.days===1?'어제':'지난 '+d.days+'일';
-    function delta(now,before){var x=now-before;return x>0?['up',prevLabel+'보다 +'+n(x)+' ▲']:x<0?['down',prevLabel+'보다 '+n(x)+' ▼']:['',prevLabel+'과 같아요']}
+    function delta(now,before){if(!P.length)return['',prevLabel+' 기록이 아직 없어 비교 전이에요'];var x=now-before;return x>0?['up',prevLabel+'보다 +'+n(x)+' ▲']:x<0?['down',prevLabel+'보다 '+n(x)+' ▼']:['',prevLabel+'과 같아요']}
     // 행: [날짜, 종류, 페이지, 유입, 모바일, 첫방문, 방문자ID, 검색어]
     var views=R.filter(function(r){return r[1]==='view'}), firsts=views.filter(function(r){return r[5]===1}), contacts=R.filter(function(r){return CONTACT[r[1]]});
     var dayList=[];for(var i=0;i<d.days;i++)dayList.push(new Date(Date.parse(d.since)+i*864e5).toISOString().slice(0,10));
