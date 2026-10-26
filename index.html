@@ -207,13 +207,15 @@ if(ev)gtag('event',ev,{page_path:location.pathname})},true)})();
         <div><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><span><b>원하는 작업과 냉장고 모델명</b><small>모델명이 있으면 폭과 문 각도까지 맞춰 볼게요.</small></span></div>
       </div>
     </div>
-    <div class="form">
-      <label>어떤 작업인가요?<select id="f-job"><option>냉장고장 칸막이·기둥 제거</option><option>냉장고장 새로 제작</option><option>홈바장 · 조명 진열장</option><option>신발장 오픈장 리폼</option><option>로봇청소기장 · 밥솥장</option><option>기타 수납장</option></select></label>
-      <label>지역<input id="f-area" placeholder="예: 대전 서구 ○○아파트"></label>
-      <label>작업 내용<textarea id="f-msg" placeholder="예: 비스포크 키친핏 4도어를 샀는데 가운데 기둥 때문에 안 들어가요."></textarea></label>
-      <div class="preview">이렇게 보내져요 (사진은 문자에 직접 첨부해 주세요)<pre id="f-pre"></pre></div>
-      <div class="to"><small>받는 번호</small><div class="num" id="phone">010-4835-3353</div></div>
-      <div class="row"><button class="btn btn-acc" type="button" id="copy">문자 내용 복사하기</button><a class="btn btn-soft" id="sms" href="sms:010-4835-3353">문자 앱 열기</a></div>
+    <div class="form qform">
+      <fieldset><legend><i>1</i>어떤 작업이에요?</legend><div class="qchips"><label class="qc"><input type="radio" name="job" value="칸막이·기둥 제거" checked><span>칸막이·기둥 제거</span></label><label class="qc"><input type="radio" name="job" value="냉장고장 새로 제작"><span>냉장고장 새로 제작</span></label><label class="qc"><input type="radio" name="job" value="홈바장·수납장"><span>홈바장·수납장</span></label><label class="qc"><input type="radio" name="job" value="신발장 리폼"><span>신발장 리폼</span></label><label class="qc"><input type="radio" name="job" value="로봇청소기장·밥솥장"><span>로봇청소기장·밥솥장</span></label><label class="qc"><input type="radio" name="job" value="기타"><span>기타</span></label></div></fieldset>
+      <fieldset><legend><i>2</i>어디세요?</legend><div class="qchips"><label class="qc"><input type="radio" name="area" value="대전" checked><span>대전</span></label><label class="qc"><input type="radio" name="area" value="세종"><span>세종</span></label><label class="qc"><input type="radio" name="area" value="천안·아산"><span>천안·아산</span></label><label class="qc"><input type="radio" name="area" value="청주"><span>청주</span></label><label class="qc"><input type="radio" name="area" value="홍성·내포"><span>홍성·내포</span></label><label class="qc"><input type="radio" name="area" value="그 외 지역"><span>그 외 지역</span></label></div><input id="f-area" placeholder="아파트 이름 (안 써도 돼요)" autocomplete="off"></fieldset>
+      <fieldset><legend><i>3</i>지금 상황은요? <small>여러 개 골라도 돼요</small></legend><div class="qchips qtags"><label class="qc"><input type="checkbox" name="tag" value="새 냉장고가 안 들어가요"><span>새 냉장고가 안 들어가요</span></label><label class="qc"><input type="checkbox" name="tag" value="장을 새로 짜고 싶어요"><span>장을 새로 짜고 싶어요</span></label><label class="qc"><input type="checkbox" name="tag" value="옆에 수납장도 필요해요"><span>옆에 수납장도 필요해요</span></label><label class="qc"><input type="checkbox" name="tag" value="빨리 해야 해요"><span>빨리 해야 해요</span></label><label class="qc"><input type="checkbox" name="tag" value="가격이 궁금해요"><span>가격이 궁금해요</span></label></div>
+        <input id="f-model" placeholder="냉장고 모델명 (아시면)" autocomplete="off"><textarea id="f-msg" rows="2" placeholder="더 하고 싶은 말 (안 써도 돼요)"></textarea></fieldset>
+      <a class="btn btn-acc qsend" id="sms" href="sms:010-4835-3353"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 6l1.5-2h5L16 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>문자 보내기</a>
+      <p class="qhint">문자창이 열리면 <b>현장 사진만 첨부</b>해서 보내 주세요. 내용은 자동으로 채워져요.</p>
+      <details class="preview"><summary>보낼 내용 미리보기</summary><pre id="f-pre"></pre></details>
+      <div class="qalt"><span>받는 번호 <b id="phone">010-4835-3353</b></span><button type="button" id="copy">문자창이 안 열리면 내용 복사</button></div>
       <p class="toast" id="toast" aria-live="polite"></p>
     </div>
   </div>
@@ -388,13 +390,19 @@ if(ev)gtag('event',ev,{page_path:location.pathname})},true)})();
   render('all');
 
   /* 문자 견적 */
-  var PHONE='010-4835-3353',job=$('f-job'),area=$('f-area'),msg=$('f-msg'),pre=$('f-pre'),sms=$('sms'),toast=$('toast');
-  function body(){return '[네모의꿈 견적 문의]\n작업: '+job.value+'\n지역: '+(area.value.trim()||'(지역을 적어 주세요)')+'\n내용: '+(msg.value.trim()||'(하고 싶은 일을 적어 주세요)')+'\n※ 현장 사진 여러 장 첨부합니다'}
+  var PHONE='010-4835-3353',form=document.querySelector('.qform'),area=$('f-area'),model=$('f-model'),msg=$('f-msg'),pre=$('f-pre'),sms=$('sms'),toast=$('toast');
+  function val(n){var x=form.querySelector('input[name="'+n+'"]:checked');return x?x.value:''}
+  function body(){var tags=[].map.call(form.querySelectorAll('input[name="tag"]:checked'),function(x){return x.value});
+    var a=val('area'),ap=area.value.trim(),l=['[네모의꿈 견적 문의]','작업: '+val('job'),'지역: '+(a==='그 외 지역'?'':a)+(ap?(a&&a!=='그 외 지역'?' ':'')+ap:'')];
+    if(model.value.trim())l.push('냉장고: '+model.value.trim());
+    if(tags.length)l.push('상황: '+tags.join(', '));
+    if(msg.value.trim())l.push('내용: '+msg.value.trim());
+    l.push('※ 현장 사진 첨부합니다');return l.join('\n')}
   function upd(){var b=body();pre.textContent=b;sms.href='sms:'+PHONE+'?&body='+encodeURIComponent(b)}
-  [job,area,msg].forEach(function(el){el.addEventListener('input',upd)});upd();
+  form.addEventListener('input',upd);form.addEventListener('change',upd);upd();
   $('copy').addEventListener('click',function(){var b=body();
-    function fb(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);toast.textContent='내용을 선택해 두었어요. 길게 눌러 복사하세요.'}
-    try{navigator.clipboard.writeText(b).then(function(){toast.textContent='복사했어요. 문자 앱에 붙여 넣고 사진을 첨부해 주세요.'},fb)}catch(e){fb()}});
+    function fb(){form.querySelector('.preview').open=true;var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);toast.textContent='내용을 선택해 두었어요. 길게 눌러 복사하세요.'}
+    try{navigator.clipboard.writeText(b).then(function(){toast.textContent='복사했어요. 문자 앱에서 '+PHONE+'으로 붙여 넣고 사진을 첨부해 주세요.'},fb)}catch(e){fb()}});
 
   /* 스크롤 등장 */
   if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){

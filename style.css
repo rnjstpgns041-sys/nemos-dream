@@ -459,3 +459,25 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
  .area-price td:nth-child(2){grid-column:1/-1;grid-row:2;color:var(--muted);font-size:14px;margin-top:4px}
  .area-price td:last-child{grid-column:2;grid-row:1}
 }
+/* 문자 견적: 눌러서 고르는 칩 */
+.qform{gap:18px}
+.qform fieldset{border:0;margin:0;padding:0;min-width:0}
+.qform legend{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;margin-bottom:10px;padding:0}
+.qform legend i{font-style:normal;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.qform legend small{font-weight:500;color:var(--muted);font-size:13px}
+.qchips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.qtags{grid-template-columns:repeat(2,1fr)}
+.qc{position:relative;display:block;cursor:pointer}
+.qc input{position:absolute;opacity:0;pointer-events:none}
+.qc span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:8px 10px;border-radius:14px;background:var(--surface);font-size:14.5px;font-weight:700;line-height:1.3;transition:background .15s,color .15s,box-shadow .15s}
+.qc input:checked+span{background:var(--accent-soft);color:var(--accent-ink);box-shadow:inset 0 0 0 2px var(--accent)}
+.qc input:focus-visible+span{outline:2px solid var(--accent-ink);outline-offset:2px}
+.qform input[type=text],.qform #f-area,.qform #f-model{margin-top:8px}
+.qform textarea{min-height:0;margin-top:8px}
+.qsend{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:58px;font-size:18px}
+.qhint{font-size:13.5px;color:var(--muted);margin:-8px 0 0;text-align:center}
+.qform .preview summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
+.qalt{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;font-size:13.5px;color:var(--muted)}
+.qalt b{color:var(--fg);font-size:15px}
+.qalt button{border:0;background:none;color:var(--accent-ink);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:4px 0}
+@media (max-width:420px){.qchips{grid-template-columns:repeat(2,1fr)}}
