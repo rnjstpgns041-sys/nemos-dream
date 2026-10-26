@@ -481,3 +481,10 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .qalt b{color:var(--fg);font-size:15px}
 .qalt button{border:0;background:none;color:var(--accent-ink);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:4px 0}
 @media (max-width:420px){.qchips{grid-template-columns:repeat(2,1fr)}}
+/* 전화 우선: 전화 버튼에 아이콘, 첫 화면 큰 전화 버튼 */
+.btn-call{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn-call svg{flex:none}
+.btn-big{font-size:18px;padding-left:28px;padding-right:28px}
+.hero-call{margin-top:12px;font-size:14px;color:var(--muted)}
+.mcta .btn-call{flex:1.4}
+.page-call{margin-top:20px}
