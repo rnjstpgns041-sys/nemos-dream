@@ -234,8 +234,8 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
   .mcta{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
   .mcta .btn{flex:1}
 }
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
-.reveal.in{opacity:1;transform:none}
+.reveal{transform:translateY(14px);transition:transform .6s ease}
+.reveal.in{transform:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important}}
 
 /* ===== 하위 페이지 공통 ===== */
@@ -422,7 +422,9 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .areas a:hover{filter:brightness(.95)}.trust b,.trust span{display:block}
 .rv figcaption a+a{margin-top:2px;font-weight:600;color:var(--muted)}
 /* 지역 페이지 보강: 숫자 띠, 대표 현장, 맡기는 경우, 비용표 */
-.area-stats-sec{padding-top:0}
+.area-stats-sec{padding-top:0;padding-bottom:56px}
+.kw-top{padding-bottom:56px}.kw-top+.band{padding-top:72px}
+@media (max-width:760px){.area-stats-sec{padding-bottom:36px}.area-stats-sec+.band,.kw-top+.band{padding-top:48px}.kw-top{padding-bottom:36px}}
 .area-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .area-stats div{background:var(--surface);border-radius:22px;padding:22px 20px;text-align:center}
 .area-stats b{display:block;font-size:34px;font-weight:900;color:var(--accent-ink);letter-spacing:-.03em;line-height:1.1}
