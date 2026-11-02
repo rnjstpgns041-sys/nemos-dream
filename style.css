@@ -500,3 +500,6 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .hero-pair figcaption.a{background:var(--accent)}
 .feat-btns{display:flex;flex-wrap:wrap;gap:8px}
 @media (max-width:760px){.hero-pair img{aspect-ratio:1/1}.page-call .btn{flex:1 1 100%}}
+.area-stats{grid-template-columns:repeat(3,1fr)}
+.stats-note{margin-top:12px;text-align:center;font-size:13px;color:var(--muted)}
+@media (max-width:760px){.area-stats{gap:8px}.area-stats div{padding:16px 8px;border-radius:18px}.area-stats b{font-size:22px}.area-stats span{font-size:12.5px}}
