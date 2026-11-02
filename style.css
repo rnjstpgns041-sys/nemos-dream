@@ -490,3 +490,6 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .hero-call{margin-top:12px;font-size:14px;color:var(--muted)}
 .mcta .btn-call{flex:1.4}
 .page-call{margin-top:20px}
+
+.qform #f-phone{margin-top:0}.qphoto{display:block;margin-top:8px;cursor:pointer}.qphoto input{position:absolute;opacity:0;width:1px;height:1px}.qphoto span{display:block;text-align:center;padding:14px;border:2px dashed var(--line,#d5d8dc);border-radius:14px;font-weight:700}.qphoto small{font-weight:500;color:var(--muted)}
+.qthumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.qthumbs:empty{display:none}.qthumbs button{border:0;padding:0;background:none;cursor:pointer}.qthumbs img{width:64px;height:64px;object-fit:cover;border-radius:10px;display:block}.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}.qsend[hidden]{display:none}
