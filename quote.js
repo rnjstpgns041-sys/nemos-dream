@@ -29,4 +29,15 @@
     function fb(){form.querySelector('.preview').open=true;var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);toast.textContent='내용을 선택해 두었어요. 길게 눌러 복사하세요.'}
     try{navigator.clipboard.writeText(b).then(function(){toast.textContent='복사했어요. 문자 앱에서 '+PHONE+'으로 붙여 넣고 사진을 첨부해 주세요.'},fb)}catch(e){fb()}});
 
+
+  /* 쓰기 편하게: 휴대폰은 '견적' 버튼 누르면 폼으로 바로, PC는 문자 대신 복사 안내, 폼 보는 동안 아래 고정 버튼 숨김 */
+  var mob=matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad/i.test(navigator.userAgent);
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href="#quote"]');if(!a||!mob)return;e.preventDefault();
+    form.scrollIntoView({behavior:'smooth',block:'start'});if(history.replaceState)history.replaceState(null,'','#quote')});
+  if(mob&&location.hash==='#quote')setTimeout(function(){form.scrollIntoView({block:'start'})},300);
+  if(!mob){sms.innerHTML=sms.innerHTML.replace('문자 보내기','견적 내용 복사하기');
+    $('qhint').innerHTML='PC에서는 문자가 안 열려요. 복사한 내용을 휴대폰 문자로 <b>'+PHONE+'</b>에 붙여 넣고 사진을 첨부해 주세요.';
+    sms.addEventListener('click',function(e){e.preventDefault();$('copy').click()})}
+  else sms.addEventListener('click',function(){toast.textContent='문자창에서 현장 사진 첨부하는 것만 잊지 마세요!'});
+  var mc=document.querySelector('.mcta');if(mc&&'IntersectionObserver' in window)new IntersectionObserver(function(es){mc.style.display=es[0].isIntersecting?'none':''},{rootMargin:'-20% 0px -20% 0px'}).observe(form);
 })();
