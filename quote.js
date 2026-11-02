@@ -9,7 +9,7 @@
     if(tags.length)l.push('상황: '+tags.join(', '));
     if(msg.value.trim())l.push('내용: '+msg.value.trim());
     l.push('※ 현장 사진 첨부합니다');return l.join('\n')}
-  function upd(){var b=body();pre.textContent=b;sms.href='sms:'+PHONE+'?&body='+encodeURIComponent(b)}
+  function upd(){var b=body();pre.textContent=b;sms.href='sms:'+PHONE.replace(/\D/g,'')+(/iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent)?'&':'?')+'body='+encodeURIComponent(b)}
   form.addEventListener('input',upd);form.addEventListener('change',upd);upd();
   /* 자동 접수 (문자 서비스 연결됐을 때만) */
   var send=$('send'),fp=$('f-photo'),th=$('f-thumbs'),shots=[];
@@ -38,6 +38,6 @@
   if(!mob){sms.innerHTML=sms.innerHTML.replace('문자 보내기','견적 내용 복사하기');
     $('qhint').innerHTML='PC에서는 문자가 안 열려요. 복사한 내용을 휴대폰 문자로 <b>'+PHONE+'</b>에 붙여 넣고 사진을 첨부해 주세요.';
     sms.addEventListener('click',function(e){e.preventDefault();$('copy').click()})}
-  else sms.addEventListener('click',function(){toast.textContent='문자창에서 현장 사진 첨부하는 것만 잊지 마세요!'});
+  else sms.addEventListener('click',function(){try{navigator.clipboard.writeText(body())}catch(e){}toast.textContent='문자창에서 현장 사진만 첨부해 보내 주세요. 혹시 내용이 비어 있으면 길게 눌러 붙여넣기 하면 돼요.'});
   var mc=document.querySelector('.mcta');if(mc&&'IntersectionObserver' in window)new IntersectionObserver(function(es){mc.style.display=es[0].isIntersecting?'none':''},{rootMargin:'-20% 0px -20% 0px'}).observe(form);
 })();
