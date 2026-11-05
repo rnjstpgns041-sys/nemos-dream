@@ -511,3 +511,11 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .qs-sub{margin:0;font-size:14.5px;color:var(--muted)}
 .qsimple .qhint{margin:0}
 .qtel{min-height:52px;font-size:16px}
+.rv-mini{background:var(--accent-soft);padding-block:40px}
+.rv-mini-h{text-align:center;font-weight:800;font-size:17px;margin:0 0 16px}.rv-mini-h b{color:#f5a623;letter-spacing:2px;margin-right:6px}
+.rvs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rvs .rv{padding:18px 18px;gap:10px}.rvs .rv blockquote{font-size:15.5px;line-height:1.6;margin:0;font-weight:600}
+.rvs .rv figcaption{font-size:13px}
+.rv-mini-cta{text-align:center;margin:18px 0 0}
+@media (max-width:760px){.rvs{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-inline:-16px;padding-inline:16px}.rvs .rv{scroll-snap-align:center}}
+.hero-note{margin:12px 0 0;font-size:13.5px;color:var(--muted);text-align:center}
