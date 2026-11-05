@@ -7,6 +7,7 @@ const clean = (s, n) => encodeURIComponent((s || "").replace(/\|/g, " ").slice(0
 export default async (req) => {
   const u = new URL(req.url);
   const q = (k) => u.searchParams.get(k);
+  if (u.searchParams.has("idx")) return new Response(JSON.stringify(await getStore("indexnow").get("last", { type: "json" })), { headers: { "content-type": "application/json", "cache-control": "no-store" } });
   const e = q("e");
   const ua = req.headers.get("user-agent") || "";
   if (!EVENTS.includes(e) || /bot|crawl|spider|headless|lighthouse/i.test(ua)) return new Response(null, { status: 204 });
