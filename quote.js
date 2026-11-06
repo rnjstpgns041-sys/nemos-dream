@@ -17,7 +17,7 @@
       try{navigator.clipboard.writeText(body)}catch(x){}say('문자창에서 빈칸 채우고 사진만 첨부해 보내 주세요.')},true);
   }else{
     /* PC: 문자창이 안 열리니 양식 복사 안내 */
-    var sms=$('sms');if(sms)sms.lastChild.textContent='문자 양식 복사하기';
+    var sms=$('sms');if(sms)sms.lastChild.textContent='무료 견적 문자 양식 복사하기';
     $('qhint').innerHTML='PC에서는 문자창이 안 열려요. 양식을 복사해서 휴대폰 문자로 <b>'+PHONE+'</b>에 보내 주세요. 사진이 없어도 괜찮아요.';
     document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="sms:"]');if(!a)return;e.preventDefault();
       if(a.id!=='sms')form.scrollIntoView({behavior:'smooth',block:'center'});copy()},true);

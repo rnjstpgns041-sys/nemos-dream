@@ -519,3 +519,6 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .rv-mini-cta{text-align:center;margin:18px 0 0}
 @media (max-width:760px){.rvs{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-inline:-16px;padding-inline:16px}.rvs .rv{scroll-snap-align:center}}
 .hero-note{margin:12px 0 0;font-size:13.5px;color:var(--muted);text-align:center}
+.qsend,.page-call .btn,.rv-mini-cta .btn,.feat-btns .btn,.proc-cta .btn{white-space:normal;text-align:center;line-height:1.3}
+.quote>*{min-width:0}
+@media (max-width:760px){.qsend{font-size:16.5px;padding-inline:14px}.mcta .btn-soft{white-space:normal;font-size:14.5px;line-height:1.25;padding-inline:8px;text-align:center}}
