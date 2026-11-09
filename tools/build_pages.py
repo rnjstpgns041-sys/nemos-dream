@@ -66,6 +66,9 @@ def qform(job=None, area=None, town=''):
     if not (where or want): return f
     body = H.unescape(re.search(r'<pre id="f-pre"[^>]*>(.*?)</pre>', f, re.S).group(1))
     body = body.replace('1. 지역·아파트 : ', '1. 지역·아파트 : ' + (where + ' ' if where else '')).replace('2. 원하는 작업 : ', '2. 원하는 작업 : ' + want)
+    if any(w in want for w in ('수전', '싱크볼', '후드', '식세기', '상부장')):   # 냉장고 작업이 아니면 사진 안내를 바꾼다
+        body = re.sub(r'3\. 냉장고 모델 : [^\n]*', '3. 모델명 : (아시면)', body)
+        body = re.sub(r'4\. 사진 : [^\n]*', '4. 사진 : 작업할 곳 사진 2장 첨부해 주세요 (멀리서 1장, 가까이서 1장)', body)
     f = re.sub(r'(<pre id="f-pre"[^>]*>).*?(</pre>)', lambda m: m.group(1) + H.escape(body, quote=False) + m.group(2), f, flags=re.S)
     f = re.sub(r'href="sms:01048353353\?&amp;body=[^"]*"', 'href="sms:01048353353?&amp;body=%s"' % _U.quote(body), f)
     return f

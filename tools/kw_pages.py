@@ -66,6 +66,8 @@ HOODS2 = [
 ]
 KW_REGIONS += HOODS2
 # 매일 순서: 동네별로 많이 찾는 작업부터
+# 연락이 많이 오는 작업 순서 (2026-11-09: 비용·견적·업체를 찾는 사람이 바로 연락하는 작업부터)
+CONTACT_ORDER = ['faucet', 'sinkbowl', 'hood', 'dishwasher', 'uppersag', 'furniture', 'cost', 'pricing', 'partition', 'install', 'demolish', 'noinstall']
 DAILY_KORDER = ['partition', 'kitchenfit', 'bespoke', 'objet', 'custom', 'reform', 'noinstall', 'movein', 'cost', 'kimchi', 'pillar', 'fourdoor', 'pricing', 'make', 'install', 'homebar', 'side', 'robot', 'range', 'shoe']
 
 # 가이드 페이지가 없는 작업용 설명 묶음: (링크 slug, 이름, -, -, -, -, 특징, 순서, -, 질문)
@@ -91,6 +93,34 @@ GD['x-cost'] = ('price', '비용', '', '', '', '',
   [('칸막이·기둥 제거 30만원', '걸리는 칸막이나 기둥만 빼고 상부장과 천장을 보강해요. 마감과 폐자재 처리까지 포함이에요.'), ('새로 짜기 100만원부터', '냉장고 모델에 맞춰 냉장고장을 새로 짜요. 크기와 구성에 따라 달라져요.'), ('홈바장 100만원부터', 'LED 조명, 유리문 같은 구성에 따라 달라져요.'), ('사진 보고 금액 안내', '시공 전에 사진을 보고 먼저 금액을 알려드려요. 모두 VAT 별도예요.')],
   [('사진 문자', '냉장고장 사진과 냉장고 모델명을 문자로 보내 주세요.'), ('금액 안내', '사진을 보고 리폼인지 새로 짜기인지, 금액이 얼마인지 알려드려요.'), ('일정 잡기', '냉장고 배송일에 맞춰 시공 날짜를 정해요.'), ('시공과 마감', '대표가 직접 시공하고 마감까지 확인해요.')], None,
   [('왜 업체마다 금액이 다른가요?', '보강을 하는지, 마감과 폐자재 처리가 포함인지에 따라 달라요. 저희 30만원에는 보강, 마감, 폐자재 처리가 다 들어가요.')])
+
+
+# 연락이 오는 주방 작업 (2026-11-09 추가: 식세기장·수전·싱크볼·후드·상부장·맞춤가구)
+_SINKSTEP = [('사진 문자', '작업할 곳 사진 2장과 지역을 문자로 보내 주세요.'), ('금액 안내', '사진을 보고 방법과 금액을 먼저 알려드려요.'), ('일정 잡기', '편한 날짜로 방문 일정을 잡아요.'), ('대표 직접 시공', '하청 없이 대표가 직접 작업하고 마무리까지 확인해요.')]
+GD['x-dishwasher'] = ('services', '식세기장', '', '', '', '',
+  [('하부장 한 칸만', '싱크대 전체를 바꾸지 않고 하부장 한 칸을 식기세척기 자리로 바꿔요.'), ('모델 크기 맞춤', '식기세척기 모델 크기에 맞춰 칸을 맞춰요.'), ('문짝 색 맞춤', '주방 가구 색에 맞춰 마감해 빌트인처럼 보여요.'), ('복구도 가능', '식기세척기를 뺀 자리를 다시 수납장으로 복구할 수도 있어요.')],
+  _SINKSTEP, None,
+  [('식세기장 비용은 얼마인가요?', '하부장 구성과 문짝, 배관 위치에 따라 달라서 사진을 보고 알려드려요.'), ('싱크대를 다 바꿔야 하나요?', '아니요. 하부장 한 칸만 바꾸는 리폼으로 해요.')])
+GD['x-faucet'] = ('services', '주방 수전 교체', '', '', '', '',
+  [('주방 수전만 따로', '주방 수전만 따로 교체해도 돼요.'), ('싱크볼·후드와 함께', '싱크볼이나 후드를 같이 바꾸면 한 번에 끝나요.'), ('대표 직접 방문', '하청 없이 대표가 직접 와서 작업해요.'), ('충청 전역', '대전·세종·천안·아산·청주 등 충청 전역 출장해요.')],
+  _SINKSTEP, None,
+  [('주방 수전 교체 비용은 얼마인가요?', '수전 종류와 싱크대 구조에 따라 달라서 사진을 보고 알려드려요.'), ('출장비가 따로 있나요?', '무조건 붙지는 않고 작업 종류와 위치에 따라 조율해요.')])
+GD['x-sinkbowl'] = ('services', '싱크볼 교체', '', '', '', '',
+  [('싱크볼만 교체', '상판과 하부장은 그대로 두고 싱크볼만 바꿔요.'), ('사각 싱크볼', '상판 구멍과 하부장 폭을 보고 사각 싱크볼로 바꿀 수 있는지 먼저 확인해요.'), ('수전 함께', '싱크볼을 바꿀 때 수전도 같이 바꾸면 한 번에 끝나요.'), ('대표 직접 시공', '하청 없이 대표가 직접 작업해요.')],
+  _SINKSTEP, None,
+  [('싱크볼 교체 비용은 얼마인가요?', '싱크볼 크기, 상판 재질, 수전 교체 여부에 따라 달라서 사진을 보고 알려드려요.')])
+GD['x-hood'] = ('services', '주방 후드 교체', '', '', '', '',
+  [('후드만 따로', '주방 후드만 따로 교체해도 돼요.'), ('상부장까지 확인', '후드와 상부장이 맞물린 구조라 상부장 상태도 같이 봐 드려요.'), ('크기 안 맞을 때', '새 후드 크기가 상부장과 안 맞으면 칸을 맞춰 손봐요.'), ('대표 직접 시공', '하청 없이 대표가 직접 작업해요.')],
+  _SINKSTEP, None,
+  [('주방 후드 교체 비용은 얼마인가요?', '후드 종류와 상부장 구조에 따라 달라서 사진을 보고 알려드려요.')])
+GD['x-uppersag'] = ('services', '상부장 처짐 수리', '', '', '', '',
+  [('처진 상부장 보강', '처진 상부장은 천장과 벽에 다시 고정하고 보강해서 수평을 잡아요.'), ('보강 vs 교체', '사진을 보고 보강으로 될지, 교체가 나을지 먼저 알려드려요.'), ('2단 보강', '냉장고장 칸막이를 뺄 때도 상부장과 천장을 2단으로 보강해요.'), ('평생 AS', '저희가 시공한 상부장의 처짐·기울어짐은 평생 무상 AS예요.')],
+  _SINKSTEP, None,
+  [('상부장 처짐 수리 비용은 얼마인가요?', '처진 정도와 고정 상태에 따라 달라서 사진을 보고 알려드려요.')])
+GD['x-furniture'] = ('services', '맞춤가구', '', '', '', '',
+  [('냉장고장 중심', '키친핏 냉장고장 맞춤제작이 대표 작업이에요.'), ('홈바장·수납장', '홈바장, 렌지장·밥솥장, 로봇청소기장, 틈새장·수납장을 맞춰 짜요.'), ('E0 친환경 자재', '포름알데히드 방출량 0.5mg/L 이하인 E0 등급 자재로 짜요.'), ('대표 직접 시공', '한샘·현대리바트 시공팀장 출신 대표가 상담부터 시공까지 직접 해요.')],
+  _SINKSTEP, None,
+  [('맞춤가구 비용은 얼마인가요?', '냉장고장 새로 짜기 100만원부터, 디자인 홈바장 100만원부터예요(VAT 별도). 그 밖의 가구는 사진을 보고 알려드려요.')])
 
 FIT = lambda w: w['f'] == 'fridge'
 KWS = [  # (slug, 검색어, 제목 뒤 문구, 가이드 slug, 가격 문구, 사례 고르기, 이 작업만의 설명, 추가 질문)
@@ -175,6 +205,24 @@ KWS = [  # (slug, 검색어, 제목 뒤 문구, 가이드 slug, 가격 문구, �
  ('interior', '냉장고장 인테리어', '주방 색에 맞춘 냉장고장·홈바', 'guide-kitchenfit', '칸막이 제거 30만원, 새로 짜기 100만원부터, 홈바장 100만원부터 (VAT 별도)',
   lambda w: FIT(w) or w['f'] == 'bar', '냉장고장은 주방에서 가장 큰 가구라 색과 구성만 바꿔도 주방 인상이 달라져요. 주방 가구 색에 맞춰 문짝을 고르고, 남는 폭에는 LED 홈바나 키큰장을 넣어 한 세트처럼 짜요.',
   [('주방 가구랑 색을 맞출 수 있나요?', '네. 기존 주방 가구 색에 맞춰 문짝과 마감 자재를 골라요.')]),
+ ('dishwasher', '식세기장', '하부장 한 칸 리폼 · 사진 견적', 'x-dishwasher', '사진을 보고 금액 안내 (VAT 별도)',
+  lambda w: False, '식기세척기를 들이려면 싱크대를 다 바꿀 필요 없이 하부장 한 칸만 식기세척기 크기에 맞춰 바꾸면 돼요. 주방 가구 색에 맞춰 마감해 빌트인처럼 보여요.',
+  [('식기세척기를 빼고 다시 장으로 돌릴 수 있나요?', '네. 식기세척기를 뺀 자리를 수납장으로 복구할 수 있어요.')]),
+ ('faucet', '주방 수전 교체', '사진 보고 금액 안내 · 대표 직접 방문', 'x-faucet', '사진을 보고 금액 안내 (VAT 별도)',
+  lambda w: False, '주방 수전만 따로 교체해도 돼요. 싱크볼이나 주방 후드를 같이 바꾸면 한 번에 끝나요.',
+  [('주방 수전만 바꿔도 되나요?', '네. 수전 사진과 싱크대 아래 사진을 보내주시면 알려드려요.')]),
+ ('sinkbowl', '싱크볼 교체', '사각 싱크볼 · 수전 함께 · 사진 견적', 'x-sinkbowl', '사진을 보고 금액 안내 (VAT 별도)',
+  lambda w: False, '상판과 하부장은 그대로 두고 싱크볼만 바꿔요. 사각 싱크볼로 바꿀 수 있는지는 상판 구멍과 하부장 폭을 보고 먼저 알려드려요.',
+  [('싱크볼 바꿀 때 수전도 같이 되나요?', '네. 같이 바꾸면 한 번에 끝나요.')]),
+ ('hood', '주방 후드 교체', '상부장까지 확인 · 사진 견적', 'x-hood', '사진을 보고 금액 안내 (VAT 별도)',
+  lambda w: False, '주방 후드만 따로 교체해도 돼요. 후드와 상부장이 맞물린 구조라 상부장 상태도 같이 봐 드려요.',
+  [('새 후드가 상부장 크기와 안 맞으면요?', '상부장 칸을 맞춰 손봐요. 새 후드 모델명을 알려주세요.')]),
+ ('uppersag', '상부장 처짐 수리', '보강·수평 잡기 · 사진 견적', 'x-uppersag', '사진을 보고 금액 안내 (VAT 별도)',
+  lambda w: FIT(w), '처진 상부장은 천장과 벽에 다시 고정하고 보강해서 수평을 잡아요. 사진을 보고 보강으로 될지, 교체가 나을지 먼저 알려드려요.',
+  [('상부장이 처지면 꼭 바꿔야 하나요?', '아니요. 보강으로 해결되는 경우가 많아요. 사진을 먼저 보내주세요.')]),
+ ('furniture', '맞춤가구', '냉장고장·홈바장 맞춤 · 대표 직접 시공', 'x-furniture', '냉장고장 새로 짜기 100만원부터, 홈바장 100만원부터 (VAT 별도)',
+  lambda w: True, '키친핏 냉장고장 맞춤제작을 중심으로 홈바장, 렌지장·밥솥장, 로봇청소기장, 신발장, 틈새장·수납장을 맞춤으로 짜요. 한샘·현대리바트 시공팀장 출신 대표가 직접 시공해요.',
+  [('맞춤가구 자재는 뭘 쓰나요?', 'E0 등급 친환경 자재(포름알데히드 0.5mg/L 이하)를 써요.')]),
 ]
 _NEW = ['gongju', 'nonsan', 'gyeryong', 'seosan', 'yesan', 'boryeong', 'jincheon', 'chungju', 'osong', 'daedeok']
 _BIG = ['daejeon', 'sejong', 'cheonan', 'cheongju', 'asan']
@@ -238,7 +286,7 @@ import os as _os
 _DJ = TOOLS + '/daily.json'
 DAILY = json.load(open(_DJ)) if _os.path.exists(_DJ) else []
 COMBOS += [tuple(x) for x in DAILY if tuple(x) not in COMBOS]
-WANT = {'cost': '냉장고장 리폼·제작 (견적 문의)', 'pricing': '냉장고장 리폼·제작 (견적 문의)', 'noinstall': '새 냉장고가 장에 안 들어가요', 'movein': '입주 전 냉장고장 리폼·제작', 'interior': '냉장고장 리폼·제작', 'ttungnaeng': '뚱냉(일반 냉장고) 자리 냉장고장', 'door': '냉장고장 문 달기'}
+WANT = {'faucet': '주방 수전 교체', 'sinkbowl': '싱크볼 교체', 'hood': '주방 후드 교체', 'dishwasher': '식세기장 (식기세척기 자리)', 'uppersag': '상부장 처짐 수리', 'furniture': '맞춤가구 (냉장고장·홈바장 등)', 'cost': '냉장고장 리폼·제작 (견적 문의)', 'pricing': '냉장고장 리폼·제작 (견적 문의)', 'noinstall': '새 냉장고가 장에 안 들어가요', 'movein': '입주 전 냉장고장 리폼·제작', 'interior': '냉장고장 리폼·제작', 'ttungnaeng': '뚱냉(일반 냉장고) 자리 냉장고장', 'door': '냉장고장 문 달기'}
 REG = {x[0]: x for x in KW_REGIONS}; KWD = {x[0]: x for x in KWS}
 KW_PAGES = []
 for rs, ks in COMBOS:
@@ -247,6 +295,7 @@ for rs, ks in COMBOS:
     if True:
         rs, rn, aslug, rkeys = REG[rs]; ks, kn, tail, gslug, price, sel, kintro, kfaq = KWD[ks]
         slug = 'kw-%s-%s' % (rs, ks); g = GD[gslug]
+        SINKJOB = ks in ('faucet', 'sinkbowl', 'hood', 'dishwasher', 'uppersag')
         cand = [w for w in works if sel(w)] or [w for w in works if FIT(w)]
         local = [w for w in cand if any(k in (CASES[w['no']].get('region') or '') or k in CASES[w['no']]['city'] for k in rkeys)]
         show = (local + [w for w in cand if w not in local])[:6]
@@ -297,7 +346,7 @@ for rs, ks in COMBOS:
 
 <section>
   <div class="wrap">
-    <div class="sec-head"><p class="kicker">실제 현장</p><h2>%(kn)s<br><em>작업 사례</em></h2></div>
+    <div class="sec-head"><p class="kicker">실제 현장</p><h2>%(case_h)s</h2></div>
     <div class="wk-grid">%(cards)s</div>
     <p class="price-note">%(price)s. 사진을 보고 우리 집 금액을 알려드려요. <a href="#quote"><b>사진 보내고 금액 받기</b></a> · <a href="price.html">비용 자세히 보기</a></p>
   </div>
@@ -314,9 +363,9 @@ for rs, ks in COMBOS:
     <div class="area-others"><span>더 보기</span><a href="area-%(aslug)s.html">%(aname)s 냉장고장 안내</a><a href="%(glink)s.html">%(gname)s %(gsuf)s</a><a href="works.html">작업 기록 전체</a><a href="qa.html">질문과 답변</a></div>
   </div>
 </section>
-''' % {'kintro': H.escape(kintro), 'rintro': H.escape(AINTRO[aslug]), 'price_big': {'partition': '30만원', 'kitchenfit': '100만원~', 'custom': '100만원~', 'homebar': '100만원~', 'range': '사진 견적', 'shoe': '하루', 'robot': '사진 견적', 'pillar': '30만원', 'cost': '30만원', 'homecafe': '100만원~', 'make': '100만원~', 'demolish': '30만원~', 'install': '하루', 'pricing': '30만원', 'side': '사진 견적', 'fridgebar': '100만원~', 'storage': '사진 견적', 'door': '사진 견적', 'ttungnaeng': '30만원~', 'interior': '30만원~'}.get(ks, '30만원~'),
-       'price_lbl': {'partition': '칸막이 제거 리폼', 'kitchenfit': '맞춤제작 (VAT 별도)', 'custom': '맞춤제작 (VAT 별도)', 'homebar': '디자인 홈바장 (VAT 별도)', 'range': '사진 보고 금액 안내', 'shoe': '대부분 하루 시공', 'reform': '부분 리폼부터 (VAT 별도)', 'kimchi': '칸막이 제거부터 (VAT 별도)', 'robot': '사진 보고 금액 안내', 'pillar': '기둥 제거 리폼 (VAT 별도)', 'noinstall': '칸막이·기둥 제거부터 (VAT 별도)', 'cost': '칸막이 제거 · 새로 짜기 100만원~', 'movein': '칸막이 제거부터 (VAT 별도)', 'fourdoor': '칸막이·기둥 제거부터 (VAT 별도)', 'homecafe': '디자인 홈바장 (VAT 별도)', 'make': '냉장고장 제작 (VAT 별도)', 'demolish': '부분 철거 리폼부터 (VAT 별도)', 'install': '리폼은 대부분 하루 시공', 'pricing': '칸막이 제거 · 제작 100만원~', 'side': '사진 보고 금액 안내', 'fridgebar': '디자인 홈바장 (VAT 별도)', 'storage': '사진 보고 금액 안내', 'door': '사진 보고 금액 안내', 'ttungnaeng': '칸막이 제거부터 (VAT 별도)', 'interior': '칸막이 제거부터 (VAT 별도)'}.get(ks, '기둥 제거부터 (VAT 별도)'),
-       'n': len(works), 'rn': rn, 'kn': kn, 'pts': pts, 'fk': ('%s 현장' % rn) if local else '가까운 지역 대표 현장', 'ft': H.escape(c['title']), 'fr': H.escape(c['region']), 'fno': f['no'],
+''' % {'kintro': H.escape(kintro), 'rintro': H.escape(AINTRO[aslug]), 'price_big': {'partition': '30만원', 'kitchenfit': '100만원~', 'custom': '100만원~', 'homebar': '100만원~', 'range': '사진 견적', 'shoe': '하루', 'robot': '사진 견적', 'pillar': '30만원', 'cost': '30만원', 'homecafe': '100만원~', 'make': '100만원~', 'demolish': '30만원~', 'install': '하루', 'pricing': '30만원', 'side': '사진 견적', 'fridgebar': '100만원~', 'storage': '사진 견적', 'door': '사진 견적', 'ttungnaeng': '30만원~', 'interior': '30만원~', 'faucet': '사진 견적', 'sinkbowl': '사진 견적', 'hood': '사진 견적', 'dishwasher': '사진 견적', 'uppersag': '사진 견적', 'furniture': '100만원~'}.get(ks, '30만원~'),
+       'price_lbl': {'partition': '칸막이 제거 리폼', 'kitchenfit': '맞춤제작 (VAT 별도)', 'custom': '맞춤제작 (VAT 별도)', 'homebar': '디자인 홈바장 (VAT 별도)', 'range': '사진 보고 금액 안내', 'shoe': '대부분 하루 시공', 'reform': '부분 리폼부터 (VAT 별도)', 'kimchi': '칸막이 제거부터 (VAT 별도)', 'robot': '사진 보고 금액 안내', 'pillar': '기둥 제거 리폼 (VAT 별도)', 'noinstall': '칸막이·기둥 제거부터 (VAT 별도)', 'cost': '칸막이 제거 · 새로 짜기 100만원~', 'movein': '칸막이 제거부터 (VAT 별도)', 'fourdoor': '칸막이·기둥 제거부터 (VAT 별도)', 'homecafe': '디자인 홈바장 (VAT 별도)', 'make': '냉장고장 제작 (VAT 별도)', 'demolish': '부분 철거 리폼부터 (VAT 별도)', 'install': '리폼은 대부분 하루 시공', 'pricing': '칸막이 제거 · 제작 100만원~', 'side': '사진 보고 금액 안내', 'fridgebar': '디자인 홈바장 (VAT 별도)', 'storage': '사진 보고 금액 안내', 'door': '사진 보고 금액 안내', 'ttungnaeng': '칸막이 제거부터 (VAT 별도)', 'interior': '칸막이 제거부터 (VAT 별도)', 'faucet': '사진 보고 금액 안내', 'sinkbowl': '사진 보고 금액 안내', 'hood': '사진 보고 금액 안내', 'dishwasher': '사진 보고 금액 안내', 'uppersag': '사진 보고 금액 안내', 'furniture': '냉장고장·홈바장 맞춤 (VAT 별도)'}.get(ks, '기둥 제거부터 (VAT 별도)'),
+       'case_h': ('냉장고장·주방 가구<br><em>다른 작업 사례</em>' if SINKJOB else '%s<br><em>작업 사례</em>' % kn), 'n': len(works), 'rn': rn, 'kn': kn, 'pts': pts, 'fk': ('%s 냉장고장 현장 (다른 작업)' % rn if SINKJOB else ('%s 현장' % rn)) if local else ('대표 냉장고장 현장 (다른 작업)' if SINKJOB else '가까운 지역 대표 현장'), 'ft': H.escape(c['title']), 'fr': H.escape(c['region']), 'fno': f['no'],
        'fp': H.escape(c['problem']), 'fres': H.escape(c['result']),
        'fq': '<blockquote class="case-quote" style="font-size:16px">“%s”<cite>고객님 후기</cite></blockquote>' % H.escape(c['quote']) if c.get('quote') else '',
        'steps': steps, 'cards': ''.join(card(w) for w in show if w is not f), 'price': price,
@@ -325,6 +374,6 @@ for rs, ks in COMBOS:
         ldj = crumbs([('홈', ''), (ANAME2[aslug], 'area-' + aslug), ('%s %s' % (rn, kn), slug)]) + ld({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in faq]})
         page(slug + '.html', '%s %s · %s' % (rn, kn, tail),
              ('%s %s. %s %s. 실제 시공 사례 전후 사진, 작업 순서, 평생 AS. 문의 %s' % (rn, kn, kintro.split('.')[0] + '.', price.split(' (')[0], PHONE))[:160],
-             '%s 출장' % rn, '%s<br><em>%s</em>' % (rn, kn), '%s, 대표가 직접 재고 짜서 설치해요.' % tail, body, ldj,
+             '%s 출장' % rn, '%s<br><em>%s</em>' % (rn, kn), ('%s, 대표가 직접 와서 작업해요.' if SINKJOB else '%s, 대표가 직접 재고 짜서 설치해요.') % tail, body, ldj,
              crumb='<a href="area-%s.html">%s</a> <span>›</span> %s' % (aslug, ANAME2[aslug], kn), og_image=SITE + 'img/works/%s-after.jpg' % f['no'], subnav=False, job=WANT.get(ks, kn), area=rn, hero_pair=f['no'])
 print('kw pages', len(KW_PAGES))
