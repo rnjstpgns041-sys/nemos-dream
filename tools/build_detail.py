@@ -342,7 +342,8 @@ today = date.today().isoformat()
 urls = [''] + [f[:-5] for f, _ in PAGES] + ['as'] + [g[0] for g in GUIDES] + ['area-' + a[0] for a in AREAS] + ['area-' + x[0] for x in SUBS] + [k[0] for k in KW_PAGES] + ['qa'] + [q[0] for q in QA_PAGES] + ['case-' + w['no'] for w in works]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     + ''.join('  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n' % (SITE, u, today) for u in urls) + '</urlset>\n')
-open('robots.txt', 'w').write('User-agent: *\nAllow: /\n\nSitemap: %ssitemap.xml\n' % SITE)
+AI_BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'Claude-SearchBot', 'Google-Extended', 'Bingbot', 'Yeti', 'Applebot']
+open('robots.txt', 'w').write('User-agent: *\nAllow: /\n\n' + ''.join('User-agent: %s\nAllow: /\n\n' % b for b in AI_BOTS) + 'Sitemap: %ssitemap.xml\n# AI용 안내: %sllms.txt\n' % (SITE, SITE))
 print('detail built', len(works), 'cases', len(AREAS), 'areas')
 
 # ================= 사장님 통계 페이지 /admin/stats/ (비밀번호 잠금, 검색 제외) =================

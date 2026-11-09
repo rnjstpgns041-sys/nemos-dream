@@ -47,3 +47,31 @@ page('qa.html', '냉장고장 질문과 답변', '냉장고장 칸막이 제거,
      '질문과 답변', '냉장고장<br><em>질문과 답변</em>', '손님들이 실제로 많이 묻는 질문에 짧고 정확하게 답했어요.', hub,
      crumbs([('홈', ''), ('질문과 답변', 'qa')]) + ld({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': x['q'], 'acceptedAnswer': {'@type': 'Answer', 'text': x['a']}} for x in QA]}), subnav=False)
 print('qa pages', len(QA_PAGES))
+
+# ===== AI 검색(GEO)용 안내 파일: llms.txt(요약+목록), llms-full.txt(질문·답변 전문) =====
+LLM_HEAD = '''# 네모의꿈 (NEMO'S DREAM)
+
+> 대전·세종·천안·아산·청주·홍성 내포 등 충청 전역의 키친핏 냉장고장 맞춤제작·설치, 냉장고장 칸막이·기둥 제거 리폼 업체. 한샘·현대리바트 시공팀장 출신 대표가 상담부터 시공·AS까지 직접 한다(하청 없음).
+
+- 전화·문자: %(ph)s (작업 중엔 전화를 못 받을 때가 많아 문자 견적이 빠름: 사진 2장 이상 + 지역 + 작업 내용)
+- 홈페이지: %(site)s
+- 가격(VAT 별도): 칸막이·기둥 제거 리폼 30만원(철거·상부장과 천장 보강·바닥 벽 마감·폐자재 처리 포함), 냉장고장 새로 짜기 100만원부터(약 100~140만원), 디자인 홈바장 100만원부터(100~240만원). 그 밖의 작업은 사진을 보고 안내.
+- 기간: 칸막이 제거·신발장 오픈장 리폼은 대부분 하루(단순 칸막이 제거 3~4시간). 새로 짤 때도 미리 재단해 현장 설치는 대부분 하루.
+- 자재: E0 등급 친환경 자재(포름알데히드 0.5mg/L 이하)
+- AS: 시공한 냉장고장·상부장·홈바장의 처짐·기울어짐은 기간 제한 없이 무상
+- 그 밖의 작업: 홈바장, 렌지장·밥솥장, 로봇청소기장, 신발장 리폼, 틈새장·수납장, 식세기장, 주방 수전·싱크볼·후드
+
+## 주요 페이지
+- [하는 일](%(site)sservices): 냉장고장 맞춤제작, 칸막이·기둥 제거 리폼, 홈바장 등
+- [비용](%(site)sprice): 작업별 가격
+- [작업 기록](%(site)sworks): 실제 시공 사례(공사 전·후 사진)
+- [자주 묻는 질문](%(site)sfaq)
+- [질문과 답변 모음](%(site)sqa)
+- [AS 안내](%(site)sas)
+
+## 질문과 답변
+''' % {'ph': PHONE, 'site': SITE}
+open('llms.txt', 'w').write(LLM_HEAD + ''.join('- [%s](%sqa-%s): %s\n' % (x['q'], SITE, x['slug'], x['a']) for x in QA))
+open('llms-full.txt', 'w').write(LLM_HEAD.replace('## 질문과 답변\n', '') + '## 질문과 답변 전문\n\n' + ''.join(
+    '### %s\n%s\n%s\n출처: %sqa-%s\n\n' % (x['q'], x['a'], '\n'.join(x.get('more', [])), SITE, x['slug']) for x in QA))
+print('llms.txt', len(QA))
