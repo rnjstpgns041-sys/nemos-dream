@@ -13,7 +13,7 @@
    - **질문(q)에 그 검색어를 글자 그대로 넣는다.** 예: 검색어 "키친핏 냉장고장 사이즈" → q "키친핏 냉장고장 사이즈는 어떻게 맞추나요?"
      (제목에 검색어가 들어가야 다음 날 중복으로 안 잡히고, 네이버에도 그 말로 뜬다.)
    - 답은 `tools/facts.md`에 있는 사실만. 가격·기간·보증·치수 규격을 지어내지 않는다. 모르면 "사진과 냉장고 모델명을 보내주시면 알려드려요".
-   - facts.md로 정직하게 답할 수 없는 검색어(다른 업체 이름, 우리가 안 하는 일, 셀프 시공 요령 등)는 건너뛰고 다음 줄로.
+   - facts.md로 정직하게 답할 수 없는 검색어(다른 업체 이름, 우리가 안 하는 일(싱크대 전체 교체·욕실 수전·붙박이장 등), 셀프 시공 요령, 치수 숫자만 다른 같은 말 등)는 건너뛰고 다음 줄로.
    - 형식: {"slug": 영문-소문자-하이픈(기존과 안 겹치게), "q": 질문, "a": 2~3문장 짧은 답, "more": [문단 1~3개], "fit": 작업 slug(partition, kitchenfit, bespoke, objet, custom, reform, kimchi, homebar, range, shoe, robot, pillar, noinstall, cost, movein, fourdoor, homecafe, make, demolish, install, pricing, side, fridgebar, storage, door, ttungnaeng, interior 중 하나), "kw": 관련 키워드 페이지(예: kw-daejeon-pricing, 있는 파일만)}
 4. `python3 tools/build_pages.py` → 페이지·sitemap·new-urls.txt가 만들어진다. 오류가 나면 고치고 다시.
 5. 바뀐 파일 전부 커밋하고 `git push origin main`. 배포가 끝나면 deploy-succeeded 함수가 새 주소를 네이버·빙(IndexNow)에 자동으로 알린다.
