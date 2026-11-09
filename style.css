@@ -531,3 +531,5 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .qa-list a{display:block;background:var(--card);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow);color:inherit;font-weight:700;font-size:16.5px;line-height:1.5}
 .qa-list b{color:var(--accent-ink);margin-right:4px}.qa-list span{display:block;margin-top:6px;font-weight:400;font-size:14px;color:var(--muted)}
 .qa-sec{padding-top:16px}
+.qa-case{margin-top:22px;padding:18px 20px;border-radius:14px;background:#f3fbf6;border:1px solid #d6f0e0}
+.qa-case h3{font-size:17px;margin:4px 0 8px}.qa-case h3 a{color:inherit}.qa-case p{margin:6px 0;line-height:1.7}

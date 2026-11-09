@@ -4,13 +4,19 @@ QA_PAGES = []
 for i, x in enumerate(QA):
     slug = 'qa-' + x['slug']
     sel = KWD[x['fit']][5] if x.get('fit') in KWD else FIT
-    cases = ([w for w in works if sel(w)] or [w for w in works if FIT(w)])[:3]
+    pool = [w for w in works if sel(w)] or [w for w in works if FIT(w)]
+    pool = pool[i % len(pool):] + pool[:i % len(pool)]      # 페이지마다 다른 현장이 먼저 오게
+    cases = pool[:3]
+    c0 = CASES.get(cases[0]['no'], {}) if cases else {}
+    story = ('<div class="qa-case"><p class="kicker">비슷한 실제 현장</p><h3><a href="case-%s.html">%s</a></h3><p>%s</p><p>%s</p></div>'
+             % (cases[0]['no'], H.escape(c0.get('title') or cases[0]['t']), H.escape(c0.get('problem', '')), H.escape(c0.get('result', '')))) if c0.get('problem') else ''
     kw = x.get('kw') if x.get('kw') and os.path.exists(x['kw'] + '.html') else None
     near = [QA[(i + k) % len(QA)] for k in (1, 2, 3, 4) if len(QA) > k]
     body = '''<section class="qa-sec">
   <div class="wrap qa-wrap">
     <div class="qa-short"><p class="kicker">짧은 답</p><p>%(a)s</p></div>
     <div class="qa-more">%(more)s</div>
+    %(story)s
     <p class="qa-cta"><a class="btn btn-acc" href="#quote">사진 한 장으로 무료 견적 받아보기</a><a class="btn btn-soft" href="tel:%(ph)s">전화 %(ph)s</a></p>
   </div>
 </section>
@@ -29,7 +35,7 @@ for i, x in enumerate(QA):
   </div>
 </section>
 ''' % {'a': H.escape(x['a']), 'more': ''.join('<p>%s</p>' % H.escape(m) for m in x.get('more', [])), 'ph': PHONE,
-       'cards': ''.join(card(w) for w in cases), 'near': ''.join('<a href="qa-%s.html">%s</a>' % (n['slug'], H.escape(n['q'])) for n in near),
+       'cards': ''.join(card(w) for w in cases), 'story': story, 'near': ''.join('<a href="qa-%s.html">%s</a>' % (n['slug'], H.escape(n['q'])) for n in near),
        'kwl': ('<a href="%s.html">%s</a>' % (kw, dict(KW_PAGES).get(kw, '관련 안내'))) if kw else ''}
     ldj = crumbs([('홈', ''), ('질문과 답변', 'qa'), (x['q'], slug)]) + ld({'@context': 'https://schema.org', '@type': 'QAPage', 'mainEntity': {
         '@type': 'Question', 'name': x['q'], 'answerCount': 1, 'acceptedAnswer': {'@type': 'Answer', 'text': x['a'] + ' ' + ' '.join(x.get('more', [])), 'url': SITE + slug,
