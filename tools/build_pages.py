@@ -174,7 +174,7 @@ body = '''<section class="band wk-sec">
       <button class="chip" type="button" data-f="etc" aria-pressed="false">수납장<small></small></button>
     </div></div>
     <div class="wk-grid" id="wk">%s</div>
-    <p class="wk-more">더 많은 현장은 블로그에 계속 올라와요. <a href="https://blog.naver.com/zibaejang" target="_blank" rel="noopener">네모의꿈 블로그 ↗</a> <a href="https://blog.naver.com/soorigome" target="_blank" rel="noopener">집수리비버 블로그 ↗</a></p>
+    <p class="wk-more">더 많은 현장은 블로그에 계속 올라와요. <a href="https://blog.naver.com/zibaejang" target="_blank" rel="noopener">네모의꿈 블로그 ↗</a></p>
   </div>
 </section>
 '''

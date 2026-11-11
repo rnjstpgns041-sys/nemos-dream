@@ -3,7 +3,7 @@ QA = json.load(open(TOOLS + '/qa.json'))
 QA_PAGES = []
 BIZ = {'@type': 'HomeAndConstructionBusiness', 'name': '네모의꿈', 'alternateName': "NEMO'S DREAM", 'url': SITE, 'telephone': PHONE,
        'priceRange': '30만원~', 'areaServed': ['대전', '세종', '천안', '아산', '청주', '홍성', '내포', '충청'],
-       'sameAs': ['https://blog.naver.com/zibaejang', 'https://blog.naver.com/soorigome'],
+       'sameAs': ['https://blog.naver.com/zibaejang'],
        'description': '키친핏 냉장고장 맞춤제작·설치, 냉장고장 칸막이·기둥 제거 리폼(30만원, VAT 별도). 대표 직접 시공, 처짐·기울어짐 평생 무상 AS.'}
 for i, x in enumerate(QA):
     slug = 'qa-' + x['slug']
