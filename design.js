@@ -110,8 +110,12 @@ function render(){
   if(S.job!=='new'&&S.fr.length>1){} // 칸막이 제거: 냉장고 사이 판재 없음
   panels.forEach(function(px){items.push({z:0,x:px,s:box(px,0,0,SIDE,L.bodyH,D,'dz-cab')})});
   // 상부장 문
-  var upDoors='',uw=L.W-2*SIDE,un=Math.max(2,Math.round(uw/450)),dw=uw/un;
-  for(var i=0;i<un;i++){upDoors+=door(SIDE+i*dw+2,L.bodyH+12,0,dw-4,UP-24,i%2?'r':'l','dz-door')}
+  // 상부장 문: 아래 냉장고·장 폭과 똑같이 나눈다 (넓으면 양문)
+  var upDoors='';
+  L.cols.forEach(function(c){
+    var n=c.w>700?2:1,dw=c.w/n;
+    for(var i=0;i<n;i++)upDoors+=door(c.x+i*dw+2,L.bodyH+12,0,dw-4,UP-24,n===2?(i?'r':'l'):'l','dz-door');
+  });
   // 열 (냉장고·추가 장)
   L.cols.forEach(function(c){
     if(c.k==='fr'){
