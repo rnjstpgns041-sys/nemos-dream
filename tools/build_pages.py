@@ -206,6 +206,7 @@ body = '''<section>
     <div class="sec-head"><p class="kicker">기본 단가</p><h2>블로그에 공개한<br><em>그대로예요</em></h2><p>모든 금액은 VAT 별도예요. 현장 상태와 크기에 따라 달라질 수 있어서, 사진을 보고 최종 금액을 알려드려요.</p></div>
     %s
     <p class="price-note">홈바에는 일반 콘센트가 기본으로 들어가고, 매립형 멀티콘센트로 바꾸면 비용이 추가돼요.</p>
+    <p class="more-link"><a class="btn btn-acc" href="design.html">무료 3D 설계 · 가견적 받기 →</a></p>
   </div>
 </section>
 
@@ -280,6 +281,57 @@ body = '''<section>
 ''' % tl
 page('process.html', '진행 방법', '문자 상담부터 실측과 설계, 사전 제작, 설치, 마감까지. 네모의꿈 키친핏 냉장고장 맞춤제작 순서를 실제 현장 사진으로 보여드려요.',
      '진행 방법', '견적부터 시공까지<br><em>이렇게 진행돼요</em>', '상담한 사람이 직접 와서 끝까지 시공해요. 실제 현장 사진으로 순서를 보여드릴게요.', body)
+
+# ================= 3D 미리보기 · 가견적 =================
+DZ_BODY = '''<section class="dz-sec">
+  <div class="wrap">
+    <div class="dz">
+      <div class="dz-view-col">
+        <div class="dz-stage">
+          <div class="dz-bar"><div class="dz-view" role="group" aria-label="보기 방식"><button type="button" data-v="3d" aria-pressed="true">입체</button><button type="button" data-v="front" aria-pressed="false">정면</button></div><button type="button" class="dz-open" id="dz-open" aria-pressed="false">문 열어보기</button></div>
+          <svg id="dz-svg" class="dz-svg" role="img" aria-label="냉장고장 배치 미리보기" preserveAspectRatio="xMidYMid meet"></svg>
+          <p class="dz-cap">배치를 보기 위한 그림이에요. 치수는 예시이고, 정확한 치수는 실측과 모델 설치 가이드로 맞춰요.</p>
+        </div>
+        <div class="dz-res">
+          <p class="dz-k">가견적</p>
+          <p class="dz-won" id="dz-won">100만원</p>
+          <p class="dz-note" id="dz-note"></p>
+          <p class="dz-fit" id="dz-fit"></p>
+        </div>
+      </div>
+      <div class="dz-form">
+        <fieldset><legend><span>1</span>어떤 작업이에요?</legend>
+          <label class="dz-job"><input type="radio" name="dz-job" value="new" checked><span><b>냉장고장 새로 짜기</b><small>옵션을 뺐거나 빈 자리 · 100만원부터</small></span></label>
+          <label class="dz-job"><input type="radio" name="dz-job" value="part"><span><b>옵션 냉장고장 칸막이 제거</b><small>있는 장을 살려서 · 30만원</small></span></label>
+          <label class="dz-job"><input type="radio" name="dz-job" value="gap"><span><b>칸막이 제거 + 틈새장</b><small>남는 폭까지 수납으로 · 70만원</small></span></label>
+        </fieldset>
+        <fieldset><legend><span>2</span>넣을 냉장고</legend>
+          <div id="dz-frs"></div>
+          <button type="button" class="btn btn-soft dz-add" id="dz-add">+ 냉장고 추가</button>
+          <p class="dz-hint">종류를 고르면 예시 치수가 들어가요. 모델명을 아시면 같이 적어 주세요. 정확한 치수로 다시 확인해 드려요.</p>
+        </fieldset>
+        <fieldset id="dz-exbox"><legend><span>3</span>같이 넣을 장 <small>(새로 짤 때)</small></legend>
+          <div class="dz-ex"><label><input type="checkbox" value="robot"><span>로봇청소기장</span></label><label><input type="checkbox" value="range"><span>렌지장</span></label><label><input type="checkbox" value="rice"><span>밥솥장</span></label><label><input type="checkbox" value="bar"><span>홈바장</span></label></div>
+        </fieldset>
+        <fieldset><legend><span>4</span>냉장고장 자리 폭 <small>(아시면)</small></legend>
+          <label class="dz-l dz-sp"><input id="dz-space" type="number" inputmode="numeric" placeholder="예: 2400"><span>mm</span></label>
+          <label class="dz-l">지역·아파트<input id="dz-area" placeholder="예: 대전 도안 ○○아파트" maxlength="40"></label>
+        </fieldset>
+        <div class="dz-send">
+          <p><b>이대로 견적 받기</b><br>버튼을 누르면 고른 내용과 설계 그림 링크가 적힌 문자가 열려요. 냉장고장 자리 사진 2장만 첨부해서 보내 주세요.</p>
+          <pre id="dz-pre" class="qs-pre"></pre>
+          <a class="btn btn-acc qsend" id="dz-sms" href="sms:01048353353">문자로 가견적 보내기</a>
+          <button type="button" class="btn btn-soft" id="dz-copy">내용 복사하기</button>
+          <p class="toast" id="dz-toast" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+'''
+page('design.html', '냉장고장 3D 미리보기 · 무료 가견적', '냉장고 종류와 같이 넣을 장을 고르면 냉장고장 배치를 입체 그림으로 보여주고 가견적을 바로 알려드려요. 칸막이 제거 30만원, 틈새장까지 70만원, 맞춤제작 100만원부터.',
+     '무료 3D 설계 · 가견적', '우리 집 냉장고장,<br><em>그려 보고 가견적 받기</em>', '냉장고와 같이 넣을 장을 고르면 배치 그림과 대략 금액이 바로 나와요. 마음에 들면 문자 한 번으로 정확한 견적을 받아 보세요.', DZ_BODY,
+     extra_js='<script src="design.js" defer></script>', subnav=False)
 
 # ================= 자주 묻는 질문 =================
 FAQ = [

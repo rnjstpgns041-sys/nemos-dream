@@ -339,7 +339,7 @@ exec(open(TOOLS + '/qa_pages.py').read())
 
 # ================= sitemap / robots =================
 today = date.today().isoformat()
-urls = [''] + [f[:-5] for f, _ in PAGES] + ['as'] + [g[0] for g in GUIDES] + ['area-' + a[0] for a in AREAS] + ['area-' + x[0] for x in SUBS] + [k[0] for k in KW_PAGES] + ['qa'] + [q[0] for q in QA_PAGES] + ['case-' + w['no'] for w in works]
+urls = [''] + [f[:-5] for f, _ in PAGES] + ['as', 'design'] + [g[0] for g in GUIDES] + ['area-' + a[0] for a in AREAS] + ['area-' + x[0] for x in SUBS] + [k[0] for k in KW_PAGES] + ['qa'] + [q[0] for q in QA_PAGES] + ['case-' + w['no'] for w in works]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     + ''.join('  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n' % (SITE, u, today) for u in urls) + '</urlset>\n')
 AI_BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'Claude-SearchBot', 'Google-Extended', 'Bingbot', 'Yeti', 'Applebot']
@@ -352,7 +352,7 @@ names.update({'/area-' + a[0]: '지역: ' + a[1] for a in AREAS})
 names.update({'/area-' + x[0]: '지역: ' + x[1] for x in SUBS})
 names.update({'/' + k[0]: '검색어: ' + k[1] for k in KW_PAGES})
 names.update({'/' + g[0]: '안내: ' + g[1] for g in GUIDES})
-names.update({'/' + q[0]: '질문: ' + q[1] for q in QA_PAGES}); names['/qa'] = '질문과 답변'
+names.update({'/' + q[0]: '질문: ' + q[1] for q in QA_PAGES}); names['/qa'] = '질문과 답변'; names['/design'] = '3D 미리보기·가견적'
 names.update({'/case-' + w['no']: '사례: ' + CASES[w['no']]['title'] for w in works})
 os.makedirs('admin/stats', exist_ok=True)
 st = open(TOOLS + '/admin_stats_template.html').read()
