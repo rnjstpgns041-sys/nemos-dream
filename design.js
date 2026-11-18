@@ -52,7 +52,7 @@ function estimate(){
 }
 
 // ---------- 배치 계산 ----------
-var SIDE=20,GAP=10,UP=380;
+var LOW=604,SIDE=20,GAP=10,UP=380;
 function layout(){
   var cols=[],x=SIDE;
   S.fr.forEach(function(f,i){if(i>0)x+=GAP;cols.push({k:'fr',f:f,x:x,w:f.w});x+=f.w});
@@ -126,16 +126,19 @@ function render(){
   L.cols.forEach(function(c){
     if(c.k==='fr'){
       var f=c.f,z=D-f.d,s=box(c.x,0,z,c.w,f.h,f.d,'dz-fr');
+      // 하부장(로봇청소기장) 줄 높이(LOW)에 맞춰 냉장고에도 가로줄을 이어 그린다
+      var dr=S.open?-260:0,top=f.h-LOW-4;
       if(TYPES[f.t]&&TYPES[f.t].doors==='4'){
-        // 4도어: 가로줄 없이 좌우 두 짝으로만 보여준다
-        s+=door(c.x+2,4,z,c.w/2-3,f.h-8,'l','dz-frd')+door(c.x+c.w/2+1,4,z,c.w/2-3,f.h-8,'r','dz-frd');
+        s+=door(c.x+2,LOW+4,z,c.w/2-3,top-4,'l','dz-frd')+door(c.x+c.w/2+1,LOW+4,z,c.w/2-3,top-4,'r','dz-frd');
+        s+=box(c.x+2,2,z+dr,c.w/2-3,LOW-2,S.open?260:0,'dz-frd')+box(c.x+c.w/2+1,2,z+dr,c.w/2-3,LOW-2,S.open?260:0,'dz-frd');
       }else{
-        s+=door(c.x+2,4,z,c.w-4,f.h-8,'r','dz-frd');
+        s+=door(c.x+2,LOW+4,z,c.w-4,top-4,'r','dz-frd');
+        s+=box(c.x+2,2,z+dr,c.w-4,LOW-2,S.open?260:0,'dz-frd');
       }
       items.push({z:z,x:c.x,s:s});
     }else{
       var h=L.bodyH,s2='',cls='dz-door';
-      var LOW=604;
+      
       function lower(){ // 하부장: 로봇청소기장이면 아래 150 빈 칸 + 문, 아니면 문 한 짝
         if(!c.robot)return door(c.x+2,4,0,c.w-4,LOW-4,'l',cls);
         var r=poly([[c.x+2,0,0],[c.x+c.w-2,0,0],[c.x+c.w-2,150,0],[c.x+2,150,0]],'dz-hole');
