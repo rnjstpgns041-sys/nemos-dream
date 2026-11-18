@@ -391,4 +391,12 @@ except Exception: _old = set()
 _new = [u for u in re.findall(r'<loc>(.*?)</loc>', open('sitemap.xml').read()) if u not in _old] if _old else []
 open('new-urls.txt', 'w').write('\n'.join(_new) + ('\n' if _new else ''))
 print('new urls', len(_new))
+# 캐시 깨기: style.css / design.js 주소 뒤에 파일 내용 해시를 붙인다 (휴대폰 앱 브라우저가 예전 파일을 쓰지 않게)
+import hashlib as _hl, glob as _gl
+_ver = {f: _hl.md5(open(f, 'rb').read()).hexdigest()[:8] for f in ('style.css', 'design.js')}
+for _f in _gl.glob('*.html'):
+    _t = open(_f).read()
+    _n = re.sub(r'href="style\.css(\?v=[0-9a-f]+)?"', 'href="style.css?v=%s"' % _ver['style.css'], _t)
+    _n = re.sub(r'src="design\.js(\?v=[0-9a-f]+)?"', 'src="design.js?v=%s"' % _ver['design.js'], _n)
+    if _n != _t: open(_f, 'w').write(_n)
 print('built')
