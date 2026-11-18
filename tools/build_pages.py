@@ -331,7 +331,7 @@ DZ_BODY = '''<section class="dz-sec">
         </div>
         <div class="dz-view-col">
           <div class="dz-stage">
-            <div class="dz-bar"><b class="dz-pt">구성 미리보기</b><div class="dz-view" role="group" aria-label="보기 방식"><button type="button" data-v="3d" aria-pressed="true">입체</button><button type="button" data-v="front" aria-pressed="false">정면</button></div><button type="button" class="dz-open" id="dz-open" aria-pressed="false">문 열기</button></div>
+            <div class="dz-bar"><b class="dz-pt">구성 미리보기</b><div class="dz-view" role="group" aria-label="보기 방식"><button type="button" data-v="front" aria-pressed="true">정면</button><button type="button" data-v="3d" aria-pressed="false">입체</button></div><button type="button" class="dz-open" id="dz-open" aria-pressed="false">문 열기</button></div>
             <svg id="dz-svg" class="dz-svg" role="img" aria-label="냉장고장 배치 미리보기" preserveAspectRatio="xMidYMid meet"></svg>
             <p class="dz-cap">전체 배치를 보는 그림이에요. 치수는 예시이고, 정확한 치수는 실측과 모델 설치 가이드로 맞춰요.</p>
           </div>

@@ -653,3 +653,13 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .a3{display:flex;gap:20px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px}
 .a3 h2{margin:6px 0 10px}.a3 p{margin:0}
 @media (max-width:760px){.a3{flex-direction:column;align-items:stretch;padding:22px}.a3 .btn{justify-content:center}}
+
+/* 참고 그림처럼: 문 사이 굵은 줄, 크림색 문, 칸 눈금 (2026-11-18) */
+.dz-seam,.dz-fr.front{fill:#3d3a35;stroke:none}
+.dz-fr.top{fill:#d9d3c8;stroke:#8e969f;stroke-width:3}.dz-fr.side{fill:#cbc4b8;stroke:#8e969f;stroke-width:3}
+.dz-frd,.dz-frd.front,.dz-door,.dz-door.front{fill:#faf8f3;stroke:#d8d2c6;stroke-width:2}
+.dz-frd.top,.dz-door.top{fill:#ece7de;stroke:#cfc8bb;stroke-width:2}.dz-frd.side,.dz-door.side{fill:#e2dccf;stroke:#cfc8bb;stroke-width:2}
+.dz-frd.open,.dz-door.open{fill:#f1ede5}
+.dz-hole{fill:#2b2a27;stroke:none}
+.dz-tick{stroke:#8e969f;stroke-width:3}
+.dz-sp{font:700 50px var(--body);fill:var(--fg);text-anchor:middle}
