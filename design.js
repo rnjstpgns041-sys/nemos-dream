@@ -61,8 +61,14 @@ function layout(){
     Object.keys(EX).forEach(function(k){
       if(!S.ex[k])return;
       if(k==='rice'&&S.ex.range){return}
+      if(k==='robot')return; // 로봇청소기장은 옆 칸이 아니라 하부장 안으로
       x+=SIDE;cols.push({k:k,x:x,w:EX[k].w,both:k==='range'&&S.ex.rice});x+=EX[k].w;
     });
+    if(S.ex.robot){
+      var host=cols.filter(function(c){return c.k!=='fr'})[0];
+      if(host)host.robot=true;
+      else{x+=SIDE;cols.push({k:'tall',x:x,w:600,robot:true});x+=600}
+    }
     x+=SIDE;need=x;
   }else{
     x+=SIDE;need=x;
@@ -121,15 +127,30 @@ function render(){
     if(c.k==='fr'){
       var f=c.f,z=D-f.d,s=box(c.x,0,z,c.w,f.h,f.d,'dz-fr');
       if(TYPES[f.t]&&TYPES[f.t].doors==='4'){
-        // 4도어: 가로줄 없이 좌우 두 짝으로만 보여준다
-        s+=door(c.x+2,4,z,c.w/2-3,f.h-8,'l','dz-frd')+door(c.x+c.w/2+1,4,z,c.w/2-3,f.h-8,'r','dz-frd');
+        // 4도어: 위 문 2짝 + 아래 2짝 (가로줄 하나)
+        var top=f.h*0.58,bot=f.h-top-12,dr=S.open?-260:0;
+        s+=door(c.x+2,bot+12,z,c.w/2-3,top-4,'l','dz-frd')+door(c.x+c.w/2+1,bot+12,z,c.w/2-3,top-4,'r','dz-frd');
+        s+=box(c.x+2,2,z+dr,c.w/2-3,bot+6,S.open?260:0,'dz-frd')+box(c.x+c.w/2+1,2,z+dr,c.w/2-3,bot+6,S.open?260:0,'dz-frd');
       }else{
         s+=door(c.x+2,4,z,c.w-4,f.h-8,'r','dz-frd');
       }
       items.push({z:z,x:c.x,s:s});
     }else{
       var h=L.bodyH,s2='',cls='dz-door';
-      if(c.k==='robot'){
+      var LOW=604;
+      function lower(){ // 하부장: 로봇청소기장이면 아래 150 빈 칸 + 문, 아니면 문 한 짝
+        if(!c.robot)return door(c.x+2,4,0,c.w-4,LOW-4,'l',cls);
+        var r=poly([[c.x+2,0,0],[c.x+c.w-2,0,0],[c.x+c.w-2,150,0],[c.x+2,150,0]],'dz-hole');
+        r+=poly([[c.x+c.w/2-130,6,0],[c.x+c.w/2+130,6,0],[c.x+c.w/2+130,96,0],[c.x+c.w/2-130,96,0]],'dz-st');
+        if(S.open)r+=poly([[c.x+80,160,0],[c.x+c.w-80,160,0],[c.x+c.w-80,520,0],[c.x+80,520,0]],'dz-st');
+        r+=door(c.x+2,154,0,c.w-4,LOW-158,'l',cls);
+        var q1=P(c.x+c.w,0,0),q2=P(c.x+c.w,150,0);
+        return r+'<text class="dz-r150" x="'+(+q1[0]-14)+'" y="'+((+q1[1]+ +q2[1])/2+14)+'">150</text>';
+      }
+      if(c.k==='tall'){
+        s2+=box(c.x,0,0,c.w,h,0,'dz-in');
+        s2+=lower()+door(c.x+2,LOW+4,0,c.w-4,h-LOW-8,'l',cls);
+      }else if(c.k==='robot'){
         s2+=box(c.x,0,0,c.w,h,0,'dz-in');
         // 로봇청소기장: 아래 150mm는 로봇이 드나드는 빈 칸, 그 위는 문 (열면 스테이션)
         s2+=poly([[c.x+2,0,0],[c.x+c.w-2,0,0],[c.x+c.w-2,150,0],[c.x+2,150,0]],'dz-hole');
@@ -142,15 +163,15 @@ function render(){
         s2+=box(c.x,0,0,c.w,h,0,'dz-in');
         s2+=poly([[c.x+40,900,0],[c.x+c.w-40,900,0],[c.x+c.w-40,1200,0],[c.x+40,1200,0]],'dz-st');
         if(c.both)s2+=poly([[c.x+120,640,0],[c.x+c.w-120,640,0],[c.x+c.w-120,860,0],[c.x+120,860,0]],'dz-st');
-        s2+=door(c.x+2,1260,0,c.w-4,h-1264,'l',cls)+door(c.x+2,4,0,c.w-4,600,'l',cls);
+        s2+=door(c.x+2,1260,0,c.w-4,h-1264,'l',cls)+lower();
       }else if(c.k==='rice'){
         s2+=box(c.x,0,0,c.w,h,0,'dz-in');
         s2+=poly([[c.x+120,900,0],[c.x+c.w-120,900,0],[c.x+c.w-120,1120,0],[c.x+120,1120,0]],'dz-st');
-        s2+=door(c.x+2,1260,0,c.w-4,h-1264,'l',cls)+door(c.x+2,4,0,c.w-4,600,'l',cls);
+        s2+=door(c.x+2,1260,0,c.w-4,h-1264,'l',cls)+lower();
       }else if(c.k==='bar'){
         s2+=box(c.x,0,0,c.w,h,0,'dz-hb');
         for(var j=1;j<4;j++)s2+=poly([[c.x+10,700+j*280,0],[c.x+c.w-10,700+j*280,0],[c.x+c.w-10,712+j*280,0],[c.x+10,712+j*280,0]],'dz-shelf');
-        s2+=door(c.x+2,4,0,c.w-4,640,'l',cls);
+        s2+=lower();
       }else if(c.k==='gap'){
         s2+=door(c.x+2,4,0,c.w-4,h-8,'l',cls);
       }
@@ -165,7 +186,8 @@ function render(){
   L.cols.forEach(function(c){
     var a=P(c.x,0,0),b=P(c.x+c.w,0,0);
     dim+='<line class="dz-dl" x1="'+a[0]+'" y1="'+yy+'" x2="'+b[0]+'" y2="'+yy+'"/><text class="dz-dt" x="'+((+a[0]+ +b[0])/2)+'" y="'+(yy+72)+'">'+Math.round(c.w)+'</text>';
-    var lab=c.k==='fr'?(TYPES[c.f.t]?TYPES[c.f.t].n.split(' (')[0]:'냉장고'):c.k==='gap'?'틈새장':c.k==='range'&&c.both?'렌지·밥솥장':EX[c.k].n;
+    var lab=c.k==='fr'?(TYPES[c.f.t]?TYPES[c.f.t].n.split(' (')[0]:'냉장고'):c.k==='gap'?'틈새장':c.k==='tall'?'키큰장':c.k==='range'&&c.both?'렌지·밥솥장':EX[c.k].n;
+    if(c.robot)lab+=' + 로봇청소기';
     dim+='<text class="dz-lab" x="'+((+a[0]+ +b[0])/2)+'" y="'+(yy+140)+'">'+lab+'</text>';
   });
   var a0=P(0,0,0),a1=P(L.W,0,0);
