@@ -121,10 +121,8 @@ function render(){
     if(c.k==='fr'){
       var f=c.f,z=D-f.d,s=box(c.x,0,z,c.w,f.h,f.d,'dz-fr');
       if(TYPES[f.t]&&TYPES[f.t].doors==='4'){
-        // 4도어: 위 문 2짝 + 아래 서랍 2개 (가로줄 하나)
-        var top=f.h*0.58,bot=f.h-top-12,dr=S.open?-260:0;
-        s+=door(c.x+2,bot+12,z,c.w/2-3,top-4,'l','dz-frd')+door(c.x+c.w/2+1,bot+12,z,c.w/2-3,top-4,'r','dz-frd');
-        s+=box(c.x+2,2,z+dr,c.w/2-3,bot+6,S.open?260:0,'dz-frd')+box(c.x+c.w/2+1,2,z+dr,c.w/2-3,bot+6,S.open?260:0,'dz-frd');
+        // 4도어: 가로줄 없이 좌우 두 짝으로만 보여준다
+        s+=door(c.x+2,4,z,c.w/2-3,f.h-8,'l','dz-frd')+door(c.x+c.w/2+1,4,z,c.w/2-3,f.h-8,'r','dz-frd');
       }else{
         s+=door(c.x+2,4,z,c.w-4,f.h-8,'r','dz-frd');
       }
