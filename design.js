@@ -110,10 +110,10 @@ function render(){
   if(S.job!=='new'&&S.fr.length>1){} // 칸막이 제거: 냉장고 사이 판재 없음
   panels.forEach(function(px){items.push({z:0,x:px,s:box(px,0,0,SIDE,L.bodyH,D,'dz-cab')})});
   // 상부장 문
-  // 상부장 문: 아래 냉장고·장 폭과 똑같이 나눈다 (넓으면 양문)
+  // 상부장 문: 아래 냉장고·장 폭과 똑같이 (새로 짤 땐 한 짝, 리폼은 넓으면 양문)
   var upDoors='';
   L.cols.forEach(function(c){
-    var n=c.w>700?2:1,dw=c.w/n;
+    var n=(S.job==='new'||c.w<=700)?1:2,dw=c.w/n;
     for(var i=0;i<n;i++)upDoors+=door(c.x+i*dw+2,L.bodyH+12,0,dw-4,UP-24,n===2?(i?'r':'l'):'l','dz-door');
   });
   // 열 (냉장고·추가 장)
@@ -124,8 +124,7 @@ function render(){
         var top=f.h*0.58,bot=f.h-top-12;
         s+=door(c.x+2,bot+12,z,c.w/2-3,top-4,'l','dz-frd')+door(c.x+c.w/2+1,bot+12,z,c.w/2-3,top-4,'r','dz-frd');
         var dr=S.open?-260:0;
-        s+=box(c.x+2,bot/2+4,z+dr,c.w/2-3,bot/2-6,S.open?260:0,'dz-frd')+box(c.x+c.w/2+1,bot/2+4,z+dr,c.w/2-3,bot/2-6,S.open?260:0,'dz-frd');
-        s+=box(c.x+2,2,z,c.w/2-3,bot/2-2,0,'dz-frd')+box(c.x+c.w/2+1,2,z,c.w/2-3,bot/2-2,0,'dz-frd');
+        s+=box(c.x+2,2,z+dr,c.w/2-3,bot+6,S.open?260:0,'dz-frd')+box(c.x+c.w/2+1,2,z+dr,c.w/2-3,bot+6,S.open?260:0,'dz-frd');
       }else{
         s+=door(c.x+2,4,z,c.w-4,f.h-8,'r','dz-frd');
       }
