@@ -1,4 +1,5 @@
-/* 네모의꿈 냉장고장 3D 미리보기 · 가견적 (design.html) */
+/* 네모의꿈 냉장고장 3D 설계 · 가견적 (design.html)
+   1. 냉장고 입력 → 2. 키큰장 → 3. 확인·보내기 */
 (function(){
 'use strict';
 var $=function(id){return document.getElementById(id)};
@@ -10,78 +11,88 @@ var TYPES={
   big:{n:'양문형·일반 4도어 (뚱냉)',w:912,h:1800,d:920,doors:'4'},
   custom:{n:'직접 입력',w:600,h:1850,d:700,doors:'1'}
 };
-var EX={robot:{n:'로봇청소기장',w:450},range:{n:'렌지장',w:600},rice:{n:'밥솥장',w:600},bar:{n:'홈바장',w:600}};
+var TALL={
+  none:{n:'없음 (냉장고만)',w:0},
+  two:{n:'키큰장 (투도어)',w:600},
+  one:{n:'키큰장 (원도어)',w:450},
+  bar:{n:'홈바장',w:600},
+  rice:{n:'밥솥장',w:600},
+  ricerange:{n:'밥솥렌지장',w:600},
+  ovenrange:{n:'오븐렌지장',w:600}
+};
+var LOWS={norm:{n:'일반장'},drawer:{n:'서랍장'},oven:{n:'오븐 일반장'},rice:{n:'밥솥 일반장'}};
 var JOBS={
   'new':{n:'냉장고장 새로 짜기 (맞춤제작)'},
   part:{n:'옵션 냉장고장 칸막이 제거'},
   gap:{n:'칸막이 제거 + 틈새장'}
 };
-var S={job:'new',fr:[{t:'k4',w:912,h:1855,d:690,m:''},{t:'k1',w:595,h:1855,d:690,m:''}],ex:{robot:false,range:false,rice:false,bar:false},space:'',open:false,view:'3d',area:''};
+var S={job:'new',fr:[{t:'k4',w:912,h:1855,d:690,m:''},{t:'k1',w:595,h:1855,d:690,m:''}],
+  tall:'two',pos:'r',low:'norm',robot:false,unk:false,space:'',open:false,view:'3d',area:'',step:0};
 
 // ---------- 상태 저장 (주소 뒤에 붙여서 견적 문자에 같이 보냄) ----------
 function enc(){
-  var f=S.fr.map(function(x){return [x.t,x.w,x.h,x.d,x.m.replace(/[~|]/g,'')].join('~')}).join('|');
-  var e=Object.keys(EX).filter(function(k){return S.ex[k]}).join('.');
-  return 'j='+S.job+'&f='+encodeURIComponent(f)+'&e='+e+'&s='+(S.space||'');
+  var f=S.fr.map(function(x){return [x.t,x.w,x.h,x.d,x.m.replace(/[~|&#]/g,'')].join('~')}).join('|');
+  return 'j='+S.job+'&f='+encodeURIComponent(f)+'&t='+S.tall+'&p='+S.pos+'&l='+S.low+'&r='+(S.robot?1:0)+'&s='+(S.space||'');
 }
 function dec(h){
   try{
     var p={};h.replace(/^#/,'').split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0)p[kv.slice(0,i)]=kv.slice(i+1)});
     if(p.j&&JOBS[p.j])S.job=p.j;
     if(p.f){var fr=decodeURIComponent(p.f).split('|').map(function(s){var a=s.split('~');return {t:TYPES[a[0]]?a[0]:'custom',w:+a[1]||600,h:+a[2]||1850,d:+a[3]||700,m:a[4]||''}}).slice(0,4);if(fr.length)S.fr=fr}
-    if(p.e!==undefined)Object.keys(EX).forEach(function(k){S.ex[k]=p.e.split('.').indexOf(k)>=0});
+    if(p.t&&TALL[p.t])S.tall=p.t;
+    if(p.p==='l'||p.p==='r')S.pos=p.p;
+    if(p.l&&LOWS[p.l])S.low=p.l;
+    if(p.r!==undefined)S.robot=p.r==='1';
+    if(p.e!==undefined&&p.t===undefined){ // 예전 링크(e=robot.range…) 호환
+      var e=p.e.split('.');S.robot=e.indexOf('robot')>=0;
+      S.tall=e.indexOf('bar')>=0?'bar':(e.indexOf('range')>=0&&e.indexOf('rice')>=0)?'ricerange':e.indexOf('range')>=0?'ovenrange':e.indexOf('rice')>=0?'rice':(S.robot?'two':'none');
+    }
     if(p.s)S.space=+p.s||'';
   }catch(e){}
 }
 
 // ---------- 가견적 ----------
 function estimate(){
-  if(S.job==='part')return {won:30,txt:'30만원',note:'칸막이·기둥 제거, 상부장과 천장 보강, 바닥·벽 마감, 폐자재 처리 포함'};
-  if(S.job==='gap')return {won:70,txt:'70만원',note:'칸막이 제거 + 남는 폭에 틈새장까지'};
-  var e=S.ex,r=e.robot,g=e.range,c=e.rice,b=e.bar,cnt=[r,g,c,b].filter(Boolean).length;
-  var t=null;
+  if(S.job==='part')return {txt:'30만원',note:'칸막이·기둥 제거, 상부장과 천장 보강, 바닥·벽 마감, 폐자재 처리 포함'};
+  if(S.job==='gap')return {txt:'70만원',note:'칸막이 제거 + 남는 폭에 틈새장까지'};
+  var T=S.tall,has=T!=='none';
+  var r=has&&S.robot,
+      c=T==='rice'||T==='ricerange'||(has&&S.low==='rice'),
+      g=T==='ricerange'||T==='ovenrange'||(has&&S.low==='oven'),
+      b=T==='bar',cnt=[r,g,c,b].filter(Boolean).length,t=null;
   if(cnt===0)t=100;
   else if(cnt===1&&r)t=100;
   else if(cnt===1&&(g||c))t=110;
   else if(cnt===2&&g&&c)t=115;
   else if(cnt===1&&b)t=130;
   else if(cnt===2&&b&&(g||c))t=140;
-  if(t!==null)return {won:t,txt:t+'만원',note:'기본 단가 기준 (냉장고장 맞춤제작)'};
+  var drawer=has&&S.low==='drawer';
+  if(t!==null)return {txt:t+'만원'+(drawer?'~':''),note:drawer?'서랍장은 서랍 수에 따라 조금 달라져요':'기본 단가 기준 (냉장고장 맞춤제작)'};
   var min=b?140:(g&&c)?115:(g||c)?110:100;
-  return {won:min,txt:min+'만원~',note:'구성이 많아서 사진을 보고 정확한 금액을 알려드려요'};
+  return {txt:min+'만원~',note:'구성이 많아서 사진을 보고 정확한 금액을 알려드려요'};
 }
 
 // ---------- 배치 계산 ----------
 var LOW=604,SIDE=20,GAP=10,UP=380;
+function frW(){var w=0;S.fr.forEach(function(f,i){w+=f.w+(i?GAP:0)});return w}
 function layout(){
-  var cols=[],x=SIDE;
-  S.fr.forEach(function(f,i){if(i>0)x+=GAP;cols.push({k:'fr',f:f,x:x,w:f.w});x+=f.w});
-  var need;
-  if(S.job==='new'){
-    Object.keys(EX).forEach(function(k){
-      if(!S.ex[k])return;
-      if(k==='rice'&&S.ex.range){return}
-      if(k==='robot')return; // 로봇청소기장은 옆 칸이 아니라 하부장 안으로
-      x+=SIDE;cols.push({k:k,x:x,w:EX[k].w,both:k==='range'&&S.ex.rice});x+=EX[k].w;
-    });
-    if(S.ex.robot){
-      var host=cols.filter(function(c){return c.k!=='fr'})[0];
-      if(host)host.robot=true;
-      else{x+=SIDE;cols.push({k:'tall',x:x,w:600,robot:true});x+=600}
-    }
-    x+=SIDE;need=x;
-  }else{
-    x+=SIDE;need=x;
-    var sp=+S.space||0;
-    if(S.job==='gap'){
-      var left=sp?sp-need-SIDE:300;
-      if(left>=120){x+=SIDE;cols.push({k:'gap',x:x,w:left});x+=left;x+=SIDE}
-      else if(!sp){x+=SIDE;cols.push({k:'gap',x:x,w:300});x+=300;x+=SIDE}
-    }
+  var cols=[],sp=+S.space||0,fw=frW(),need,tw=0,x=SIDE;
+  var hasTall=S.job==='new'&&S.tall!=='none';
+  if(hasTall){
+    tw=TALL[S.tall].w;
+    if(sp){var rest=sp-SIDE*3-fw;if(rest>=300)tw=Math.min(rest,1200)}
+  }
+  function fridges(){S.fr.forEach(function(f,i){if(i>0)x+=GAP;cols.push({k:'fr',f:f,x:x,w:f.w});x+=f.w})}
+  function tall(){cols.push({k:S.tall,x:x,w:tw});x+=tw}
+  if(hasTall&&S.pos==='l'){tall();x+=SIDE;fridges()}
+  else{fridges();if(hasTall){x+=SIDE;tall()}}
+  x+=SIDE;need=hasTall?SIDE*3+fw+300:x;
+  if(S.job==='gap'){
+    var left=sp?sp-x-SIDE:300;
+    if(left>=120||!sp){left=left>=120?left:300;cols.push({k:'gap',x:x,w:left});x+=left+SIDE}
   }
   var hMax=Math.max.apply(null,S.fr.map(function(f){return f.h}));
-  var bodyH=hMax+20;
-  return {cols:cols,W:Math.max(x,need),need:need,H:bodyH+UP,bodyH:bodyH,D:700};
+  return {cols:cols,W:x,need:need,H:hMax+20+UP,bodyH:hMax+20,D:700};
 }
 
 // ---------- 그리기 (정면 / 입체) ----------
@@ -91,8 +102,9 @@ function render(){
   var pad=90,ext=S.open?560:0;
   var minX=-pad-(S.open?280:0),maxX=L.W+L.D*kx+pad+ext*0.3,minY=-(L.H+L.D*ky)-40,maxY=(maxD-L.D+ext)*ky+150;
   function P(x,y,z){return [(x+z*kx).toFixed(1),(-y-z*ky).toFixed(1)]}  // z: 앞면 0, 뒤로 +
+  function rect(x,y,w,h,cls){return poly([[x,y,0],[x+w,y,0],[x+w,y+h,0],[x,y+h,0]],cls)}
   function poly(pts,cls){return '<polygon class="'+cls+'" points="'+pts.map(function(p){return P(p[0],p[1],p[2]).join(',')}).join(' ')+'"/>'}
-  function box(x,y,z,w,h,d,cls){ // 뒤에서 앞으로 보이는 면: 윗면, 오른쪽면, 앞면
+  function box(x,y,z,w,h,d,cls){ // 보이는 면: 윗면, 오른쪽면, 앞면
     var s='';
     if(v&&d>0){s+=poly([[x,y+h,z],[x+w,y+h,z],[x+w,y+h,z+d],[x,y+h,z+d]],cls+' top');
       s+=poly([[x+w,y,z],[x+w,y,z+d],[x+w,y+h,z+d],[x+w,y+h,z]],cls+' side');}
@@ -104,29 +116,33 @@ function render(){
     var a=0.8,hx=hinge==='l'?x:x+w,dx=Math.cos(a)*w*(hinge==='l'?1:-1),dz=-Math.sin(a)*w;
     return poly([[hx,y,z],[hx+dx,y,z+dz],[hx+dx,y+h,z+dz],[hx,y+h,z]],cls+' open');
   }
+  function doors(x,y,w,h,cls){ // 폭이 넓으면 양문
+    if(w>520)return door(x+2,y,0,w/2-3,h,'l',cls)+door(x+w/2+1,y,0,w/2-3,h,'r',cls);
+    return door(x+2,y,0,w-4,h,S.pos==='l'?'l':'r',cls);
+  }
+  function drawer(x,y,w,h){ // 서랍: 열면 앞으로 빠짐
+    var d=S.open?-300:0;
+    return box(x+2,y,d,w-4,h,S.open?300:0,'dz-door')+(S.open?'':rect(x+w/2-60,y+h-40,120,10,'dz-hdl'));
+  }
   var g='',D=L.D,items=[];
-  // 바닥·벽
   g+='<rect class="dz-wall" x="'+minX+'" y="'+minY+'" width="'+(maxX-minX)+'" height="'+(-minY)+'"/>';
   g+='<rect class="dz-floor" x="'+minX+'" y="0" width="'+(maxX-minX)+'" height="'+maxY+'"/>';
   // 몸통: 상부장 띠, 양옆·사이 판재
   items.push({z:D,s:box(0,L.bodyH,0,L.W,UP,D,'dz-cab')});
   var panels=[0];
-  L.cols.forEach(function(c,i){if(c.k!=='fr'){panels.push(c.x-SIDE)}});
+  L.cols.forEach(function(c,i){if(i>0&&(c.k!=='fr'||L.cols[i-1].k!=='fr'))panels.push(c.x-SIDE)});
   panels.push(L.W-SIDE);
-  if(S.job!=='new'&&S.fr.length>1){} // 칸막이 제거: 냉장고 사이 판재 없음
   panels.forEach(function(px){items.push({z:0,x:px,s:box(px,0,0,SIDE,L.bodyH,D,'dz-cab')})});
-  // 상부장 문
-  // 상부장 문: 아래 냉장고·장 폭과 똑같이 (새로 짤 땐 한 짝, 리폼은 넓으면 양문)
+  // 상부장 문: 아래 냉장고·장 폭과 똑같이
   var upDoors='';
   L.cols.forEach(function(c){
-    var n=(S.job==='new'||c.w<=700)?1:2,dw=c.w/n;
+    var n=c.w<=700||(S.job==='new'&&c.k==='fr')?1:2,dw=c.w/n;
     for(var i=0;i<n;i++)upDoors+=door(c.x+i*dw+2,L.bodyH+12,0,dw-4,UP-24,n===2?(i?'r':'l'):'l','dz-door');
   });
-  // 열 (냉장고·추가 장)
   L.cols.forEach(function(c){
     if(c.k==='fr'){
       var f=c.f,z=D-f.d,s=box(c.x,0,z,c.w,f.h,f.d,'dz-fr');
-      // 하부장(로봇청소기장) 줄 높이(LOW)에 맞춰 냉장고에도 가로줄을 이어 그린다
+      // 하부장 줄 높이(LOW)에 맞춰 냉장고에도 가로줄
       var dr=S.open?-260:0,top=f.h-LOW-4;
       if(TYPES[f.t]&&TYPES[f.t].doors==='4'){
         s+=door(c.x+2,LOW+4,z,c.w/2-3,top-4,'l','dz-frd')+door(c.x+c.w/2+1,LOW+4,z,c.w/2-3,top-4,'r','dz-frd');
@@ -136,59 +152,62 @@ function render(){
         s+=box(c.x+2,2,z+dr,c.w-4,LOW-2,S.open?260:0,'dz-frd');
       }
       items.push({z:z,x:c.x,s:s});
-    }else{
-      var h=L.bodyH,s2='',cls='dz-door';
-      
-      function lower(){ // 하부장: 로봇청소기장이면 아래 150 빈 칸 + 문, 아니면 문 한 짝
-        if(!c.robot)return door(c.x+2,4,0,c.w-4,LOW-4,'l',cls);
-        var r=poly([[c.x+2,0,0],[c.x+c.w-2,0,0],[c.x+c.w-2,150,0],[c.x+2,150,0]],'dz-hole');
-        r+=poly([[c.x+c.w/2-130,6,0],[c.x+c.w/2+130,6,0],[c.x+c.w/2+130,96,0],[c.x+c.w/2-130,96,0]],'dz-st');
-        if(S.open)r+=poly([[c.x+80,160,0],[c.x+c.w-80,160,0],[c.x+c.w-80,520,0],[c.x+80,520,0]],'dz-st');
-        r+=door(c.x+2,154,0,c.w-4,LOW-158,'l',cls);
-        var q1=P(c.x+c.w,0,0),q2=P(c.x+c.w,150,0);
-        return r+'<text class="dz-r150" x="'+(+q1[0]-14)+'" y="'+((+q1[1]+ +q2[1])/2+14)+'">150</text>';
-      }
-      if(c.k==='tall'){
-        s2+=box(c.x,0,0,c.w,h,0,'dz-in');
-        s2+=lower()+door(c.x+2,LOW+4,0,c.w-4,h-LOW-8,'l',cls);
-      }else if(c.k==='robot'){
-        s2+=box(c.x,0,0,c.w,h,0,'dz-in');
-        // 로봇청소기장: 아래 150mm는 로봇이 드나드는 빈 칸, 그 위는 문 (열면 스테이션)
-        s2+=poly([[c.x+2,0,0],[c.x+c.w-2,0,0],[c.x+c.w-2,150,0],[c.x+2,150,0]],'dz-hole');
-        s2+=poly([[c.x+90,6,0],[c.x+c.w-90,6,0],[c.x+c.w-90,96,0],[c.x+90,96,0]],'dz-st');
-        if(S.open)s2+=poly([[c.x+60,160,0],[c.x+c.w-60,160,0],[c.x+c.w-60,520,0],[c.x+60,520,0]],'dz-st');
-        s2+=door(c.x+2,154,0,c.w-4,h-158,'l',cls);
-        var q1=P(c.x+c.w,0,0),q2=P(c.x+c.w,150,0);
-        s2+='<text class="dz-r150" x="'+(+q1[0]-14)+'" y="'+((+q1[1]+ +q2[1])/2+14)+'">150</text>';
-      }else if(c.k==='range'){
-        s2+=box(c.x,0,0,c.w,h,0,'dz-in');
-        s2+=poly([[c.x+40,900,0],[c.x+c.w-40,900,0],[c.x+c.w-40,1200,0],[c.x+40,1200,0]],'dz-st');
-        if(c.both)s2+=poly([[c.x+120,640,0],[c.x+c.w-120,640,0],[c.x+c.w-120,860,0],[c.x+120,860,0]],'dz-st');
-        s2+=door(c.x+2,1260,0,c.w-4,h-1264,'l',cls)+lower();
-      }else if(c.k==='rice'){
-        s2+=box(c.x,0,0,c.w,h,0,'dz-in');
-        s2+=poly([[c.x+120,900,0],[c.x+c.w-120,900,0],[c.x+c.w-120,1120,0],[c.x+120,1120,0]],'dz-st');
-        s2+=door(c.x+2,1260,0,c.w-4,h-1264,'l',cls)+lower();
-      }else if(c.k==='bar'){
-        s2+=box(c.x,0,0,c.w,h,0,'dz-hb');
-        for(var j=1;j<4;j++)s2+=poly([[c.x+10,700+j*280,0],[c.x+c.w-10,700+j*280,0],[c.x+c.w-10,712+j*280,0],[c.x+10,712+j*280,0]],'dz-shelf');
-        s2+=lower();
-      }else if(c.k==='gap'){
-        s2+=door(c.x+2,4,0,c.w-4,h-8,'l',cls);
-      }
-      items.push({z:0,x:c.x,s:s2});
+      return;
     }
+    var h=L.bodyH,s2='',x=c.x,w=c.w;
+    if(c.k==='gap'){items.push({z:0,x:x,s:door(x+2,4,0,w-4,h-8,'l','dz-door')});return}
+    s2+=box(x,0,0,w,h,0,c.k==='bar'?'dz-hb':'dz-in');
+    // --- 하부장 (0 ~ LOW) ---
+    var b0=0;
+    if(S.robot){
+      s2+=rect(x+2,0,w-4,150,'dz-hole')+rect(x+w/2-Math.min(130,w/2-30),6,Math.min(260,w-60),90,'dz-st');
+      var q1=P(x+w,0,0),q2=P(x+w,150,0);
+      s2+='<text class="dz-r150" x="'+(+q1[0]-14)+'" y="'+((+q1[1]+ +q2[1])/2+14)+'">150</text>';
+      b0=154;
+    }else b0=4;
+    var lh=LOW-b0;
+    if(S.low==='drawer'){
+      var n=lh>400?3:2,dh=lh/n;
+      for(var i=0;i<n;i++)s2+=drawer(x,b0+i*dh,w,dh-4);
+    }else if(S.low==='oven'||S.low==='rice'){
+      // 가전이 들어가는 칸(문 없음) + 아래 작은 서랍
+      var nh=S.low==='oven'?Math.min(lh-60,470):Math.min(lh-140,300),ny=LOW-nh-4;
+      s2+=rect(x+2,ny,w-4,nh,'dz-niche');
+      if(S.low==='oven'){s2+=rect(x+24,ny+20,w-48,nh-40,'dz-st')+rect(x+50,ny+nh-80,w-100,14,'dz-hdl')}
+      else{s2+=rect(x+w/2-130,ny+10,260,Math.min(220,nh-40),'dz-st')+rect(x+12,ny,w-24,10,'dz-shelf')}
+      if(ny-b0>60)s2+=drawer(x,b0,w,ny-b0-4);
+    }else{
+      s2+=doors(x,b0,w,lh-4,'dz-door');
+    }
+    // --- 위쪽 (LOW ~ 몸통 끝) ---
+    var u0=LOW+4,uh=h-u0-4;
+    if(c.k==='two'||c.k==='one'){
+      s2+=c.k==='two'?doors(x,u0,w,uh,'dz-door'):door(x+2,u0,0,w-4,uh,S.pos==='l'?'l':'r','dz-door');
+    }else if(c.k==='bar'){
+      for(var j=0;j<3;j++)s2+=rect(x+10,u0+260+j*300,w-20,12,'dz-shelf');
+      s2+=door(x+2,h-404,0,w-4,400,'l','dz-door');
+    }else if(c.k==='rice'){
+      s2+=rect(x+2,u0,w-4,420,'dz-niche')+rect(x+w/2-130,u0+20,260,200,'dz-st')+rect(x+12,u0,w-24,10,'dz-shelf');
+      s2+=doors(x,u0+424,w,uh-424,'dz-door');
+    }else if(c.k==='ricerange'){
+      s2+=rect(x+2,u0,w-4,700,'dz-niche')+rect(x+w/2-130,u0+20,260,200,'dz-st')+rect(x+40,u0+380,w-80,280,'dz-st')+rect(x+12,u0+350,w-24,12,'dz-shelf');
+      s2+=doors(x,u0+704,w,uh-704,'dz-door');
+    }else if(c.k==='ovenrange'){
+      s2+=rect(x+2,u0,w-4,880,'dz-niche')+rect(x+24,u0+20,w-48,520,'dz-st')+rect(x+50,u0+460,w-100,14,'dz-hdl')+rect(x+40,u0+580,w-80,260,'dz-st')+rect(x+12,u0+560,w-24,12,'dz-shelf');
+      s2+=doors(x,u0+884,w,uh-884,'dz-door');
+    }
+    items.push({z:0,x:x,s:s2});
   });
   items.sort(function(a,b){return (b.z>=D)-(a.z>=D)||(a.x||0)-(b.x||0)});
   items.forEach(function(it){g+=it.s});
   g+=upDoors;
   // 치수
-  var dim='',yy=v?70+ (maxD-D)*ky:60;
+  var dim='',yy=v?70+(maxD-D)*ky:60;
   L.cols.forEach(function(c){
     var a=P(c.x,0,0),b=P(c.x+c.w,0,0);
     dim+='<line class="dz-dl" x1="'+a[0]+'" y1="'+yy+'" x2="'+b[0]+'" y2="'+yy+'"/><text class="dz-dt" x="'+((+a[0]+ +b[0])/2)+'" y="'+(yy+72)+'">'+Math.round(c.w)+'</text>';
-    var lab=c.k==='fr'?(TYPES[c.f.t]?TYPES[c.f.t].n.split(' (')[0]:'냉장고'):c.k==='gap'?'틈새장':c.k==='tall'?'키큰장':c.k==='range'&&c.both?'렌지·밥솥장':EX[c.k].n;
-    if(c.robot)lab+=' + 로봇청소기';
+    var lab=c.k==='fr'?(TYPES[c.f.t]?TYPES[c.f.t].n.split(' (')[0]:'냉장고'):c.k==='gap'?'틈새장':TALL[c.k].n.replace(' (투도어)','').replace(' (원도어)','');
+    if(c.k!=='fr'&&c.k!=='gap'&&S.robot)lab+=' + 로봇';
     dim+='<text class="dz-lab" x="'+((+a[0]+ +b[0])/2)+'" y="'+(yy+140)+'">'+lab+'</text>';
   });
   var a0=P(0,0,0),a1=P(L.W,0,0);
@@ -200,41 +219,106 @@ function render(){
 }
 
 // ---------- 결과·문자 ----------
+function frName(f){return (TYPES[f.t]?TYPES[f.t].n.split(' (')[0]:'냉장고')+(f.m?' '+f.m:'')+' '+f.w+'mm'}
+function tallTxt(){
+  if(S.job!=='new')return '';
+  if(S.tall==='none')return '없음 (냉장고만)';
+  return TALL[S.tall].n+' · '+(S.pos==='l'?'왼쪽':'오른쪽')+' / 하부장 '+LOWS[S.low].n+(S.robot?' + 로봇청소기 공간':'');
+}
 function summary(L){
   var e=estimate();
   $('dz-won').textContent=e.txt;
   $('dz-note').textContent=e.note+' · VAT 별도 · 출장비는 위치에 따라 조율';
   var fit=$('dz-fit'),sp=+S.space||0;
-  if(!sp){fit.className='dz-fit';fit.textContent='필요한 폭은 약 '+Math.round(L.need).toLocaleString()+'mm예요. 냉장고장 자리 폭을 넣으면 들어가는지 알려드려요.'}
+  if(!sp){fit.className='dz-fit';fit.textContent='필요한 폭은 약 '+Math.round(L.W).toLocaleString()+'mm예요. 냉장고장 자리 폭을 넣으면 들어가는지 알려드려요.'}
   else{var diff=sp-L.need;
-    if(diff>=0){fit.className='dz-fit ok';fit.textContent='들어가요. 여유 약 '+Math.round(diff)+'mm'+(S.job!=='gap'&&diff>=150?' (남는 폭은 틈새장으로 쓸 수 있어요)':'')}
+    if(diff>=0){fit.className='dz-fit ok';fit.textContent=S.job==='new'&&S.tall!=='none'?'들어가요. 키큰장은 남는 폭에 맞춰 약 '+Math.round(L.cols.filter(function(c){return c.k===S.tall})[0].w)+'mm로 그렸어요.':'들어가요. 여유 약 '+Math.round(sp-L.W+(S.job==='gap'?0:0))+'mm'}
     else{fit.className='dz-fit no';fit.textContent='약 '+Math.round(-diff)+'mm 부족해요. '+(S.job==='new'?'구성을 줄이거나 사진을 보내주시면 방법을 찾아드려요.':'칸막이·기둥을 빼도 모자라면 새로 짜야 할 수 있어요.')}}
   var link='https://nemos-dream.com/design#'+enc();
-  var frs=S.fr.map(function(f,i){return (i+1)+') '+(TYPES[f.t]?TYPES[f.t].n.split(' (')[0]:'냉장고')+(f.m?' '+f.m:'')+' '+f.w+'mm'}).join(', ');
-  var exs=Object.keys(EX).filter(function(k){return S.ex[k]}).map(function(k){return EX[k].n}).join(', ');
-  var body='[네모의꿈 3D 가견적 문의]\n1. 지역·아파트 : '+(S.area||'')+'\n2. 원하는 작업 : '+JOBS[S.job].n+(S.job==='new'&&exs?' + '+exs:'')+'\n3. 냉장고 : '+frs+'\n4. 냉장고장 자리 폭 : '+(sp?sp+'mm':'(모르면 비워 두세요)')+'\n5. 가견적 : '+e.txt+' (VAT 별도)\n6. 사진 : 냉장고장 자리 사진 2장 첨부해 주세요\n내 설계 보기 : '+link;
+  var frs=S.fr.map(function(f,i){return (i+1)+') '+frName(f)}).join(', ');
+  var body='[네모의꿈 3D 가견적 문의]\n1. 지역·아파트 : '+(S.area||'')+'\n2. 원하는 작업 : '+JOBS[S.job].n+'\n3. 냉장고 : '+frs+(S.job==='new'?'\n4. 키큰장 : '+tallTxt():'')+'\n5. 냉장고장 자리 폭 : '+(sp?sp+'mm':'(모르면 비워 두세요)')+'\n6. 가견적 : '+e.txt+' (VAT 별도)\n7. 사진 : 냉장고장 자리 사진 2장 첨부해 주세요\n내 설계 보기 : '+link;
   $('dz-pre').textContent=body;
   $('dz-sms').href='sms:'+PHONE+'?&body='+encodeURIComponent(body);
+  // 확인 화면 요약
+  var rows=[['작업',JOBS[S.job].n],['냉장고',S.fr.map(frName).join('\n')]];
+  if(S.job==='new')rows.push(['키큰장',tallTxt()]);
+  rows.push(['자리 폭',sp?sp+'mm':'모름 (기본값으로 그림)'],['전체 폭','약 '+Math.round(L.W).toLocaleString()+'mm'],['가견적',e.txt+' (VAT 별도)']);
+  $('dz-sum').innerHTML=rows.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+esc(r[1]).replace(/\n/g,'<br>')+'</dd>'}).join('');
   try{history.replaceState(null,'','#'+enc())}catch(e){}
 }
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
 // ---------- 입력 화면 ----------
 function frRow(f,i){
   var opts=Object.keys(TYPES).map(function(k){return '<option value="'+k+'"'+(k===f.t?' selected':'')+'>'+TYPES[k].n+'</option>'}).join('');
   return '<div class="dz-fr" data-i="'+i+'"><div class="dz-frh"><b>냉장고 '+(i+1)+'</b>'+(S.fr.length>1?'<button type="button" class="dz-del" data-i="'+i+'" aria-label="냉장고 '+(i+1)+' 빼기">빼기</button>':'')+'</div>'
+   +(S.unk?'':'<label class="dz-l">모델명 / 색상<input data-k="m" value="'+esc(f.m)+'" placeholder="모델명 입력 (예: 옆면 스티커)" maxlength="30"></label>')
    +'<label class="dz-l">종류<select data-k="t">'+opts+'</select></label>'
-   +'<label class="dz-l">모델명 (아시면)<input data-k="m" value="'+f.m.replace(/"/g,'')+'" placeholder="예: 냉장고 옆면 스티커의 모델명" maxlength="30"></label>'
    +'<div class="dz-mm"><label>가로<input data-k="w" type="number" inputmode="numeric" value="'+f.w+'"></label><label>높이<input data-k="h" type="number" inputmode="numeric" value="'+f.h+'"></label><label>깊이<input data-k="d" type="number" inputmode="numeric" value="'+f.d+'"></label><span>mm</span></div></div>';
+}
+// 작은 아이콘 (키큰장 형태·하부장)
+function icon(k){
+  var r=function(x,y,w,h,c){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="1.5" class="'+c+'"/>'};
+  var s='';
+  if(k==='none')s=r(5,3,18,34,'i-o')+'<line x1="6" y1="36" x2="22" y2="4" class="i-x"/>';
+  else if(k==='two')s=r(4,3,10,21,'i-d')+r(14,3,10,21,'i-d')+r(4,25,20,12,'i-d');
+  else if(k==='one')s=r(7,3,14,21,'i-d')+r(7,25,14,12,'i-d');
+  else if(k==='bar')s=r(4,3,20,21,'i-hb')+'<line x1="5" y1="10" x2="23" y2="10" class="i-s"/><line x1="5" y1="17" x2="23" y2="17" class="i-s"/>'+r(4,25,20,12,'i-d');
+  else if(k==='rice')s=r(4,3,20,11,'i-d')+r(4,14,20,10,'i-n')+r(10,16,8,6,'i-a')+r(4,25,20,12,'i-d');
+  else if(k==='ricerange')s=r(4,3,20,7,'i-d')+r(4,10,20,14,'i-n')+r(10,11,8,5,'i-a')+r(7,17,14,6,'i-a')+r(4,25,20,12,'i-d');
+  else if(k==='ovenrange')s=r(4,3,20,5,'i-d')+r(4,8,20,16,'i-n')+r(7,9,14,5,'i-a')+r(6,15,16,8,'i-a')+r(4,25,20,12,'i-d');
+  else if(k==='norm')s=r(4,3,20,21,'i-o')+r(4,25,10,12,'i-d')+r(14,25,10,12,'i-d');
+  else if(k==='drawer')s=r(4,3,20,21,'i-o')+r(4,25,20,6,'i-d')+r(4,31,20,6,'i-d');
+  else if(k==='oven')s=r(4,3,20,21,'i-o')+r(4,25,20,8,'i-n')+r(6,26,16,6,'i-a')+r(4,33,20,4,'i-d');
+  else if(k==='lrice')s=r(4,3,20,21,'i-o')+r(4,25,20,7,'i-n')+r(10,26,8,5,'i-a')+r(4,32,20,5,'i-d');
+  return '<svg viewBox="0 0 28 40" aria-hidden="true">'+s+'</svg>';
+}
+function pickHtml(name,map,cur,iconKey){
+  return Object.keys(map).map(function(k){return '<label><input type="radio" name="'+name+'" value="'+k+'"'+(k===cur?' checked':'')+'>'+icon(iconKey?iconKey(k):k)+'<span>'+map[k].n+'</span></label>'}).join('');
 }
 function drawForm(){
   $('dz-frs').innerHTML=S.fr.map(frRow).join('');
   $('dz-add').hidden=S.fr.length>=4;
+  $('dz-unk').checked=S.unk;
   document.querySelectorAll('input[name=dz-job]').forEach(function(r){r.checked=r.value===S.job});
-  document.querySelectorAll('.dz-ex input').forEach(function(c){c.checked=!!S.ex[c.value];c.disabled=S.job!=='new'});
-  $('dz-exbox').classList.toggle('off',S.job!=='new');
+  $('dz-tall').innerHTML=pickHtml('dz-tall',TALL,S.tall);
+  $('dz-low').innerHTML=pickHtml('dz-low',LOWS,S.low,function(k){return k==='rice'?'lrice':k});
+  var isNew=S.job==='new',noTall=S.tall==='none';
+  $('dz-off').hidden=isNew;$('dz-optbox').hidden=!isNew;$('dz-posl').hidden=!isNew||noTall;
+  $('dz-low').classList.toggle('off',noTall);$('dz-robot').disabled=noTall;
+  document.querySelectorAll('input[name=dz-low]').forEach(function(r){r.disabled=noTall});
+  $('dz-robot').checked=S.robot&&!noTall;
+  $('dz-pos').value=S.pos;
   $('dz-space').value=S.space||'';
+  $('dz-space').placeholder='기본값 '+Math.round(layout().W);
+}
+function go(n){
+  S.step=Math.max(0,Math.min(2,n));
+  document.querySelectorAll('.dz-step').forEach(function(el){el.hidden=+el.dataset.s!==S.step});
+  document.querySelectorAll('#dz-steps button').forEach(function(b){b.setAttribute('aria-current',+b.dataset.s===S.step?'step':'false')});
+  $('dz-prev').style.visibility=S.step?'visible':'hidden';
+  $('dz-next').hidden=S.step===2;
 }
 function update(){var L=render();summary(L)}
+
+// 그림 저장 (PNG)
+function savePng(){
+  var svg=$('dz-svg'),cl=svg.cloneNode(true),src=svg.querySelectorAll('*'),dst=cl.querySelectorAll('*');
+  for(var i=0;i<src.length;i++){var cs=getComputedStyle(src[i]);
+    dst[i].setAttribute('style','fill:'+cs.fill+';stroke:'+cs.stroke+';stroke-width:'+cs.strokeWidth+';opacity:'+cs.opacity+';font:'+cs.fontWeight+' '+cs.fontSize+' sans-serif;text-anchor:'+cs.textAnchor)}
+  var vb=svg.viewBox.baseVal,W=1600,H=Math.round(W*vb.height/vb.width);
+  cl.setAttribute('xmlns','http://www.w3.org/2000/svg');cl.setAttribute('width',W);cl.setAttribute('height',H);
+  var img=new Image();
+  img.onload=function(){
+    var cv=document.createElement('canvas');cv.width=W;cv.height=H+90;var x=cv.getContext('2d');
+    x.fillStyle='#fff';x.fillRect(0,0,W,H+90);x.drawImage(img,0,0,W,H);
+    x.fillStyle='#00843d';x.font='bold 34px sans-serif';x.fillText('네모의꿈 냉장고장 설계 · 가견적 '+estimate().txt+' (VAT 별도) · 010-4835-3353',30,H+56);
+    cv.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='네모의꿈-냉장고장-설계.png';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);
+      $('dz-toast').textContent='그림을 저장했어요. 문자 보낼 때 같이 첨부해도 돼요.'},'image/png');
+  };
+  img.onerror=function(){$('dz-toast').textContent='이 브라우저에서는 저장이 안 돼요. 화면을 캡처해 주세요.'};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(cl));
+}
 
 function bind(){
   $('dz-frs').addEventListener('input',function(ev){
@@ -247,14 +331,22 @@ function bind(){
   });
   $('dz-frs').addEventListener('click',function(ev){var b=ev.target.closest('.dz-del');if(!b)return;S.fr.splice(+b.dataset.i,1);drawForm();update()});
   $('dz-add').addEventListener('click',function(){S.fr.push({t:'k1',w:595,h:1855,d:690,m:''});drawForm();update()});
+  $('dz-unk').addEventListener('change',function(){S.unk=this.checked;drawForm()});
   document.querySelectorAll('input[name=dz-job]').forEach(function(r){r.addEventListener('change',function(){S.job=r.value;drawForm();update()})});
-  document.querySelectorAll('.dz-ex input').forEach(function(c){c.addEventListener('change',function(){S.ex[c.value]=c.checked;update()})});
+  $('dz-tall').addEventListener('change',function(ev){S.tall=ev.target.value;drawForm();update()});
+  $('dz-low').addEventListener('change',function(ev){S.low=ev.target.value;update()});
+  $('dz-robot').addEventListener('change',function(){S.robot=this.checked;update()});
+  $('dz-pos').addEventListener('change',function(){S.pos=this.value;update()});
   $('dz-space').addEventListener('input',function(){var n=Math.round(+this.value);S.space=n>=600&&n<=6000?n:'';update()});
   $('dz-area').addEventListener('input',function(){S.area=this.value.slice(0,40);summary(layout())});
-  $('dz-open').addEventListener('click',function(){S.open=!S.open;this.setAttribute('aria-pressed',S.open);this.textContent=S.open?'문 닫기':'문 열어보기';render()});
+  $('dz-open').addEventListener('click',function(){S.open=!S.open;this.setAttribute('aria-pressed',S.open);this.textContent=S.open?'문 닫기':'문 열기';render()});
   document.querySelectorAll('.dz-view button').forEach(function(b){b.addEventListener('click',function(){S.view=b.dataset.v;document.querySelectorAll('.dz-view button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});render()})});
+  document.querySelectorAll('#dz-steps button').forEach(function(b){b.addEventListener('click',function(){go(+b.dataset.s)})});
+  $('dz-prev').addEventListener('click',function(){go(S.step-1);$('dz-steps').scrollIntoView({behavior:'smooth',block:'start'})});
+  $('dz-next').addEventListener('click',function(){go(S.step+1);$('dz-steps').scrollIntoView({behavior:'smooth',block:'start'})});
+  $('dz-png').addEventListener('click',savePng);
   $('dz-copy').addEventListener('click',function(){var t=$('dz-pre').textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){$('dz-toast').textContent='복사했어요. 문자 앱에 붙여 넣어 주세요.'},function(){$('dz-toast').textContent='길게 눌러서 복사해 주세요.'})});
 }
 if(location.hash.length>2)dec(location.hash);
-drawForm();bind();update();
+drawForm();bind();update();go(0);
 })();
