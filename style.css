@@ -599,3 +599,5 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .dz-send .qs-pre{white-space:pre-wrap;word-break:break-all;font-size:13px;max-height:180px;overflow:auto;margin:0}
 .dz-cta{margin-top:12px}
 @media (max-width:860px){.dz{grid-template-columns:1fr}.dz-view-col{position:static}.dz-won{font-size:34px}}
+.dz-hole{fill:#3b4048;stroke:#8e969f;stroke-width:3}
+.dz-r150{font:700 44px var(--body);fill:#fff;text-anchor:end}

@@ -133,8 +133,13 @@ function render(){
       var h=L.bodyH,s2='',cls='dz-door';
       if(c.k==='robot'){
         s2+=box(c.x,0,0,c.w,h,0,'dz-in');
-        s2+='<g class="dz-robot">'+poly([[c.x+60,10,0],[c.x+c.w-60,10,0],[c.x+c.w-60,320,0],[c.x+60,320,0]],'dz-st')+'</g>';
-        s2+=door(c.x+2,340,0,c.w-4,h-344,'l',cls);
+        // 로봇청소기장: 아래 150mm는 로봇이 드나드는 빈 칸, 그 위는 문 (열면 스테이션)
+        s2+=poly([[c.x+2,0,0],[c.x+c.w-2,0,0],[c.x+c.w-2,150,0],[c.x+2,150,0]],'dz-hole');
+        s2+=poly([[c.x+90,6,0],[c.x+c.w-90,6,0],[c.x+c.w-90,96,0],[c.x+90,96,0]],'dz-st');
+        if(S.open)s2+=poly([[c.x+60,160,0],[c.x+c.w-60,160,0],[c.x+c.w-60,520,0],[c.x+60,520,0]],'dz-st');
+        s2+=door(c.x+2,154,0,c.w-4,h-158,'l',cls);
+        var q1=P(c.x+c.w,0,0),q2=P(c.x+c.w,150,0);
+        s2+='<text class="dz-r150" x="'+(+q1[0]-14)+'" y="'+((+q1[1]+ +q2[1])/2+14)+'">150</text>';
       }else if(c.k==='range'){
         s2+=box(c.x,0,0,c.w,h,0,'dz-in');
         s2+=poly([[c.x+40,900,0],[c.x+c.w-40,900,0],[c.x+c.w-40,1200,0],[c.x+40,1200,0]],'dz-st');
