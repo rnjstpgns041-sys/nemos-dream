@@ -663,3 +663,9 @@ footer .links{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .dz-hole{fill:#2b2a27;stroke:none}
 .dz-tick{stroke:#8e969f;stroke-width:3}
 .dz-sp{font:700 50px var(--body);fill:var(--fg);text-anchor:middle}
+
+/* 장은 냉장고와 다른 색 (2026-11-19): 장 = 따뜻한 베이지, 냉장고 = 밝은 흰색 */
+.dz-door,.dz-door.front,.dz-cab.front{fill:#e6d9c3;stroke:#bba98c;stroke-width:2}
+.dz-door.top,.dz-cab.top{fill:#ddd0b9;stroke:#bba98c;stroke-width:2}.dz-door.side,.dz-cab.side{fill:#d2c3a8;stroke:#bba98c;stroke-width:2}
+.dz-door.open{fill:#ede3d1}
+.dz-frd,.dz-frd.front{fill:#f9fafb;stroke:#cdd2d8;stroke-width:2}

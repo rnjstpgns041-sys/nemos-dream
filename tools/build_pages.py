@@ -307,7 +307,7 @@ DZ_BODY = '''<section class="dz-sec">
               <label class="dz-l" id="dz-posl">키큰장 위치<select id="dz-pos"><option value="r">오른쪽</option><option value="l">왼쪽</option></select></label></div>
               <p class="dz-hint">가로 치수를 아시면 넣어 주세요. 모르시면 비워 두셔도 기본값으로 그려져요.</p>
             </fieldset>
-            <p class="dz-off" id="dz-off" hidden>키큰장 선택은 <b>새로 짜기</b>일 때만 있어요. 칸막이 제거는 지금 있는 장을 그대로 살려요.</p>
+            <p class="dz-off" id="dz-off" hidden>칸막이 제거는 지금 있는 장을 그대로 살려요. 옆에 장을 더 넣고 싶으면 1단계에서 <b>칸막이 제거 + 틈새장</b>이나 <b>새로 짜기</b>를 골라 주세요.</p>
             <div class="dz-two dz-opts" id="dz-optbox">
               <fieldset><legend>키큰장 형태</legend><div class="dz-pick" id="dz-tall"></div></fieldset>
               <fieldset><legend>하부장 옵션</legend><div class="dz-pick" id="dz-low"></div>

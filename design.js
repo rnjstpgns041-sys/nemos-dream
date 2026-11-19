@@ -54,7 +54,10 @@ function dec(h){
 // ---------- 가견적 ----------
 function estimate(){
   if(S.job==='part')return {txt:'30만원',note:'칸막이·기둥 제거, 상부장과 천장 보강, 바닥·벽 마감, 폐자재 처리 포함'};
-  if(S.job==='gap')return {txt:'70만원',note:'칸막이 제거 + 남는 폭에 틈새장까지'};
+  if(S.job==='gap'){
+    var plain=S.tall==='none'||((S.tall==='two'||S.tall==='one')&&S.low==='norm'&&!S.robot);
+    return plain?{txt:'70만원',note:'칸막이 제거 + 남는 폭에 틈새장까지'}:{txt:'70만원~',note:'칸막이 제거 + 틈새장. 고른 키큰장 구성에 따라 금액이 달라져서 사진 보고 알려드려요'};
+  }
   var T=S.tall,has=T!=='none';
   var r=has&&S.robot,
       c=T==='rice'||T==='ricerange'||(has&&S.low==='rice'),
@@ -74,23 +77,21 @@ function estimate(){
 
 // ---------- 배치 계산 ----------
 var LOW=820,SIDE=20,GAP=10,UP=380,G=12; // LOW: 냉장고·키큰장 가운데 가로줄 높이, G: 문 사이 굵은 줄 반폭
+// 냉장고 옆 장 종류: 새로 짜기·틈새장은 키큰장 구성을 고를 수 있다
+function tallKind(){if(S.job==='new')return S.tall==='none'?null:S.tall;if(S.job==='gap')return S.tall==='none'?'gap':S.tall;return null}
 function frW(){var w=0;S.fr.forEach(function(f,i){w+=f.w+(i?GAP:0)});return w}
 function layout(){
   var cols=[],sp=+S.space||0,fw=frW(),need,tw=0,x=SIDE;
-  var hasTall=S.job==='new'&&S.tall!=='none';
+  var mode=tallKind(),hasTall=!!mode,minW=mode==='gap'?120:300;
   if(hasTall){
-    tw=TALL[S.tall].w;
-    if(sp){var rest=sp-SIDE*3-fw;if(rest>=300)tw=Math.min(rest,1200)}
+    tw=mode==='gap'?300:TALL[mode].w;
+    if(sp){var rest=sp-SIDE*3-fw;if(rest>=minW)tw=Math.min(rest,1200)}
   }
   function fridges(){S.fr.forEach(function(f,i){if(i>0)x+=GAP;cols.push({k:'fr',f:f,x:x,w:f.w});x+=f.w})}
-  function tall(){cols.push({k:S.tall,x:x,w:tw});x+=tw}
+  function tall(){cols.push({k:mode,x:x,w:tw});x+=tw}
   if(hasTall&&S.pos==='l'){tall();x+=SIDE;fridges()}
   else{fridges();if(hasTall){x+=SIDE;tall()}}
-  x+=SIDE;need=hasTall?SIDE*3+fw+300:x;
-  if(S.job==='gap'){
-    var left=sp?sp-x-SIDE:300;
-    if(left>=120||!sp){left=left>=120?left:300;cols.push({k:'gap',x:x,w:left});x+=left+SIDE}
-  }
+  x+=SIDE;need=hasTall?SIDE*3+fw+minW:x;
   var hMax=Math.max.apply(null,S.fr.map(function(f){return f.h}));
   return {cols:cols,W:x,need:need,H:hMax+20+UP,bodyH:hMax+20,D:700};
 }
@@ -135,8 +136,11 @@ function render(){
   panels.forEach(function(px){items.push({z:0,x:px,s:box(px,0,0,SIDE,L.bodyH,D,'dz-cab')})});
   // 상부장 문: 아래 냉장고·장 폭과 똑같이
   var upDoors='';
-  L.cols.forEach(function(c){
-    var n=c.w<=700||(S.job==='new'&&c.k==='fr')?1:2,dw=c.w/n;
+  if(S.job!=='new'){ // 칸막이 제거·틈새장: 있던 상부장을 균등하게 4등분
+    var uw=(L.W-SIDE*2)/4;
+    for(var u=0;u<4;u++)upDoors+=door(SIDE+u*uw+2,L.bodyH+12,0,uw-4,UP-24,u%2?'r':'l','dz-door');
+  }else L.cols.forEach(function(c){
+    var n=c.w<=700||c.k==='fr'?1:2,dw=c.w/n;
     for(var i=0;i<n;i++)upDoors+=door(c.x+i*dw+2,L.bodyH+12,0,dw-4,UP-24,n===2?(i?'r':'l'):'l','dz-door');
   });
   L.cols.forEach(function(c){
@@ -232,8 +236,8 @@ function render(){
 // ---------- 결과·문자 ----------
 function frName(f){return (TYPES[f.t]?TYPES[f.t].n.split(' (')[0]:'냉장고')+(f.m?' '+f.m:'')+' '+f.w+'mm'}
 function tallTxt(){
-  if(S.job!=='new')return '';
-  if(S.tall==='none')return '없음 (냉장고만)';
+  if(S.job==='part')return '';
+  if(S.tall==='none')return S.job==='gap'?'기본 틈새장 (통문)':'없음 (냉장고만)';
   return TALL[S.tall].n+' · '+(S.pos==='l'?'왼쪽':'오른쪽')+' / 하부장 '+LOWS[S.low].n+(S.robot?' + 로봇청소기 공간':'');
 }
 function summary(L){
@@ -243,16 +247,16 @@ function summary(L){
   var fit=$('dz-fit'),sp=+S.space||0;
   if(!sp){fit.className='dz-fit';fit.textContent='필요한 폭은 약 '+Math.round(L.W).toLocaleString()+'mm예요. 냉장고장 자리 폭을 넣으면 들어가는지 알려드려요.'}
   else{var diff=sp-L.need;
-    if(diff>=0){fit.className='dz-fit ok';fit.textContent=S.job==='new'&&S.tall!=='none'?'들어가요. 키큰장은 남는 폭에 맞춰 약 '+Math.round(L.cols.filter(function(c){return c.k===S.tall})[0].w)+'mm로 그렸어요.':'들어가요. 여유 약 '+Math.round(sp-L.W+(S.job==='gap'?0:0))+'mm'}
+    if(diff>=0){fit.className='dz-fit ok';var tk=tallKind();fit.textContent=tk?'들어가요. '+(tk==='gap'?'틈새장':'옆 장')+'은 남는 폭에 맞춰 약 '+Math.round(L.cols.filter(function(c){return c.k===tk})[0].w)+'mm로 그렸어요.':'들어가요. 여유 약 '+Math.round(sp-L.W)+'mm'}
     else{fit.className='dz-fit no';fit.textContent='약 '+Math.round(-diff)+'mm 부족해요. '+(S.job==='new'?'구성을 줄이거나 사진을 보내주시면 방법을 찾아드려요.':'칸막이·기둥을 빼도 모자라면 새로 짜야 할 수 있어요.')}}
   var link='https://nemos-dream.com/design#'+enc();
   var frs=S.fr.map(function(f,i){return (i+1)+') '+frName(f)}).join(', ');
-  var body='[네모의꿈 3D 가견적 문의]\n1. 지역·아파트 : '+(S.area||'')+'\n2. 원하는 작업 : '+JOBS[S.job].n+'\n3. 냉장고 : '+frs+(S.job==='new'?'\n4. 키큰장 : '+tallTxt():'')+'\n5. 냉장고장 자리 폭 : '+(sp?sp+'mm':'(모르면 비워 두세요)')+'\n6. 가견적 : '+e.txt+' (VAT 별도)\n7. 사진 : 냉장고장 자리 사진 2장 첨부해 주세요\n내 설계 보기 : '+link;
+  var body='[네모의꿈 3D 가견적 문의]\n1. 지역·아파트 : '+(S.area||'')+'\n2. 원하는 작업 : '+JOBS[S.job].n+'\n3. 냉장고 : '+frs+(S.job!=='part'?'\n4. '+(S.job==='gap'?'틈새장':'키큰장')+' : '+tallTxt():'')+'\n5. 냉장고장 자리 폭 : '+(sp?sp+'mm':'(모르면 비워 두세요)')+'\n6. 가견적 : '+e.txt+' (VAT 별도)\n7. 사진 : 냉장고장 자리 사진 2장 첨부해 주세요\n내 설계 보기 : '+link;
   $('dz-pre').textContent=body;
   $('dz-sms').href='sms:'+PHONE+'?&body='+encodeURIComponent(body);
   // 확인 화면 요약
   var rows=[['작업',JOBS[S.job].n],['냉장고',S.fr.map(frName).join('\n')]];
-  if(S.job==='new')rows.push(['키큰장',tallTxt()]);
+  if(S.job!=='part')rows.push([S.job==='gap'?'틈새장':'키큰장',tallTxt()]);
   rows.push(['자리 폭',sp?sp+'mm':'모름 (기본값으로 그림)'],['전체 폭','약 '+Math.round(L.W).toLocaleString()+'mm'],['가견적',e.txt+' (VAT 별도)']);
   $('dz-sum').innerHTML=rows.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+esc(r[1]).replace(/\n/g,'<br>')+'</dd>'}).join('');
   try{history.replaceState(null,'','#'+enc())}catch(e){}
@@ -292,10 +296,11 @@ function drawForm(){
   $('dz-add').hidden=S.fr.length>=4;
   $('dz-unk').checked=S.unk;
   document.querySelectorAll('input[name=dz-job]').forEach(function(r){r.checked=r.value===S.job});
-  $('dz-tall').innerHTML=pickHtml('dz-tall',TALL,S.tall);
+  var T2={};Object.keys(TALL).forEach(function(k){T2[k]={n:k==='none'&&S.job==='gap'?'기본 틈새장 (통문)':TALL[k].n}});
+  $('dz-tall').innerHTML=pickHtml('dz-tall',T2,S.tall);
   $('dz-low').innerHTML=pickHtml('dz-low',LOWS,S.low,function(k){return k==='rice'?'lrice':k});
-  var isNew=S.job==='new',noTall=S.tall==='none';
-  $('dz-off').hidden=isNew;$('dz-optbox').hidden=!isNew;$('dz-posl').hidden=!isNew||noTall;
+  var opt=S.job!=='part',noTall=S.tall==='none';
+  $('dz-off').hidden=opt;$('dz-optbox').hidden=!opt;$('dz-posl').hidden=!opt||(S.job==='new'&&noTall);
   $('dz-low').classList.toggle('off',noTall);$('dz-robot').disabled=noTall;
   document.querySelectorAll('input[name=dz-low]').forEach(function(r){r.disabled=noTall});
   $('dz-robot').checked=S.robot&&!noTall;
