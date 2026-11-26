@@ -206,7 +206,7 @@ body = '''<section>
     <div class="sec-head"><p class="kicker">기본 단가</p><h2>블로그에 공개한<br><em>그대로예요</em></h2><p>모든 금액은 VAT 별도예요. 현장 상태와 크기에 따라 달라질 수 있어서, 사진을 보고 최종 금액을 알려드려요.</p></div>
     %s
     <p class="price-note">홈바에는 일반 콘센트가 기본으로 들어가고, 매립형 멀티콘센트로 바꾸면 비용이 추가돼요.</p>
-    <p class="more-link"><a class="btn btn-acc" href="design.html">무료 3D 설계 · 가견적 받기 →</a></p>
+    <p class="more-link"><a class="btn btn-acc" href="design.html">무료 3D 설계 · 가견적 받기 →</a> <a class="btn btn-soft" href="partition-cost.html">칸막이 제거 비용 →</a> <a class="btn btn-soft" href="fridge-cabinet-price.html">냉장고장 가격 →</a></p>
   </div>
 </section>
 
