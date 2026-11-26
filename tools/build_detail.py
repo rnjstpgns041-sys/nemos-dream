@@ -154,7 +154,7 @@ for slug, name, cities, intro, reach in AREAS:
       <details><summary>설치 후에 처지면 어떻게 하나요?</summary><p class="a">기둥을 빼거나 새로 짠 장의 처짐·기울어짐은 평생 AS로 책임져요. <a href="as.html">AS 안내 보기</a></p></details>
     </div>
     <div class="area-others"><span>다른 지역</span>%(others)s</div>%(subs)s
-    <div class="area-others"><span>작업별 안내</span><a href="guide-kitchenfit.html">키친핏 냉장고장 맞춤제작</a><a href="guide-partition.html">칸막이 제거 리폼</a><a href="partition-cost.html">칸막이 제거 비용</a><a href="fridge-cabinet-price.html">냉장고장 가격</a><a href="fridge-bespoke.html">비스포크 냉장고장</a><a href="fridge-objet.html">오브제 냉장고장</a></div>
+    <div class="area-others"><span>작업별 안내</span><a href="guide-kitchenfit.html">키친핏 냉장고장 맞춤제작</a><a href="guide-partition.html">칸막이 제거 리폼</a><a href="partition-cost.html">칸막이 제거 비용</a><a href="fridge-cabinet-price.html">냉장고장 가격</a><a href="fridge-cabinet-make-cost.html">냉장고장 제작 비용</a><a href="fridge-cabinet-reform-cost.html">냉장고장 리폼 비용</a><a href="fridge-bespoke.html">비스포크 냉장고장</a><a href="fridge-objet.html">오브제 냉장고장</a></div>
   </div>
 </section>
 ''' % {'intro': intro, 'reach': reach, 'name': name, 'cards': ''.join(card(w, 'h3') for w in show), 'others': others, 'subs': ('<div class="area-others"><span>가까운 동네</span>%s</div>' % ''.join('<a href="area-%s.html">%s</a>' % (x[0], x[1]) for x in SUBS if x[2] == slug)) if any(x[2] == slug for x in SUBS) else '',
@@ -206,7 +206,7 @@ for slug, name, parent, key, intro, towns in SUBS:
     </div>
     <div class="area-others"><span>%(pname)s 전체</span><a href="area-%(parent)s.html">%(pname)s 냉장고장 안내</a></div>
     %(sibs)s
-    <div class="area-others"><span>작업별 안내</span><a href="guide-kitchenfit.html">키친핏 냉장고장 맞춤제작</a><a href="guide-partition.html">칸막이 제거 리폼</a><a href="partition-cost.html">칸막이 제거 비용</a><a href="fridge-cabinet-price.html">냉장고장 가격</a><a href="fridge-bespoke.html">비스포크 냉장고장</a><a href="fridge-objet.html">오브제 냉장고장</a></div>
+    <div class="area-others"><span>작업별 안내</span><a href="guide-kitchenfit.html">키친핏 냉장고장 맞춤제작</a><a href="guide-partition.html">칸막이 제거 리폼</a><a href="partition-cost.html">칸막이 제거 비용</a><a href="fridge-cabinet-price.html">냉장고장 가격</a><a href="fridge-cabinet-make-cost.html">냉장고장 제작 비용</a><a href="fridge-cabinet-reform-cost.html">냉장고장 리폼 비용</a><a href="fridge-bespoke.html">비스포크 냉장고장</a><a href="fridge-objet.html">오브제 냉장고장</a></div>
   </div>
 </section>
 """ % {'intro': intro, 'towns': towns, 'name': name, 'pname': pname, 'parent': parent, 'cards': ''.join(card(w, 'h3') for w in show),
@@ -272,6 +272,30 @@ GUIDES = [
   [('냉장고장 가격은 얼마예요?', '네모의꿈 기준 칸막이 제거 리폼 30만원, 틈새장까지 70만원, 새로 짜기 100만원부터(약 100~140만원)예요. 모두 VAT 별도예요.'),
    ('리폼과 새로 짜기 중 뭐가 나아요?', '옵션 장 틀이 멀쩡하면 칸막이만 빼는 리폼이 가장 저렴해요. 장이 냉장고와 아예 안 맞거나 무옵션 세대면 새로 짜요. 사진을 보면 어떤 쪽인지 알려드려요.'),
    ('가격에 뭐가 포함돼요?', '리폼은 철거, 상부장과 천장 보강, 바닥·벽 마감, 폐자재 처리까지 들어 있어요. 자재는 E0 등급 친환경 자재예요.'),
+   ('견적은 어떻게 받아요?', '냉장고장 사진 2장과 지역, 냉장고 모델명을 010-4835-3353으로 문자 주세요.')]),
+ ('fridge-cabinet-make-cost', '냉장고장 제작 비용', '냉장고장 제작 비용 · 기본형 100만원 · 렌지장 110만원 · 홈바장 130만원', '냉장고장 제작 비용', '냉장고장 제작<br><em>비용</em>',
+  '네모의꿈(010-4835-3353)의 냉장고장 제작 비용은 기본형 100만원부터예요. 로봇청소기장 100만원, 렌지장·밥솥장·오븐장 110만원, 밥솥장 + 렌지장 115만원, 홈바장 130만원, 홈바장 + 렌지장 또는 밥솥장 140만원이에요(VAT 별도).',
+  [('기본형 100만원', '키친핏 냉장고 1+1+1, 4+4, 4+3도어 구성에 맞춰 냉장고장을 새로 짜요. 로봇청소기장도 100만원이에요.'),
+   ('렌지장·밥솥장 110~115만원', '렌지장·밥솥장·오븐장을 넣으면 110만원, 밥솥장과 렌지장을 같이 넣으면 115만원이에요.'),
+   ('홈바장 130~140만원', '홈바장을 넣으면 130만원, 홈바장에 렌지장이나 밥솥장까지 넣으면 140만원이에요.'),
+   ('사진 보고 최종 금액', '현장 상태와 크기에 따라 달라질 수 있어 사진을 보고 최종 금액을 알려드려요. E0 친환경 자재, 처짐 평생 무상 AS예요.')],
+  [('모델 정하기', '냉장고 모델을 먼저 정해요. 설치 가이드 치수에 맞춰 짜야 해요.'), ('사진 견적', '사진 2장과 지역, 냉장고 모델명을 문자로 보내 주세요.'), ('미리 재단', '치수에 맞게 미리 재단해 가서 현장 작업을 줄여요.'), ('하루 설치', '현장 설치는 대부분 하루에 끝나요.')],
+  lambda w: w['f'] == 'fridge' and (w['no'] in ('223833108339', '224277045640', '224432139660', '224176609693', '223906771954') or any(k in w['t'] for k in ('제작', '맞춤', '새로', '키친핏'))),
+  [('냉장고장 제작 비용은 얼마예요?', '네모의꿈 기준 기본형 100만원부터예요. 렌지장·밥솥장을 넣으면 110~115만원, 홈바장을 넣으면 130~140만원이에요(VAT 별도).'),
+   ('제작 말고 리폼으로 할 수는 없나요?', '옵션 냉장고장 틀이 멀쩡하면 칸막이만 빼는 리폼이 30만원, 남는 폭에 틈새장까지 70만원이에요. 사진을 보면 어느 쪽이 맞는지 알려드려요.'),
+   ('제작 기간은 얼마나 걸려요?', '치수에 맞게 미리 재단해 가서 현장 설치는 대부분 하루에 끝나요.'),
+   ('견적은 어떻게 받아요?', '냉장고장 자리 사진 2장과 지역, 냉장고 모델명을 010-4835-3353으로 문자 주세요.')]),
+ ('fridge-cabinet-reform-cost', '냉장고장 리폼 비용', '냉장고장 리폼 비용 · 칸막이 제거 30만원 · 틈새장까지 70만원', '냉장고장 리폼 비용', '냉장고장 리폼<br><em>비용</em>',
+  '네모의꿈(010-4835-3353)의 냉장고장 리폼 비용은 칸막이·기둥 제거 30만원, 칸막이 제거 + 남는 폭 틈새장 70만원이에요(VAT 별도). 옵션 냉장고장을 다 뜯지 않고 필요한 곳만 고쳐서, 새로 짜는 것(100만원부터)보다 부담이 적어요.',
+  [('부분 리폼 30만원', '기존 상부장은 그대로 쓰고 중간 칸막이·기둥만 빼요. 상부장과 천장 보강 포함이에요.'),
+   ('틈새장까지 70만원', '칸막이를 빼고 냉장고를 넣고 남는 폭에 틈새장을 짜 넣어요.'),
+   ('기본가에 다 포함', '철거, 상부장과 천장 보강, 바닥·벽 마감, 폐자재 처리가 들어 있어요.'),
+   ('대부분 하루', '단순 칸막이 제거는 3~4시간이면 끝나고 대부분 그날 냉장고를 넣어요.')],
+  [('사진 보내기', '냉장고장 사진 2장과 지역, 냉장고 모델명을 문자로 보내 주세요.'), ('리폼 가능 확인', '틀을 살려 리폼할지, 새로 짜야 할지 사진을 보고 알려드려요.'), ('하루 시공', '칸막이를 빼고 보강·마감까지 하루에 끝내요.'), ('평생 AS', '처짐·기울어짐은 평생 무상이에요.')],
+  lambda w: w['f'] == 'fridge' and any(k in w['t'] for k in ('칸막이', '기둥', '리폼', '구조', '재사용')),
+  [('냉장고장 리폼 비용은 얼마예요?', '네모의꿈 기준 칸막이·기둥 제거 30만원, 틈새장까지 짜면 70만원이에요(VAT 별도).'),
+   ('리폼이 새로 짜는 것보다 싼가요?', '네. 옵션 장 틀과 상부장을 다시 쓰기 때문에 새로 짜기(100만원부터)보다 부담이 적어요.'),
+   ('리폼해도 상부장이 처지지 않나요?', '칸막이가 받치던 무게만큼 상부장과 천장을 2단으로 보강하고, 처짐·기울어짐은 평생 무상 AS로 책임져요.'),
    ('견적은 어떻게 받아요?', '냉장고장 사진 2장과 지역, 냉장고 모델명을 010-4835-3353으로 문자 주세요.')]),
  ('fridge-objet', 'LG 오브제 냉장고장', 'LG 오브제 냉장고장 맞춤제작·리폼', '오브제 냉장고장', 'LG 오브제<br><em>냉장고장</em>',
   'LG 오브제 1+1+1처럼 여러 대를 나란히 넣는 냉장고는 옵션 냉장고장 가운데 기둥에 걸려 붙지 않는 경우가 많아요. 기둥을 빼고 보강해서 오브제가 나란히 붙게 만들어요.',

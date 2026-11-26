@@ -11,18 +11,27 @@
    "q": "냉장고장",
    "web": true,
    "nemos": false,
-   "blog_ours": false,
+   "blog_ours": true,
    "sites": [
-    "www.insight.co.kr/news/583506",
-    "homestyle.lge.co.kr/home"
+    "m.etoday.co.kr/news/view/2653472",
+    "www.etoday.co.kr/",
+    "m.wikitree.co.kr/articles/1178111",
+    "www.wikitree.co.kr/"
    ]
   },
   {
    "q": "냉장고장 수납장",
-   "web": false,
+   "web": true,
    "nemos": false,
    "blog_ours": false,
-   "sites": []
+   "sites": [
+    "m.wikitree.co.kr/articles/1178111",
+    "www.wikitree.co.kr/",
+    "www.dailypop.kr/news/articleView.html?idxno=104841",
+    "m.lawissue.co.kr/view.php?ud=20261112133355589067191f6c6e_12",
+    "www.lawissue.co.kr/",
+    "m.beyondpost.co.kr/view.php?ud=202611121103576054205868f676_30"
+   ]
   },
   {
    "q": "냉장고장 리폼",
@@ -41,14 +50,14 @@
   {
    "q": "냉장고장 가격",
    "web": true,
-   "nemos": true,
+   "nemos": false,
    "blog_ours": false,
    "sites": [
     "fridgecut.homecareland.co.kr/contact/",
     "ulmadna.com/",
     "thewanthouse.co.kr/refrigeratormakeoverprice43/",
     "fridgeremove.homecareland.co.kr/contact/",
-    "nemos-dream.com/kw-cheongju-pricing"
+    "gomkitchen.co.kr/"
    ]
   },
   {
@@ -61,34 +70,45 @@
   {
    "q": "냉장고장 칸막이 제거 비용",
    "web": true,
+   "nemos": true,
+   "blog_ours": false,
+   "sites": [
+    "jangfit.korhomecare.com/naengjanggojang-kanmagi-cheolgeo/",
+    "nemojari.com/jobs/fridge-partition-removal-cost/",
+    "aboderepair.co.kr/",
+    "dorurak.com/",
+    "nemos-dream.com/guide-partition"
+   ]
+  },
+  {
+   "q": "냉장고장 칸막이 복구",
+   "web": true,
    "nemos": false,
    "blog_ours": false,
    "sites": [
-    "aboderepair.co.kr/",
-    "jangfit.korhomecare.com/naengjanggojang-kanmagi-cheolgeo/",
-    "nemojari.com/jobs/fridge-partition-removal-cost/"
+    "nemojari.com/jobs/fridge-partition-reinstall/"
    ]
   },
   {
    "q": "냉장고장 칸막이 철거",
-   "web": false,
+   "web": true,
    "nemos": false,
    "blog_ours": false,
-   "sites": []
+   "sites": [
+    "nemojari.com/jobs/move-in-fridge-cabinet/",
+    "dorurak.com/",
+    "aboderepair.co.kr/",
+    "jangfit.korhomecare.com/naengjanggojang-jungganbyeok-cheolgeo/"
+   ]
   },
   {
    "q": "냉장고장 칸막이 설치",
-   "web": false,
+   "web": true,
    "nemos": false,
-   "blog_ours": false,
-   "sites": []
-  },
-  {
-   "q": "냉장고장 칸막이 복구",
-   "web": false,
-   "nemos": false,
-   "blog_ours": false,
-   "sites": []
+   "blog_ours": true,
+   "sites": [
+    "dorurak.com/"
+   ]
   },
   {
    "q": "키친핏 냉장고장",
@@ -113,10 +133,12 @@
   },
   {
    "q": "키친핏 냉장고장 사이즈",
-   "web": false,
+   "web": true,
    "nemos": false,
    "blog_ours": false,
-   "sites": []
+   "sites": [
+    "ittemlab.com/kitchen-fit-fridge-samsung-vs-lg-fit-max/"
+   ]
   },
   {
    "q": "키친핏 냉장고장 리폼",
@@ -131,15 +153,19 @@
    "nemos": false,
    "blog_ours": false,
    "sites": [
-    "www.samsung.com/sec/"
+    "www.samsung.com/sec/",
+    "gomkitchen.co.kr/"
    ]
   },
   {
    "q": "냉장고장 리폼 비용",
-   "web": false,
+   "web": true,
    "nemos": false,
    "blog_ours": false,
-   "sites": []
+   "sites": [
+    "thewanthouse.co.kr/remodel-cost/",
+    "gomkitchen.co.kr/"
+   ]
   },
   {
    "q": "청주 냉장고장 리폼",
@@ -150,10 +176,15 @@
   },
   {
    "q": "냉장고장 제작 비용",
-   "web": false,
+   "web": true,
    "nemos": false,
    "blog_ours": false,
-   "sites": []
+   "sites": [
+    "custombuilt.korjipsuri.com/services/",
+    "fridgereform.korhomecare.com/fridge-cabinet-custom-build/",
+    "koreasurirepair.com/",
+    "nemojari.com/jobs/fridge-cabinet-custom-cost/"
+   ]
   },
   {
    "q": "뚱냉 냉장고장 제작",
@@ -167,13 +198,14 @@
   {
    "q": "냉장고장 제작 금액",
    "web": true,
-   "nemos": true,
+   "nemos": false,
    "blog_ours": false,
    "sites": [
     "nemojari.com/jobs/fridge-cabinet-custom-cost/",
     "ulmadna.com/",
     "simplewoody.com/ko/living/built-in-refrigerator-installation-cost-calculator.html",
-    "nemos-dream.com/kw-cheongju-pricing"
+    "gomkitchen.co.kr/",
+    "jicgong.com/"
    ]
   },
   {
@@ -191,17 +223,6 @@
    "sites": []
   },
   {
-   "q": "비스포크 냉장고장 깊이",
-   "web": true,
-   "nemos": false,
-   "blog_ours": false,
-   "sites": [
-    "nemojari.com/jobs/samsung-fridge-cabinet/",
-    "www.feeldesign.ai/ko/post/bespoke-kitchen-fit-refrigerator-cabinet-guide-2026",
-    "fixterior.co.kr/"
-   ]
-  },
-  {
    "q": "비스포크 냉장고장 사이즈",
    "web": true,
    "nemos": false,
@@ -212,12 +233,27 @@
    ]
   },
   {
-   "q": "비스포크 냉장고장 리폼 비용",
+   "q": "비스포크 냉장고장 깊이",
    "web": true,
    "nemos": false,
    "blog_ours": false,
    "sites": [
-    "www.samsung.com/sec/"
+    "nemojari.com/jobs/samsung-fridge-cabinet/",
+    "www.feeldesign.ai/ko/post/bespoke-kitchen-fit-refrigerator-cabinet-guide-2026",
+    "fixterior.co.kr/",
+    "www.jungannews.com/"
+   ]
+  },
+  {
+   "q": "비스포크 냉장고장 리폼 비용",
+   "web": true,
+   "nemos": true,
+   "blog_ours": true,
+   "sites": [
+    "korhomecare.com/services/fridge-wall-removal/",
+    "nemos-dream.com/fridge-bespoke",
+    "www.samsung.com/sec/",
+    "pantry.kjibsuri.com/portfolio-detail-01"
    ]
   },
   {
@@ -240,7 +276,7 @@
    "nemos": false,
    "blog_ours": false,
    "sites": [
-    "jicgong.com/"
+    "www.coupang.com/"
    ]
   },
   {
@@ -256,9 +292,12 @@
    "nemos": false,
    "blog_ours": false,
    "sites": [
+    "njc.jibsuriworld.com/kimchi-fridge-side-storage/",
     "fridgereform.korhomecare.com/fridge-cabinet-custom-build/",
     "ulmadna.com/",
-    "interiorwood.korjipsuri.com/"
+    "interiorwood.korjipsuri.com/",
+    "nemojari.com/jobs/fridge-upper-cabinet-make/",
+    "withzenis.com/"
    ]
   },
   {
@@ -288,7 +327,7 @@
    "nemos": true,
    "blog_ours": false,
    "sites": [
-    "nemos-dream.com/kw-daejeon-pricing",
+    "nemos-dream.com/kw-yuseong-pricing",
     "homecarepro.kr/",
     "interior.korhomefactory.com/",
     "resunab.korhomefactory.com/daejeon"
@@ -304,14 +343,13 @@
    ]
   },
   {
-   "q": "대전 냉장고장 가격",
+   "q": "대전 냉장고장 리폼 업체",
    "web": true,
    "nemos": true,
-   "blog_ours": false,
+   "blog_ours": true,
    "sites": [
-    "nemos-dream.com/kw-daedeok-pricing",
-    "resunab.korhomefactory.com/daejeon",
-    "interior.korhomefactory.com/"
+    "interiorda.com/",
+    "nemos-dream.com/area-daejeon"
    ]
   },
   {
@@ -349,10 +387,10 @@
    "blog_ours": false,
    "sites": [
     "nemos-dream.com/area-sejong",
-    "nemojari.com/fridge-cabinet/sejong/",
+    "nemojari.com/fridge-cabinet/goun/",
     "intref.korhomefactory.com/",
-    "gomkitchen.co.kr/",
-    "jicgong.com/"
+    "jicgong.com/",
+    "refrigerator.rainygenius.com/"
    ]
   },
   {
@@ -380,6 +418,18 @@
    ]
   },
   {
+   "q": "천안 냉장고장 리폼 가격",
+   "web": true,
+   "nemos": true,
+   "blog_ours": false,
+   "sites": [
+    "nemos-dream.com/area-cheonan",
+    "nemojari.com/jobs/fridge-cabinet-reform-cost/",
+    "refrig.korhomefactory.com/gallery-case-03",
+    "ref.korhomefactory.com/"
+   ]
+  },
+  {
    "q": "천안 냉장고장 제작 비용",
    "web": true,
    "nemos": true,
@@ -388,19 +438,7 @@
     "nemos-dream.com/area-cheonan",
     "interior.korhomefactory.com/",
     "ref.korhomefactory.com/",
-    "sunab.korhomefactory.com/"
-   ]
-  },
-  {
-   "q": "천안 냉장고장 리폼 가격",
-   "web": true,
-   "nemos": true,
-   "blog_ours": false,
-   "sites": [
-    "nemos-dream.com/kw-cheonan-pricing",
-    "nemojari.com/jobs/fridge-cabinet-reform-cost/",
-    "refrig.korhomefactory.com/gallery-case-03",
-    "ref.korhomefactory.com/"
+    "refrigerator.kzipsuri.com/cheonan-fridge-cabinet"
    ]
   },
   {
@@ -434,6 +472,13 @@
    ]
   },
   {
+   "q": "청주 냉장고장 제작",
+   "web": false,
+   "nemos": false,
+   "blog_ours": true,
+   "sites": []
+  },
+  {
    "q": "청주 냉장고장 시공",
    "web": false,
    "nemos": false,
@@ -448,13 +493,6 @@
    "sites": [
     "nemos-dream.com/kw-cheongju-fridgebar"
    ]
-  },
-  {
-   "q": "청주 냉장고장 제작",
-   "web": false,
-   "nemos": false,
-   "blog_ours": true,
-   "sites": []
   },
   {
    "q": "아산 냉장고장",
